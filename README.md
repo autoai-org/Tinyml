@@ -1,4 +1,5 @@
-# ELENet
+![logo](assets/logo.png)
+# TinyNet
 
 > The neural network framework implemented in pure python.
 

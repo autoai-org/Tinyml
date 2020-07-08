@@ -7,12 +7,10 @@ class Softmax(Layer):
     
     def forward(self, input):
         self.input = input
-        input -= np.max(input)
-        softmax_output = (np.exp(input).T/np.sum(np.exp(input), axis=0)).T
-        # save the output for backward pass
-        self.output = softmax_output
-        return softmax_output
-    
+        exps = np.exp(input - np.max(input))
+        self.output = exps / np.sum(exps)
+        return self.output
+
     def backward(self, in_gradient):
         reshaped_input = self.output.reshape(-1,1)
         return np.diagflat(reshaped_input) - np.matmul(reshaped_input, reshaped_input.T)

@@ -1,6 +1,6 @@
 #coding:utf-8
 
-from elenet.core import Parameter
+from tinynet.core import Parameter
 
 class Layer(object):
     def __init__(self, name):
@@ -10,7 +10,7 @@ class Layer(object):
     
     def forward(self, input):
         '''
-        > this function needs to be overridden
+        > this function needs to be overridden.
         compute the forward pass
         '''
         return self.input, lambda D: D
@@ -23,14 +23,10 @@ class Layer(object):
         self.parameters.append(param)
         return param
     
-    def update(self, optimizer):
-        '''
-        updates the saved parameters with the given optimizer
-        '''
-        for param in self.parameters:
-            optimizer.update(param)
-
     def backward(self, in_gradient):
+        '''
+        > this function needs to be overridden.
+        '''
         pass
 
     def summary(self):

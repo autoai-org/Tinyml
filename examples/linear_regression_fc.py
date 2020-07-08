@@ -1,9 +1,9 @@
 import numpy as np
-from elenet.layers import Linear, ReLu, LeakyReLu
-from elenet.losses import mse_loss
-from elenet.optims import SGDOptimizer
-from elenet.utilities.learner import Learner
-from elenet.net import Sequential
+from tinynet.layers import Linear, ReLu, LeakyReLu
+from tinynet.losses import mse_loss
+from tinynet.optims import SGDOptimizer
+from tinynet.utilities.learner import Learner
+from tinynet.net import Sequential
 
 X = np.random.randn(100, 10)
 w = np.random.randn(10, 1)

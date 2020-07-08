@@ -1,9 +1,9 @@
 import numpy as np
-from elenet.layers import Linear, ReLu, LeakyReLu
-from elenet.losses import mse_loss
-from elenet.optims import SGDOptimizer
-from elenet.utilities.learner import Learner
-from elenet.net import Sequential
+from tinynet.layers import Linear, ReLu, LeakyReLu
+from tinynet.losses import mse_loss
+from tinynet.optims import SGDOptimizer
+from tinynet.utilities.learner import Learner
+from tinynet.net import Sequential
 
 X = np.random.randn(1000, 2)
 Y = X[:, 0] * X[:, 1]
@@ -17,6 +17,6 @@ model = Sequential([
 
 model.summary()
 
-learner = Learner(model, mse_loss, SGDOptimizer(lr=0.3))
+learner = Learner(model, mse_loss, SGDOptimizer(lr=0.015))
 
-learner.fit(X, Y, epochs=3, batch_size=2)
+learner.fit(X, Y, epochs=50, batch_size=64)

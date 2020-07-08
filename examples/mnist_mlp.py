@@ -1,29 +1,36 @@
 import numpy as np
-from sklearn.datasets import fetch_openml
-from sklearn.model_selection import train_test_split
 
-from elenet.net import Sequential
-from elenet.layers import Linear, Softmax, ReLu
-from elenet.optims import SGDOptimizer
-from elenet.utilities.learner import Learner
-from elenet.losses import cross_entropy_loss
+from tinynet.net import Sequential
+from tinynet.layers import Linear, Softmax, ReLu
+from tinynet.optims import SGDOptimizer
+from tinynet.utilities.learner import Learner
+from tinynet.losses import cross_entropy_loss
+import tinynet.dataloaders.mnist as mnist
 
-x, y = fetch_openml('mnist_784', version=1, return_X_y = True, cache=True)
-x = (x/255).astype('float32')
+print('loading data...')
+
+# mnist.init()
+x_train, y_train, x_test, y_test = mnist.load()
+
+x_train = (x_train/255).astype('float32')
+x_test = (x_test/255).astype('float32')
 
 digits = 10
-examples = y.shape[0]
-y = y.reshape(1, examples)
+examples = y_train.shape[0]
+y = y_train.reshape(1, examples)
 y = np.eye(digits)[y.astype('int32')]
-y = y.T.reshape(examples,digits)
+y_train = y.T.reshape(examples,digits)
 
+print('building model...')
 model = Sequential([
     Linear('fc_1', 784, 256),
     ReLu('relu_1'),
-    Linear('fc_2', 256, 256),
+    Linear('fc_2', 256, 64),
     ReLu('relu_2'),
-    Linear('fc_3', 256, 10),
+    Linear('fc_2', 64, 10),
+    Softmax()
 ])
 model.summary()
-learner = Learner(model, cross_entropy_loss, SGDOptimizer(lr=0.1))
-learner.fit(x, y, epochs=10, batch_size=32)
+learner = Learner(model, cross_entropy_loss, SGDOptimizer(lr=0.05))
+print('starting training...')
+learner.fit(x_train, y_train, epochs=15, batch_size=128)
