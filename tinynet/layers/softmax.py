@@ -12,5 +12,4 @@ class Softmax(Layer):
         return self.output
 
     def backward(self, in_gradient):
-        reshaped_input = self.output.reshape(-1,1)
-        return np.diagflat(reshaped_input) - np.matmul(reshaped_input, reshaped_input.T)
+        return in_gradient

@@ -18,7 +18,6 @@ class Linear(Layer):
         return np.matmul(input, self.weights.tensor) + self.bias.tensor
 
     def backward(self, in_gradient):
-        # print('[{}] in_gradient:  {}'.format(self.name, np.sum(in_gradient)))
         self.weights.gradient += np.matmul(self.input.T, in_gradient)
         self.bias.gradient += in_gradient.sum(axis=0)
         return np.matmul(in_gradient, self.weights.tensor.T)

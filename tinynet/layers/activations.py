@@ -6,13 +6,13 @@ class ReLu(Layer):
     def __init__(self, name):
         super().__init__(name)
         self.type='ReLu'
-    
+
     def forward(self, input):
         self.input = input
         return input * (input > 0)
-    
+
     def backward(self, in_gradient):
-        return in_gradient * (self.input > 0)
+        return in_gradient * 1.0 * (self.input > 0)
 
 class LeakyReLu(Layer):
     def __init__(self, name, k):

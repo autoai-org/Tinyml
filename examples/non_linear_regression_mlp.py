@@ -17,6 +17,6 @@ model = Sequential([
 
 model.summary()
 
-learner = Learner(model, mse_loss, SGDOptimizer(lr=0.015))
+learner = Learner(model, mse_loss, SGDOptimizer(lr=0.3))
 
-learner.fit(X, Y, epochs=50, batch_size=64)
+learner.fit(X, Y, epochs=50, batch_size=50)

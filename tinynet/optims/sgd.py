@@ -3,5 +3,8 @@ class SGDOptimizer():
         self.lr = lr
     
     def update(self, param):
-        param.tensor -= self.lr * param.gradient
-        param.gradient.fill(0)
+        if param.require_grad:
+            param.tensor -= self.lr * param.gradient
+            param.gradient.fill(0)
+        else:
+            pass

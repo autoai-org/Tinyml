@@ -16,5 +16,5 @@ class Sequential(Net):
         out_gradient = in_gradient
         for layer in self.layers[::-1]:
             out_gradient = layer.backward(out_gradient)
-            print('{} gradient: {}'.format(layer.name, np.sum(out_gradient)))
+            print('{} gradient: {}'.format(layer.name, np.mean(out_gradient)))
         return out_gradient

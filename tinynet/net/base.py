@@ -11,10 +11,8 @@ class Net(object):
         '''
         updates the saved parameters with the given optimizer
         '''
-        # print(self.parameters)
         for param in self.parameters:
             optimizer.update(param)
-        # print(self.parameters)
 
     def summary(self):
         print_net_summary(self.layers)
