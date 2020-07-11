@@ -8,7 +8,7 @@ def print_net_summary(layers):
 
 def log_trainining_progress(epoch,total_epochs, loss_sum, loss_mean):
     if (VERBOSE==1):
-        print("[tinynet] epoch: {}/{}, loss(sum): {}, loss(mean): {}".format(epoch + 1, total_epochs, loss_sum, loss_mean))
+        print("[Tinynet] epoch: {}/{}, loss(sum): {}, loss(mean): {}".format(epoch + 1, total_epochs, loss_sum, loss_mean))
     else:
         pass
 

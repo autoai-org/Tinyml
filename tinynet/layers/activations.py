@@ -14,6 +14,7 @@ class ReLu(Layer):
     def backward(self, in_gradient):
         return in_gradient * 1.0 * (self.input > 0)
 
+
 class LeakyReLu(Layer):
     def __init__(self, name, k):
         super().__init__(name)

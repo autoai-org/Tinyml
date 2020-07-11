@@ -4,7 +4,8 @@ from .base import Layer
 class Softmax(Layer):
     def __init__(self, name='softmax'):
         super().__init__(name)
-    
+        self.type = 'Softmax'
+        
     def forward(self, input):
         exps = np.exp(input - np.max(input))
         '''
