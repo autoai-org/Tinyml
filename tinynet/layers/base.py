@@ -30,7 +30,7 @@ class Layer(object):
         pass
 
     def summary(self):
-        if hasattr(self, 'weights'):
-            return [self.type, self.name, self.weights.tensor.shape]
+        if hasattr(self, 'weight'):
+            return [self.type, self.name, self.weight.tensor.shape]
         else:
             return [self.type, self.name, None]

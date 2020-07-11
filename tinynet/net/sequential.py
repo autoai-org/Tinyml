@@ -1,6 +1,7 @@
 from .base import Net
 
 import numpy as np
+from tinynet.utilities.logger import log_backward_gradient
 
 class Sequential(Net):
     def __init__(self, layers):
@@ -13,8 +14,7 @@ class Sequential(Net):
         return output
     
     def backward(self, in_gradient):
-        out_gradient = in_gradient
         for layer in self.layers[::-1]:
-            out_gradient = layer.backward(out_gradient)
-            print('{} gradient: {}'.format(layer.name, np.mean(out_gradient)))
-        return out_gradient
+            in_gradient = layer.backward(in_gradient)
+            log_backward_gradient(layer.name, np.mean(in_gradient))
+        return in_gradient

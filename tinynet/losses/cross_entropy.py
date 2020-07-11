@@ -1,6 +1,7 @@
 import numpy as np
+from sklearn.metrics import log_loss
 
 def cross_entropy_loss(predicted, ground_truth):
-
-    loss = loss = -1 * np.einsum('ij,ij->', ground_truth, np.log(predicted+1e-15), optimize=True) / ground_truth.shape[0]
-    return loss, predicted - ground_truth
+    # log_likelihood = -np.log(predicted + 1e-15)
+    # loss = np.sum(log_likelihood).mean()
+    return log_loss(ground_truth, predicted), predicted - ground_truth
