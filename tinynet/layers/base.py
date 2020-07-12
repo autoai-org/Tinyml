@@ -13,7 +13,7 @@ class Layer(object):
         > this function needs to be overridden.
         compute the forward pass
         '''
-        return self.input, lambda D: D
+        return self.input
     
     def build_param(self, tensor):
         '''
@@ -27,7 +27,7 @@ class Layer(object):
         '''
         > this function needs to be overridden.
         '''
-        pass
+        return in_gradient
 
     def summary(self):
         if hasattr(self, 'weight'):
