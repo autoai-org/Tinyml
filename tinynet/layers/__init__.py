@@ -6,4 +6,4 @@ from .convolution import Conv2D
 from .flatten import Flatten
 from .pooling import MaxPool2D
 
-__all__ = [Layer, Linear, Softmax, ReLu, LeakyReLu, Conv2D, Flatten, MaxPool2D]
+__all__ = ['Layer', 'Linear', 'Softmax', 'ReLu', 'LeakyReLu', 'Conv2D', 'Flatten', 'MaxPool2D']

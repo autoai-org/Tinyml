@@ -56,8 +56,23 @@ def col2im_indices(cols, x_shape, field_height=3, field_width=3, padding=1,
 
 
 class Conv2D(Layer):
+    '''
+    Conv2D performs convolutional operation with given input.
+    '''
     def __init__(self, name, input_dim, n_filter, h_filter, w_filter, stride, padding):
+        '''
+        input_dim:
+
+        n_filter:
+
+        h_filter:
+
+        w_filter:
+
+        stride: 
+        '''
         super().__init__(name)
+        self.type = 'Conv2D'
         self.input_channel, self.input_height, self.input_weight = input_dim
         self.n_filter = n_filter
         self.h_filter = h_filter

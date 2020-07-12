@@ -4,6 +4,9 @@ import numpy as np
 from tinynet.utilities.logger import log_backward_gradient
 
 class Sequential(Net):
+    '''
+    Sequential model reads a list of layers and stack them to be a neural network.
+    '''
     def __init__(self, layers):
         super().__init__(layers)
     

@@ -9,7 +9,7 @@ class Net(object):
         
     def update(self, optimizer):
         '''
-        updates the saved parameters with the given optimizer
+        updates the saved parameters with the given optimizer.
         '''
         for param in self.parameters:
             optimizer.update(param)

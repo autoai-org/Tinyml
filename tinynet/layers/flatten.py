@@ -2,6 +2,9 @@ from .base import Layer
 import numpy as np
 
 class Flatten(Layer):
+    '''
+    Flatten layer reads an ndarray as input, and reshape it into a 1-d vector.
+    '''
     def __init__(self,name):
         super().__init__(name)
     

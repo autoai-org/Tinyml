@@ -41,7 +41,7 @@ model = Sequential([
     Linear('fc_2', 128, 64),
     ReLu('relu_2'),
     Linear('fc_3', 64, 10),
-    Softmax()
+    # Softmax()
 ])
 
 def get_accuracy(y_predict,y_true):
