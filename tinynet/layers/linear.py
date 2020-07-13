@@ -1,7 +1,6 @@
 from .base import Layer
 import numpy as np
 
-
 class Linear(Layer):
     '''
     Linear layer performs fully connected operation.
@@ -14,7 +13,7 @@ class Linear(Layer):
         self.type = 'Linear'
         self.weight = self.build_param(weight)
         self.bias = self.build_param(bias)
-
+    
     def forward(self, input):
         '''
         The forward pass of fully connected layer is given by :math:`f(x)=wx+b`.
@@ -22,11 +21,11 @@ class Linear(Layer):
         # save input as the input will be used in backward pass
         self.input = input
         return np.matmul(input, self.weight.tensor) + self.bias.tensor
-
+    
     def backward(self, in_gradient):
         '''
         In the backward pass, we compute the gradient with respect to :math:`w`, :math:`b`, and :math:`x`.
-        
+
         We have:
 
         .. math::

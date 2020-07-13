@@ -2,12 +2,17 @@ from .base import Layer
 import numpy as np
 
 class ReLu(Layer):
-
+    '''
+    ReLu layer performs rectifier linear unit opertaion.
+    '''
     def __init__(self, name):
         super().__init__(name)
         self.type='ReLu'
 
     def forward(self, input):
+        '''
+        In the forward pass, the output is defined as :math:`y=max(0, x)`.
+        '''
         self.input = input
         return input * (input > 0)
 
@@ -16,6 +21,8 @@ class ReLu(Layer):
 
 
 class LeakyReLu(Layer):
+    '''
+    '''
     def __init__(self, name, k):
         super().__init__(name)
         self.k = k

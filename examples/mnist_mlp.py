@@ -3,7 +3,7 @@ import numpy as np
 from tinynet.net import Sequential
 from tinynet.layers import Linear, Softmax, ReLu
 from tinynet.optims import SGDOptimizer
-from tinynet.utilities.learner import Learner
+from tinynet.learner import Learner
 from tinynet.losses import cross_entropy_loss, mse_loss
 import tinynet.dataloaders.mnist as mnist
 

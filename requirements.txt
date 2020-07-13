@@ -3,3 +3,4 @@ numpy
 tqdm
 scikit-learn
 Sphinx==3.1.2
+numba

@@ -7,7 +7,7 @@ class Learner():
         self.model = model
         self.loss = loss
         self.optimizer = optimizer
-
+    
     def batch_fit(self, data, label):
         y_predicated = self.model.forward(data)
         loss, loss_gradient = self.loss(y_predicated, label)
