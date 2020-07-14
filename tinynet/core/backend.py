@@ -1,6 +1,9 @@
 import os
 
-GPU = os.environ['TNN_GPU']
+GPU = False
+
+if "TNN_GPU" in os.environ:
+    GPU=True
 
 Backend = None
 

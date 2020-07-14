@@ -29,6 +29,7 @@ class Softmax(Layer):
     def backward(self, in_gradient):
         '''
         Important: The actual backward gradient is not :math:`1`.
-        The reason why we pass in_gradient directly to previous layer is: since we know the formula is pretty straightforward when softmax is being used together with cross entropy loss (see theoretical induction), we compute the gradient in the cross entropy loss function, so that we could reduce the complexity, and increase the computational stabilities.
+
+        The reason why we pass the gradient directly to previous layer is: since we know the formula is pretty straightforward when softmax is being used together with cross entropy loss (see theoretical induction), we compute the gradient in the cross entropy loss function, so that we could reduce the complexity, and increase the computational stabilities.
         '''
         return in_gradient
