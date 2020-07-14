@@ -1,4 +1,4 @@
-import numpy as np
+from tinynet.core import Backend as np
 import time
 from tinynet.utilities.logger import log_trainining_progress, log_training_time
 
@@ -31,7 +31,7 @@ class Learner():
             losses.append(loss)
         elapsed = time.process_time() - start
         log_training_time(elapsed)
-        return losses
+        return self.model, losses
 
     def predict(self, data):
         return self.model.forward(data)

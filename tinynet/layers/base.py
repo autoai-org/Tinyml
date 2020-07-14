@@ -34,3 +34,6 @@ class Layer(object):
             return [self.type, self.name, self.weight.tensor.shape]
         else:
             return [self.type, self.name, None]
+    
+    def __call__(self, input):
+        return self.forward(input)

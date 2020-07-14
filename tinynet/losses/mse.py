@@ -1,4 +1,4 @@
-import numpy as np
+from tinynet.core import Backend as np
 
 def mse_loss(predicted, ground_truth):
     '''

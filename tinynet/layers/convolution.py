@@ -1,5 +1,5 @@
 from .base import Layer
-import numpy as np
+from tinynet.core import Backend as np
 
 
 def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride=1):
@@ -84,14 +84,14 @@ class Conv2D(Layer):
         bias = np.zeros((self.n_filter, 1))
         self.weight = self.build_param(weight)
         self.bias = self.build_param(bias)
-        self.h_out = (self.input_height - self.h_filter +
+        self.out_height = (self.input_height - self.h_filter +
                       2 * padding) / self.stride + 1
-        self.w_out = (self.input_weight - self.w_filter +
+        self.out_width = (self.input_weight - self.w_filter +
                       2 * padding) / self.stride + 1
-        if not self.w_out.is_integer() or not self.h_out.is_integer():
+        if not self.out_width.is_integer() or not self.out_height.is_integer():
             raise Exception("[Tinynet] Invalid dimension settings!")
-        self.h_out, self.w_out = int(self.h_out), int(self.w_out)
-        self.out_dim = (self.n_filter, self.h_out, self.w_out)
+        self.out_height, self.out_width = int(self.out_height), int(self.out_width)
+        self.out_dim = (self.n_filter, self.out_height, self.out_width)
 
     def forward(self, input):
         self.n_input = input.shape[0]
@@ -100,7 +100,7 @@ class Conv2D(Layer):
         weight_in_row = self.weight.tensor.reshape(self.n_filter, -1)
         output = np.matmul(weight_in_row, self.input_col) + self.bias.tensor
         output = output.reshape(
-            self.n_filter, self.h_out, self.w_out, self.n_input)
+            self.n_filter, self.out_height, self.out_width, self.n_input)
         output = output.transpose(3, 0, 1, 2)
         return output
 

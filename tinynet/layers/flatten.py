@@ -1,5 +1,5 @@
 from .base import Layer
-import numpy as np
+from tinynet.core import Backend as np
 
 class Flatten(Layer):
     '''

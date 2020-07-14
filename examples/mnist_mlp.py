@@ -1,10 +1,12 @@
+import os
+os.environ['TNN_GPU'] = ""
 from tinynet.layers import softmax
-import numpy as np
+from tinynet.core import Backend as np
 from tinynet.net import Sequential
 from tinynet.layers import Linear, Softmax, ReLu
 from tinynet.optims import SGDOptimizer
 from tinynet.learner import Learner
-from tinynet.losses import cross_entropy_loss, mse_loss
+from tinynet.losses import cross_entropy_loss, mse_loss, cross_entropy_with_softmax_loss
 import tinynet.dataloaders.mnist as mnist
 
 from sklearn.preprocessing import OneHotEncoder
@@ -49,14 +51,14 @@ def get_accuracy(y_predict,y_true):
                             np.argmax(y_true,axis=-1)))
 
 model.summary()
-learner = Learner(model, mse_loss, SGDOptimizer(lr=0.01))
+learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.002))
 
 print('starting training...')
-learner.fit(x_train, y_train, epochs=10, batch_size=256)
+model, losses = learner.fit(x_train, y_train, epochs=10, batch_size=256)
 
 print('starting evaluating...')
 
-y_predict = learner.predict(x_test)
+y_predict = model(x_test)
 
 acc = get_accuracy(y_predict, y_test)
 print('Testing Accuracy: {}%'.format(acc*100))

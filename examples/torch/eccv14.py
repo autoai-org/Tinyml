@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 from torchvision.transforms import transforms
-import numpy as np
+from tinynet.core import Backend as np
 import matplotlib.pyplot as plt
 from PIL import Image
 

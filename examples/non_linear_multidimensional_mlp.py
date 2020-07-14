@@ -1,4 +1,4 @@
-import numpy as np
+from tinynet.core import Backend as np
 import tinynet
 from tinynet.layers import Linear, ReLu, LeakyReLu
 from tinynet.losses import mse_loss

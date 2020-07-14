@@ -1,11 +1,13 @@
+import os
+os.environ['TNN_GPU'] = ""
 from tinynet.layers.flatten import Flatten
 from tinynet.layers import softmax
-import numpy as np
+from tinynet.core import Backend as np
 from tinynet.net import Sequential
 from tinynet.layers import Linear, Softmax, ReLu, Conv2D
 from tinynet.optims import SGDOptimizer
 from tinynet.learner import Learner
-from tinynet.losses import cross_entropy_loss, mse_loss
+from tinynet.losses import cross_entropy_with_softmax_loss, mse_loss
 import tinynet.dataloaders.mnist as mnist
 
 from sklearn.preprocessing import OneHotEncoder
@@ -45,8 +47,11 @@ model = Sequential([
            h_filter=3, w_filter=3, stride=1, padding=1),
     ReLu('relu_1'),
     Flatten('flatten_1'),
-    Linear('fc_1', 25088, 10),
-    Softmax()
+    Linear('fc_1', 25088, 256),
+    ReLu('relu_2'),
+    Linear('fc_2', 256, 64),
+    ReLu('relu_3'),
+    Linear('fc_2', 64, 10),
 ])
 
 
@@ -56,10 +61,10 @@ def get_accuracy(y_predict, y_true):
 
 
 model.summary()
-learner = Learner(model, mse_loss, SGDOptimizer(lr=0.01))
+learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.01))
 
 print('starting training...')
-learner.fit(x_train, y_train, epochs=10, batch_size=256)
+learner.fit(x_train, y_train, epochs=5, batch_size=1024)
 
 print('starting evaluating...')
 

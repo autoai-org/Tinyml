@@ -1,6 +1,6 @@
 from .base import Net
 
-import numpy as np
+from tinynet.core import Backend as np
 from tinynet.utilities.logger import output_intermediate_result
 
 class Sequential(Net):
@@ -22,3 +22,6 @@ class Sequential(Net):
             in_gradient = layer.backward(in_gradient)
             output_intermediate_result(layer.name, in_gradient, 'gradient')
         return in_gradient
+
+    def __call__(self, input):
+        return self.forward(input)

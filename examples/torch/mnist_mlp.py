@@ -3,7 +3,7 @@ from torch import optim
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import numpy as np
+from tinynet.core import Backend as np
 
 from torch.autograd import Variable
 from tinynet.utilities.logger import log_trainining_progress
