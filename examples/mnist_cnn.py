@@ -1,18 +1,18 @@
-import os
-os.environ['TNN_GPU'] = ""
-from tinynet.layers.flatten import Flatten
-from tinynet.layers import softmax
-from tinynet.core import Backend as np
-from tinynet.net import Sequential
-from tinynet.layers import Linear, Softmax, ReLu, Conv2D
-from tinynet.optims import SGDOptimizer
-from tinynet.learner import Learner
-from tinynet.losses import cross_entropy_with_softmax_loss, mse_loss
-import tinynet.dataloaders.mnist as mnist
-
-from sklearn.preprocessing import OneHotEncoder
-
 import tinynet
+from sklearn.preprocessing import OneHotEncoder
+import tinynet.dataloaders.mnist as mnist
+from tinynet.losses import cross_entropy_with_softmax_loss, mse_loss
+from tinynet.learner import Learner
+from tinynet.optims import SGDOptimizer
+from tinynet.layers import Linear, Softmax, ReLu, Conv2D
+from tinynet.net import Sequential
+from tinynet.core import Backend as np
+from tinynet.layers import softmax
+from tinynet.layers.flatten import Flatten
+import os
+from tinynet.layers.pooling import MaxPool2D
+os.environ['TNN_GPU'] = ""
+
 
 # Higher verbose level = more detailed logging
 tinynet.utilities.logger.VERBOSE = 1
@@ -35,8 +35,10 @@ def pre_process_data(train_x, train_y, test_x, test_y):
 
     return train_x, train_y, test_x, test_y
 
+
 x_train, y_train, x_test, y_test = mnist.load()
-x_train, y_train, x_test, y_test = pre_process_data(x_train, y_train, x_test, y_test)
+x_train, y_train, x_test, y_test = pre_process_data(
+    x_train, y_train, x_test, y_test)
 
 print(y_train.shape)
 print(x_train.shape)
@@ -44,14 +46,16 @@ print('building model...')
 
 model = Sequential([
     Conv2D('conv_1', (1, 28, 28), n_filter=32,
-           h_filter=3, w_filter=3, stride=1, padding=1),
+           h_filter=3, w_filter=3, stride=1, padding=0),
     ReLu('relu_1'),
-    Flatten('flatten_1'),
-    Linear('fc_1', 25088, 256),
+    Conv2D('conv_2', (32, 26, 26), n_filter=64,
+           h_filter=3, w_filter=3, stride=1, padding=0),
     ReLu('relu_2'),
-    Linear('fc_2', 256, 64),
+    MaxPool2D('maxpool_1', (64, 24, 24), size=(2, 2), stride=2),
+    Flatten('flat_1'),
+    Linear('fc_1', 9216, 128),
     ReLu('relu_3'),
-    Linear('fc_2', 64, 10),
+    Linear('fc_2', 128, 10),
 ])
 
 
@@ -61,7 +65,8 @@ def get_accuracy(y_predict, y_true):
 
 
 model.summary()
-learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.01))
+learner = Learner(model, cross_entropy_with_softmax_loss,
+                  SGDOptimizer(lr=0.01))
 
 print('starting training...')
 learner.fit(x_train, y_train, epochs=5, batch_size=1024)

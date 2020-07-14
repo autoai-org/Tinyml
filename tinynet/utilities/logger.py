@@ -1,10 +1,10 @@
 #coding:utf-8
-
+from tabulate import tabulate
 VERBOSE = 1
 
 def print_net_summary(layers):
-    for each in layers:
-        print(each.summary())
+    layers_info = [each.summary() for each in layers]
+    print(tabulate(layers_info, headers=['Type', 'Name', 'Weight','Output_shape'], tablefmt='orgtbl'))
 
 def log_trainining_progress(epoch,total_epochs, loss_sum, loss_mean):
     if (VERBOSE>=1):

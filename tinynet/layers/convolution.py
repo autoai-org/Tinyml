@@ -1,7 +1,10 @@
 from .base import Layer
 from tinynet.core import Backend as np
 
-
+'''
+These im2col and col2im should be credited to: https://github.com/huyouare/CS231n.
+> TODO: add a naive implementation.
+'''
 def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride=1):
     # First figure out what the size of the output should be
     N, C, H, W = x_shape
@@ -80,7 +83,7 @@ class Conv2D(Layer):
         self.stride = stride
         self.padding = padding
         weight = np.random.randn(
-            self.n_filter, self.h_filter, self.w_filter) / np.sqrt(n_filter/2.)
+            self.n_filter, self.input_channel, self.h_filter, self.w_filter) / np.sqrt(n_filter/2.0)
         bias = np.zeros((self.n_filter, 1))
         self.weight = self.build_param(weight)
         self.bias = self.build_param(bias)

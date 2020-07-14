@@ -30,10 +30,16 @@ class Layer(object):
         return in_gradient
 
     def summary(self):
+        info = [self.type, self.name]
         if hasattr(self, 'weight'):
-            return [self.type, self.name, self.weight.tensor.shape]
+            info.append(self.weight.tensor.shape)
         else:
-            return [self.type, self.name, None]
+            info.append('N/A')
+        if hasattr(self, 'out_dim'):
+            info.append(self.out_dim)
+        else:
+            info.append('N/A')
+        return info
     
     def __call__(self, input):
         return self.forward(input)
