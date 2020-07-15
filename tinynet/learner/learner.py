@@ -11,6 +11,7 @@ class Learner():
     def batch_fit(self, data, label):
         y_predicated = self.model.forward(data)
         loss, loss_gradient = self.loss(y_predicated, label)
+        loss, loss_gradient = loss/len(data), loss_gradient/len(data)
         self.model.backward(loss_gradient)
         self.model.update(self.optimizer)
         return loss

@@ -49,7 +49,7 @@ def get_accuracy(y_predict,y_true):
                             np.argmax(y_true,axis=-1)))
 
 model.summary()
-learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.002))
+learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.5))
 
 print('starting training...')
 model, losses = learner.fit(x_train, y_train, epochs=10, batch_size=256)
