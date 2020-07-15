@@ -1,4 +1,4 @@
-from .backend import Backend
+from .backend import Backend, GPU
 from .parameter import Parameter
 
-__all__=['Parameter', 'Backend']
+__all__=['Parameter', 'Backend', 'GPU']

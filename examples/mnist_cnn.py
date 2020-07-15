@@ -4,18 +4,20 @@ import tinynet.dataloaders.mnist as mnist
 from tinynet.losses import cross_entropy_with_softmax_loss, mse_loss
 from tinynet.learner import Learner
 from tinynet.optims import SGDOptimizer
-from tinynet.layers import Linear, Softmax, ReLu, Conv2D
+from tinynet.layers import Linear, Softmax, ReLu, Conv2D, Dropout
 from tinynet.net import Sequential
 from tinynet.core import Backend as np
 from tinynet.layers import softmax
 from tinynet.layers.flatten import Flatten
 import os
 from tinynet.layers.pooling import MaxPool2D
-os.environ['TNN_GPU'] = ""
-
 
 # Higher verbose level = more detailed logging
 tinynet.utilities.logger.VERBOSE = 1
+GPU = False
+
+if GPU:
+    os.environ['TNN_GPU'] = "True"
 
 print('loading data...')
 # mnist.init()
@@ -40,6 +42,12 @@ x_train, y_train, x_test, y_test = mnist.load()
 x_train, y_train, x_test, y_test = pre_process_data(
     x_train, y_train, x_test, y_test)
 
+if GPU:
+    import cupy as cp
+    x_train = cp.array(x_train)
+    y_train = cp.array(y_train)
+    x_test = cp.array(x_test)
+    y_test = cp.array(y_test)
 print(y_train.shape)
 print(x_train.shape)
 print('building model...')
@@ -52,9 +60,11 @@ model = Sequential([
            h_filter=3, w_filter=3, stride=1, padding=0),
     ReLu('relu_2'),
     MaxPool2D('maxpool_1', (64, 24, 24), size=(2, 2), stride=2),
+    Dropout('drop_1', 0.25),
     Flatten('flat_1'),
     Linear('fc_1', 9216, 128),
     ReLu('relu_3'),
+    Dropout('drop_2',0.5),
     Linear('fc_2', 128, 10),
 ])
 

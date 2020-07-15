@@ -1,8 +1,11 @@
 from .base import Layer
 from tinynet.core import Backend as np
+from tinynet.core import GPU
 
 '''
-These im2col and col2im should be credited to: https://github.com/huyouare/CS231n.
+These im2col and col2im should be credited to:
+https://github.com/huyouare/CS231n. Some minor modifications are made to ensure
+it works on GPU.
 > TODO: add a naive implementation.
 '''
 def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride=1):
@@ -15,7 +18,7 @@ def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride
 
     i0 = np.repeat(np.arange(field_height, dtype='int32'), field_width)
     i0 = np.tile(i0, C)
-    i1 = stride * np.repeat(np.arange(out_height, dtype='int32'), out_width)
+    i1 = stride * np.repeat(np.arange(int(out_height), dtype='int32'), int(out_width))
     j0 = np.tile(np.arange(field_width), field_height * C)
     j1 = stride * np.tile(np.arange(out_width, dtype='int32'), int(out_height))
     i = i0.reshape(-1, 1) + i1.reshape(1, -1)
@@ -52,7 +55,11 @@ def col2im_indices(cols, x_shape, field_height=3, field_width=3, padding=1,
                                  stride)
     cols_reshaped = cols.reshape(C * field_height * field_width, -1, N)
     cols_reshaped = cols_reshaped.transpose(2, 0, 1)
-    np.add.at(x_padded, (slice(None), k, i, j), cols_reshaped)
+    if GPU:
+        # In cupy, scatter_add is equivalent to np.add.at
+        np.scatter_add(x_padded, (slice(None), k, i, j), cols_reshaped)
+    else:
+        np.add.at(x_padded, (slice(None), k, i, j), cols_reshaped)
     if padding == 0:
         return x_padded
     return x_padded[:, :, padding:-padding, padding:-padding]

@@ -63,6 +63,7 @@ is simple: :math:`y_i=max(0, x_i)`.
 In the ReLu function, we do not have any weight or bias to update. Hence
 we only need to compute the gradient to previous layer. We have
 :math:`\frac{\partial{l}}{\partial{x_i}}=\frac{\partial{l}}{\partial{y_i}}\frac{\partial{y_i}}{\partial{x_i}}`.
+
 Then we have:
 
 .. math::

@@ -1,5 +1,3 @@
-import os
-os.environ['TNN_GPU'] = ""
 from tinynet.layers import softmax
 from tinynet.core import Backend as np
 from tinynet.net import Sequential
