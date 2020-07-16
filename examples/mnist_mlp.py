@@ -52,11 +52,13 @@ model.summary()
 learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.5))
 
 print('starting training...')
-model, losses = learner.fit(x_train, y_train, epochs=10, batch_size=256)
+# model, losses = learner.fit(x_train, y_train, epochs=2, batch_size=256)
+
+model.load("./model.tnn")
 
 print('starting evaluating...')
 
-y_predict = model(x_test)
-
+y_predict = learner.predict(x_test, 100)
+print(y_predict.shape)
 acc = get_accuracy(y_predict, y_test)
 print('Testing Accuracy: {}%'.format(acc*100))
