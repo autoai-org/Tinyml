@@ -26,7 +26,6 @@ class MaxPool2D(Layer):
         input_reshaped = input.reshape(input.shape[0]* input.shape[1], 1, input.shape[2], input.shape[3])
         self.input_col = im2col_indices(input_reshaped, self.size[0], self.size[1], padding=0, stride=self.stride)
         self.max_indices = np.argmax(self.input_col, axis=0)
-        print(range(self.max_indices.size))
         self.total_count = list(range(0, self.max_indices.size))
         output = self.input_col[self.max_indices, self.total_count]
         output = output.reshape(self.out_height, self.out_width, self.num_of_entries, self.input_channel).transpose(2,3,0,1)

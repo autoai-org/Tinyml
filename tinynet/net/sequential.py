@@ -22,6 +22,9 @@ class Sequential(Net):
             in_gradient = layer.backward(in_gradient)
             output_intermediate_result(layer.name, in_gradient, 'gradient')
         return in_gradient
+    
+    def add(self, layer):
+        self.layers.append(layer)
 
     def __call__(self, input):
         return self.forward(input)

@@ -48,6 +48,7 @@ if GPU:
     y_train = cp.array(y_train)
     x_test = cp.array(x_test)
     y_test = cp.array(y_test)
+    
 print(y_train.shape)
 print(x_train.shape)
 print('building model...')
