@@ -6,7 +6,7 @@ Tinynet is a small framework for writing neural networks for educational purpose
 There might be some errors and deficiencies, and these are all my fault. If you
 meet any of them, please kindly leave your comments at `GitHub Issue Tracker
 <https://github.com/xzyaoi/tinynet/issues>`_. If you are not comfortable with
-public accessible issues, please write me at xiaozhe.yaoi#gmail.com.
+publicly accessible issues, please write me at xiaozhe.yaoi#gmail.com.
 
 .. toctree::
    :maxdepth: 5

@@ -160,8 +160,9 @@ Dropout Layer
 =============
 
 In deep neural networks, we may encounter over fitting when our network
-is complex and with many parameters. In
-:raw-latex:`\cite{JMLR:v15:srivastava14a}`, N.Srivastava et al proposed
+is complex and with many parameters. In `Dropout: A Simple Way to Prevent Neural
+Networks from Overfitting <http://jmlr.org/papers/v15/srivastava14a.html>`_,
+N.Srivastava et al proposed
 a simple technique named *Dropout* that could prevent overfitting. It
 refers to dropping out some neurons in a neural network randomly. The
 mechanism is equivalent to training different neural networks with
