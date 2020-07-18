@@ -172,13 +172,13 @@ The parameters for this layer is a preset probability :math:`p_0`. It
 indicates the probability of dropping a neuron. For example, if
 :math:`p_0=0.5`, then it means that every neuron in this layer has a
 :math:`0.5` chance of being dropped. With the given probability, we can
-define the dropout layer to be a function :math:`f(x_i)` such that
+define the dropout layer to be a function :math:`y_i=f(x_i)` such that
 
 .. math::
 
    y_i=
      \begin{cases}
-       $0$ & \text{$r_i<p$}  \\
+       0 & \text{$r_i<p$}  \\
        x_i & \text{$r_i\geq p$} \\
      \end{cases}
 
