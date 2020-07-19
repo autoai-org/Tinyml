@@ -14,13 +14,13 @@ class Sequential(Net):
         output = input
         for layer in self.layers:
             output = layer.forward(output)
-            output_intermediate_result(layer.name, output, 'data')
+            output_intermediate_result(layer.name, output, 'data', layer)
         return output
     
     def backward(self, in_gradient):
         for layer in self.layers[::-1]:
             in_gradient = layer.backward(in_gradient)
-            output_intermediate_result(layer.name, in_gradient, 'gradient')
+            output_intermediate_result(layer.name, in_gradient, 'gradient', layer)
         return in_gradient
     
     def add(self, layer):

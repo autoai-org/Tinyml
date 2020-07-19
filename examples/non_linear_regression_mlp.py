@@ -7,7 +7,7 @@ from tinynet.optims import SGDOptimizer
 from tinynet.learner import Learner
 from tinynet.net import Sequential
 
-tinynet.utilities.logger.VERBOSE = 3
+tinynet.utilities.logger.VERBOSE = 1
 
 X = np.random.randint(low=1, high=5, size=(5, 2))
 Y = X[:, 0] * X[:, 1]

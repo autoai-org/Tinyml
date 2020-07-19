@@ -29,6 +29,15 @@ class Layer(object):
         '''
         return in_gradient
 
+    def _rebuild_params(self):
+        '''
+        In case users changed the weight after initialization, they can use this function to rebuild the params. With this function, the gradient information will be attached to the original parameters.
+
+        Use this function with caution.
+        '''
+        self.weight = self.build_param(self.weight)
+        self.bias = self.build_param(self.bias)
+
     def summary(self):
         info = [self.type, self.name]
         if hasattr(self, 'weight'):

@@ -16,9 +16,18 @@ def log_training_time(time_in_seconds):
     if (VERBOSE >= 1):
         print("[Tinynet] Finished training in {} seconds".format(time_in_seconds))
 
-def output_intermediate_result(layername, output, type):
+def output_intermediate_result(layername, output, type, layer):
     if (VERBOSE >= 3):
         print('--- {} {} ---'.format(type, layername))
         print('> shape: '+str(output.shape))
         print(output)
-        print('=== end of data ===')
+        if layer is not None and hasattr(layer, 'weight'):
+            print ('==== {} weight ===='.format(layername))
+            print (layer.weight.tensor)
+            print ('==== {} bias ===='.format(layername))
+            print (layer.bias.tensor)
+            print ('==== {} weight gradient ===='.format(layername))
+            print (layer.weight.gradient)
+            print ('==== {} bias gradient ===='.format(layername))
+            print (layer.bias.gradient)
+        print('--- end of data ---')

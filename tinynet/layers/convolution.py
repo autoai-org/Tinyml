@@ -8,6 +8,7 @@ https://github.com/huyouare/CS231n. Some minor modifications are made to ensure
 it works on GPU.
 > TODO: add a naive implementation.
 '''
+
 def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride=1):
     # First figure out what the size of the output should be
     N, C, H, W = x_shape
