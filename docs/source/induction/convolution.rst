@@ -104,8 +104,7 @@ to convert them as
            4 & 5 & 7 & 8   \\
            5 & 6 & 8 & 9
            \end{array} } \right], B^*=\left[ {\begin{array}{*{20}c}
-           1 & 2 & 3 & 4    \\
-              
+           1 & 2 & 3 & 4  
        \end{array} } \right]
 
 Then we have :math:`C^*=A^*B^*=[37, 47, 67, 77]`. If we reshape them
