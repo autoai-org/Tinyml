@@ -33,7 +33,7 @@ model = Sequential([fc_1, relu, fc_2])
 optimizer = SGDOptimizer(0.1)
 model.summary()
 
-epoch = 2
+epoch = 1
 
 for epoch in range(epoch):
     y_predicted = model.forward(x)
