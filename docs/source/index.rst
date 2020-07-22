@@ -6,7 +6,7 @@ Tinynet is a small framework for writing neural networks for educational purpose
 There might be some errors and deficiencies, and these are all my fault. If you
 meet any of them, please kindly leave your comments at `GitHub Issue Tracker
 <https://github.com/xzyaoi/tinynet/issues>`_. If you are not comfortable with
-publicly accessible issues, please write me at xiaozhe.yaoi#gmail.com.
+publicly accessible issues, please write me at `askxzyao@gmail.com <mailto:askxzyao@gmail.com>`_.
 
 .. toctree::
    :maxdepth: 5
@@ -18,6 +18,11 @@ publicly accessible issues, please write me at xiaozhe.yaoi#gmail.com.
    api
    
 
+.. figure:: ../../../assets/moscot.png
+   :alt: Jingwei - The moscot for Tinynet
+   :width: 4.58333in
+
+   Jingwei - The moscot for Tinynet
 
 
 Indices and tables
@@ -26,3 +31,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
