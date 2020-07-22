@@ -6,7 +6,7 @@ Tinynet is a small framework for writing neural networks for educational purpose
 There might be some errors and deficiencies, and these are all my fault. If you
 meet any of them, please kindly leave your comments at `GitHub Issue Tracker
 <https://github.com/xzyaoi/tinynet/issues>`_. If you are not comfortable with
-publicly accessible issues, please write me at `askxzyao@gmail.com <mailto:askxzyao@gmail.com>`_.
+publicly accessible issues, please drop an email to `askxzyao@gmail.com <mailto:askxzyao@gmail.com>`_.
 
 .. toctree::
    :maxdepth: 5
@@ -18,11 +18,11 @@ publicly accessible issues, please write me at `askxzyao@gmail.com <mailto:askxz
    api
    
 
-.. figure:: ../../../assets/moscot.png
-   :alt: Jingwei - The moscot for Tinynet
+.. figure:: ../../assets/mascot.png
+   :alt: Jingwei - The mascot for Tinynet
    :width: 4.58333in
 
-   Jingwei - The moscot for Tinynet
+   Jingwei - The mascot for Tinynet
 
 
 Indices and tables
