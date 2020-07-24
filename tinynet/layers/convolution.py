@@ -75,7 +75,7 @@ class Conv2D(Layer):
 
     def __init__(self, name, input_dim, n_filter, h_filter, w_filter, stride, padding):
         '''
-        :param input_dim: the input data dimension, it should be of the shape (C, H, W) where C is for the channel, H for height and W for width.
+        :param input_dim: the input data dimension, it should be of the shape (N, C, H, W) where N is for number of input data, C is for the channel, H for height and W for width.
 
         :param n_filter: the number of filters used in this layer. It can be any integers.
 
@@ -87,7 +87,7 @@ class Conv2D(Layer):
         '''
         super().__init__(name)
         self.type = 'Conv2D'
-        self.input_channel, self.input_height, self.input_weight = input_dim
+        self.input_channel, self.input_height, self.input_width = input_dim
         self.n_filter = n_filter
         self.h_filter = h_filter
         self.w_filter = w_filter
@@ -100,7 +100,7 @@ class Conv2D(Layer):
         self.bias = self.build_param(bias)
         self.out_height = (self.input_height - self.h_filter +
                            2 * padding) / self.stride + 1
-        self.out_width = (self.input_weight - self.w_filter +
+        self.out_width = (self.input_width - self.w_filter +
                           2 * padding) / self.stride + 1
         if not self.out_width.is_integer() or not self.out_height.is_integer():
             raise Exception("[Tinynet] Invalid dimension settings!")
@@ -130,7 +130,7 @@ class Conv2D(Layer):
         weight_flat = self.weight.tensor.reshape(self.n_filter, -1)
         out_gradient_col = np.matmul(weight_flat.T, gradient_flat)
         shape = (self.n_input, self.input_channel,
-                 self.input_height, self.input_weight)
+                 self.input_height, self.input_width)
         out_gradient = col2im_indices(out_gradient_col, shape, self.h_filter,
                                       self.w_filter, self.padding, self.stride)
         return out_gradient
