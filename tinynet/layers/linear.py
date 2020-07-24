@@ -35,3 +35,4 @@ class Linear(Layer):
         self.weight.gradient = np.matmul(self.input.T, in_gradient)
         self.bias.gradient = in_gradient.sum(axis=0)
         return np.matmul(in_gradient, self.weight.tensor.T)
+    

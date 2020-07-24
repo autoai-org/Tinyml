@@ -1,16 +1,16 @@
-import tinynet
-from sklearn.preprocessing import OneHotEncoder
-import tinynet.dataloaders.mnist as mnist
-from tinynet.losses import cross_entropy_with_softmax_loss, mse_loss
-from tinynet.learner import Learner
-from tinynet.optims import SGDOptimizer
-from tinynet.layers import Linear, Softmax, ReLu, Conv2D, Dropout
-from tinynet.net import Sequential
-from tinynet.core import Backend as np
-from tinynet.layers import softmax
-from tinynet.layers.flatten import Flatten
 import os
+
+import tinynet
+import tinynet.dataloaders.mnist as mnist
+from sklearn.preprocessing import OneHotEncoder
+from tinynet.core import Backend as np
+from tinynet.layers import Conv2D, Dropout, Linear, ReLu, Softmax, softmax
+from tinynet.layers.flatten import Flatten
 from tinynet.layers.pooling import MaxPool2D
+from tinynet.learner import Learner
+from tinynet.losses import cross_entropy_with_softmax_loss, mse_loss
+from tinynet.net import Sequential
+from tinynet.optims import SGDOptimizer
 
 # Higher verbose level = more detailed logging
 tinynet.utilities.logger.VERBOSE = 1
@@ -39,8 +39,8 @@ def pre_process_data(train_x, train_y, test_x, test_y):
 
 
 x_train, y_train, x_test, y_test = mnist.load()
-x_train, y_train, x_test, y_test = pre_process_data(
-    x_train, y_train, x_test, y_test)
+x_train, y_train, x_test, y_test = pre_process_data(x_train, y_train, x_test,
+                                                    y_test)
 
 if GPU:
     import cupy as cp
@@ -48,31 +48,39 @@ if GPU:
     y_train = cp.array(y_train)
     x_test = cp.array(x_test)
     y_test = cp.array(y_test)
-    
+
 print(y_train.shape)
 print(x_train.shape)
 print('building model...')
 
 model = Sequential([
-    Conv2D('conv_1', (1, 28, 28), n_filter=32,
-           h_filter=3, w_filter=3, stride=1, padding=0),
+    Conv2D('conv_1', (1, 28, 28),
+           n_filter=32,
+           h_filter=3,
+           w_filter=3,
+           stride=1,
+           padding=0),
     ReLu('relu_1'),
-    Conv2D('conv_2', (32, 26, 26), n_filter=64,
-           h_filter=3, w_filter=3, stride=1, padding=0),
+    Conv2D('conv_2', (32, 26, 26),
+           n_filter=64,
+           h_filter=3,
+           w_filter=3,
+           stride=1,
+           padding=0),
     ReLu('relu_2'),
     MaxPool2D('maxpool_1', (64, 24, 24), size=(2, 2), stride=2),
     Dropout('drop_1', 0.25),
     Flatten('flat_1'),
     Linear('fc_1', 9216, 128),
     ReLu('relu_3'),
-    Dropout('drop_2',0.5),
+    Dropout('drop_2', 0.5),
     Linear('fc_2', 128, 10),
 ])
 
 
 def get_accuracy(y_predict, y_true):
-    return np.mean(np.equal(np.argmax(y_predict, axis=-1),
-                            np.argmax(y_true, axis=-1)))
+    return np.mean(
+        np.equal(np.argmax(y_predict, axis=-1), np.argmax(y_true, axis=-1)))
 
 
 model.summary()
@@ -87,4 +95,4 @@ print('starting evaluating...')
 y_predict = learner.predict(x_test)
 
 acc = get_accuracy(y_predict, y_test)
-print('Testing Accuracy: {}%'.format(acc*100))
+print('Testing Accuracy: {}%'.format(acc * 100))

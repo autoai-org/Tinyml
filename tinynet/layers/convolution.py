@@ -9,6 +9,7 @@ it works on GPU.
 > TODO: add a naive implementation.
 '''
 
+
 def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride=1):
     # First figure out what the size of the output should be
     N, C, H, W = x_shape
@@ -19,7 +20,8 @@ def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride
 
     i0 = np.repeat(np.arange(field_height, dtype='int32'), field_width)
     i0 = np.tile(i0, C)
-    i1 = stride * np.repeat(np.arange(int(out_height), dtype='int32'), int(out_width))
+    i1 = stride * np.repeat(np.arange(int(out_height),
+                                      dtype='int32'), int(out_width))
     j0 = np.tile(np.arange(field_width), field_height * C)
     j1 = stride * np.tile(np.arange(out_width, dtype='int32'), int(out_height))
     i = i0.reshape(-1, 1) + i1.reshape(1, -1)
@@ -70,17 +72,18 @@ class Conv2D(Layer):
     '''
     Conv2D performs convolutional operation with given input.
     '''
+
     def __init__(self, name, input_dim, n_filter, h_filter, w_filter, stride, padding):
         '''
-        input_dim:
+        :param input_dim: the input data dimension, it should be of the shape (C, H, W) where C is for the channel, H for height and W for width.
 
-        n_filter:
+        :param n_filter: the number of filters used in this layer. It can be any integers.
 
-        h_filter:
+        :param h_filter: the height of the filter.
 
-        w_filter:
+        :param w_filter: the width of the filter.
 
-        stride: 
+        :param stride: the stride of the sliding filter.
         '''
         super().__init__(name)
         self.type = 'Conv2D'
@@ -96,12 +99,13 @@ class Conv2D(Layer):
         self.weight = self.build_param(weight)
         self.bias = self.build_param(bias)
         self.out_height = (self.input_height - self.h_filter +
-                      2 * padding) / self.stride + 1
+                           2 * padding) / self.stride + 1
         self.out_width = (self.input_weight - self.w_filter +
-                      2 * padding) / self.stride + 1
+                          2 * padding) / self.stride + 1
         if not self.out_width.is_integer() or not self.out_height.is_integer():
             raise Exception("[Tinynet] Invalid dimension settings!")
-        self.out_height, self.out_width = int(self.out_height), int(self.out_width)
+        self.out_height, self.out_width = int(
+            self.out_height), int(self.out_width)
         self.out_dim = (self.n_filter, self.out_height, self.out_width)
 
     def forward(self, input):

@@ -16,3 +16,9 @@
 TBD.
 
 ## Credits
+
+I was inspired by the following materials:
+
+* https://wiseodd.github.io/techblog/2016/07/16/convnet-conv-layer/
+* http://cs231n.stanford.edu/
+* https://cs230.stanford.edu/

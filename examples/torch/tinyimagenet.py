@@ -7,7 +7,7 @@ import torchvision as tv
 import numpy as np
 import pickle 
 
-batch_size = 16
+batch_size = 256
 
 class TinyVGG16(nn.Module):
     def __init__(self, num_classes = 200):
@@ -77,14 +77,15 @@ def get_accuracy(y_predict, y_true):
                             np.argmax(y_true, axis=-1)))
 
 def prepare_data():
-    x_train, y_train, x_test, y_test = load_data("/content/drive/My Drive/dataset/tinyimagenet/tinyimagenet.pkl")
-
+    x_train, y_train, x_test, y_test = load_data("/content/drive/My Drive/dataset/tinyimagenet.pkl")
+    print(x_train.shape)
     x_train, y_train, x_test, y_test = torch.Tensor(x_train), torch.Tensor(y_train), torch.Tensor(x_test), torch.Tensor(y_test)
 
     train_dataset = TensorDataset(x_train, y_train)
     test_dataset = TensorDataset(x_test, y_test)
 
-    train_loader, test_loader = DataLoader(train_dataset, batch_size), DataLoader(test_dataset, batch_size)
+    train_loader = DataLoader(train_dataset, batch_size, shuffle=True, num_workers=4)
+    test_loader = DataLoader(test_dataset, batch_size)
     return train_loader, test_loader
 
 def main():
@@ -92,32 +93,37 @@ def main():
     model = TinyVGG16(200)
     model = model.to(device)
     train_loader, test_loader = prepare_data()
-    epochs = 5
-    log_interval = 1000
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.02)
+    epochs = 200
+    log_interval = 500
+    optimizer = torch.optim.SGD(model.parameters(), lr=0.01)
     criterion = nn.CrossEntropyLoss()
     for epoch in range(epochs):
+        # Train Phase
+        train_correct = 0
         for batch_idx, (data, target) in enumerate(train_loader):
             data = data.to(device)
             target = target.long().to(device)
             optimizer.zero_grad()
             output = model(data)
+            _, preds = torch.max(output, 1)
             loss = criterion(output, target)
             loss.backward()
+            train_correct += torch.sum(preds == target)
             optimizer.step()
             if batch_idx % log_interval == 0:
                 print('Epoch: {}, Batch: {}, Loss: {}'.format(epoch, batch_idx, loss))
-    
-        # test phase
+        print('Accuracy on training set: {}'.format(100. * train_correct/len(train_loader.dataset)))
+
+        # Test Phase
         correct = 0
         with torch.no_grad():
             model.eval()
-            for data, target in test_loader:
+            for batch_idx, (data, target) in enumerate(test_loader):
                 data = data.to(device)
                 target = target.long().to(device)
-                output = model(data)
-                pred = output.argmax(dim=1, keepdim=True)
-                correct += (pred==target).sum().item()
-        print("On Test Set: Accuracy: {} with {} corrects".format(100. * correct/len(test_loader.dataset), correct))
-
+                results = model(data)
+                _, pred = torch.max(results, 1)
+                correct += (pred == target).sum().item()
+        print("On Test Set: Accuracy: {} % with {} corrects".format(100. * correct/len(test_loader.dataset), correct))
+    torch.save(model.state_dict(), "/content/drive/My Drive/model/tinyimagenet.pth")
 main()
