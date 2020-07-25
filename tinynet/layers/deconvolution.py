@@ -1,75 +1,78 @@
 from .base import Layer
-from .convolution import im2col_indices, Conv2D
 from tinynet.core import Backend as np
+
+
+def im2rows(in_gradient, inp_shape, filter_shape, dilation, stride, dilated_shape, res_shape):
+    """
+    Gradient transformation for the im2rows operation
+    :param in_gradient: The grad from the next layer
+    :param inp_shape: The shape of the input image
+    :param filter_shape: The shape of the filter (num_filters, depth, height, width)
+    :param dilation: The dilation for the filter
+    :param stride: The stride for the filter
+    :param dilated_shape: The dilated shape of the filter
+    :param res_shape: The shape of the expected result
+    :return: The reformed gradient of the shape of the image
+    """
+    dilated_rows, dilated_cols = dilated_shape
+    num_rows, num_cols = res_shape
+    res = np.zeros(inp_shape, dtype=in_gradient.dtype)
+    in_gradient = in_gradient.reshape(
+        (in_gradient.shape[0], in_gradient.shape[1], filter_shape[1], filter_shape[2], filter_shape[3]))
+    for it in range(num_rows * num_cols):
+        i = it // num_rows
+        j = it % num_rows
+        res[:, :, i * stride[0]:i * stride[0] + dilated_rows:dilation,
+            j * stride[1]:j * stride[1] + dilated_cols:dilation] += in_gradient[:, it, :, :, :]
+    return res
+
 
 class Deconv2D(Layer):
     '''
-    Deconv2D performs deconvolutional operation, or transposed convolution.
+    Deconv2D performs deconvolution operation, or tranposed convolution.    
     '''
-    def __init__(self, name, input_dim, n_filter, h_filter, w_filter, stride, padding):
+
+    def __init__(self, name, input_dim, n_filters, h_filter, w_filter, stride, dilation=1):
         '''
-        :param input_dim: the input data dimension, it should be of the shape (C, H, W) where C is for the channel, H for height and W for width.
-
-        :param n_filter: the number of filters used in this layer. It can be any integers.
-
-        :param h_filter: the height of the filter.
-
-        :param w_filter: the width of the filter.
-
-        :param stride: the stride of the sliding filter.
-
-        The output shape will be:
-        .. math::
-
-        (stride * (input_size - 1) + dilation * (h_filter - 1) + 1, 
-        stride * (input_size - 1) + dilation * (w_filter - 1) + 1)
-
+        :param input_dim: the input dimension, in the format of (C,H,W)
+        :param n_filters: the number of convolution filters
+        :param h_filter: the height of the filter
+        :param w_filter: the width of the filter
+        :param stride: the stride for forward convolution
+        :param dilation: the dilation factor for the filters, =1 by default.
         '''
         super().__init__(name)
         self.type = 'Deconv2D'
         self.input_channel, self.input_height, self.input_width = input_dim
-        self.n_filter = n_filter
+        self.n_filters = n_filters
         self.h_filter = h_filter
         self.w_filter = w_filter
         self.stride = stride
-        self.padding = padding
+        self.dilation = dilation
         weight = np.random.randn(
-            self.n_filter, self.input_channel, self.h_filter, self.w_filter) / np.sqrt(n_filter/2.0)
-        bias = np.zeros((self.n_filter,1))
+            self.n_filters, self.input_channel, self.h_filter, self.w_filter) / np.sqrt(self.n_filters/2.0)
+        bias = np.zeros((self.n_filters, 1))
         self.weight = self.build_param(weight)
         self.bias = self.build_param(bias)
-        self.out_height = max(0, self.input_height.shape[2] - self.h_filter + 1)
-        self.out_width = max(0, self.input_width.shape[2] - self.w_filter + 1)
-        if not self.out_width.is_integer() or not self.out_height.is_integer():
-            raise Exception("[Tinynet] Invalid dimension settings!")
-        self.out_height, self.out_width = int(
-            self.out_height), int(self.out_width)
-        self.out_dim = (self.n_filter, self.out_height, self.out_width)
-        self._conv2d = Conv2D('inner_conv2d', input_dim, n_filter, h_filter, w_filter, stride, padding)
 
     def forward(self, input):
-        self.n_input = input.shape[0]
-        self.input_col = im2col_indices(
-            input, self.h_filter, self.w_filter, stride=self.stride, padding=self.padding
+        filter_shape = self.weight.tensor.shape
+        dilated_shape = (
+            (filter_shape[2] - 1) * self.dilation + 1, (filter_shape[3] - 1) * self.dilation + 1)
+        res_shape = (
+            (self.input_height - 1) * self.stride + dilated_shape[0],
+            (self.input_width - 1) * self.stride + dilated_shape[1]
         )
-        weight_rotated = np.filp(self.weight.tensor,(2,3))
-        weight_rotated_flat = weight_rotated.reshape(self.n_filter, -1)
-        output = np.matmul(weight_rotated_flat, self.input_col) + self.bias.tensor
-        output = output.T.reshape(self.n_filter, self.out_height, self.out_width, self.n_input)
-        output = output.transpose(3,0,1,2)
-        return output
+        input_mat = input.reshape(
+            (input.shape[0], input.shape[1], -1)).transpose((0, 2, 1))
+        filters_mat = self.weight.tensor.reshape(
+            self.weight.tensor.shape[0], -1)
+        res_mat = np.matmul(input_mat, filters_mat)
+
+        return im2rows(res_mat, (input.shape[0], filter_shape[1], res_shape[0], res_shape[1]), filter_shape, self.dilation, (self.stride, self.stride), dilated_shape, input.shape[2:]) + self.bias.tensor[np.newaxis, :, np.newaxis, np.newaxis]
 
     def backward(self, in_gradient):
         '''
-        the backward of deconvolution is implemented by a forward pass of convolution.
-        '''
-        gradient_flat = in_gradient.transpose(1,2,3,0).reshape(self.n_filter, -1)
-        weight_gradient = np.matmul(gradient_flat, self.input_col.T).reshape(self.weight.tensor.shape)
-        self.weight.gradient = np.flip(weight_gradient, (2,3))
-        self.bias.gradient = np.sum(in_gradient, (0,2,3)).reshape(self.n_filter,-1)
-        self._conv2d.weight = self.weight
-        self._conv2d.bias = self.bias
-        return self._conv2d(in_gradient)
-
-
-
+        This function is not needed in computation, at least right now.
+         '''
+        return in_gradient

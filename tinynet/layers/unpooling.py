@@ -51,8 +51,6 @@ class MaxUnpool2D(Layer):
                         index = indices[i, j, m, n]
                         w_index = index % self.size[0]
                         h_index = index // self.size[1]
-                        print("index={}, m={},n={},w_index={}, h_index={}, input={}, loc_h={}, loc_w={}".format(index, m, n, w_index, h_index,
-                              input[i, j, m, n], m+h_index, n + w_index))
                         unpooled[i, j,  m+h_index, n +
                                  w_index] = input[i, j, m, n]
         return unpooled
