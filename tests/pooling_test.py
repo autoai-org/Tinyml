@@ -1,6 +1,8 @@
 import unittest
 import numpy as np
 from tinynet.layers import MaxPool2D
+import torch
+from torch.nn import MaxPool2d as torch_max_pool_2d
 
 class TestMaxpool2D(unittest.TestCase):
     def __init__(self, *args, **kwargs):
@@ -14,6 +16,18 @@ class TestMaxpool2D(unittest.TestCase):
         output = self.single_channel_layer(data)
         ground_truth = np.array([[[[6,7,8],[6,7,8],[4,6,8]]]])
         self.assertTrue((output==ground_truth).all())
+
+class TestMaxpool2DPyTorch(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.data = np.random.randn(2,3,6,6)
+        self.torch_layer = torch_max_pool_2d((2,2),1,padding=0,dilation=1,return_indices= False)
+        self.tnn_layer = MaxPool2D('test', (3,6,6), (2,2),1,return_index=False)
+
+    def test(self):
+        torch_output = self.torch_layer(torch.from_numpy(self.data))
+        tnn_output = self.tnn_layer(self.data)
+        self.assertTrue((torch_output.numpy()==tnn_output).all())
 
 if __name__ == '__main__':
     unittest.main()

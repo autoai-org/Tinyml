@@ -29,8 +29,9 @@ class MaxPool2D(Layer):
         self.total_count = list(range(0, self.max_indices.size))
         output = self.input_col[self.max_indices, self.total_count]
         output = output.reshape(self.out_height, self.out_width, self.num_of_entries, self.input_channel).transpose(2,3,0,1)
+        indices = self.max_indices.reshape(self.out_height, self.out_width, self.num_of_entries, self.input_channel).transpose(2,3,0,1)
         if self.return_index:
-            return output, self.max_indices
+            return output, indices
         else:
             return output
 

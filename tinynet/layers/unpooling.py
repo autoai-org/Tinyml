@@ -3,8 +3,9 @@ from .base import Layer
 from .convolution import im2col_indices, get_im2col_indices
 from tinynet.core import Backend as np
 
+
 def col2im_no_dup(cols, x_shape, field_height=3, field_width=3, padding=1,
-                   stride=1):
+                  stride=1):
     '''
     Similar function for col2im_indices, but will not perform +=.
     This function is used for 
@@ -16,7 +17,7 @@ def col2im_no_dup(cols, x_shape, field_height=3, field_width=3, padding=1,
                                  stride)
     cols_reshaped = cols.reshape(C * field_height * field_width, -1, N)
     cols_reshaped = cols_reshaped.transpose(2, 0, 1)
-    x_padded[:,k,i,j] = cols_reshaped
+    x_padded[:, k, i, j] = cols_reshaped
     if padding == 0:
         return x_padded
     return x_padded[:, :, padding:-padding, padding:-padding]
@@ -33,18 +34,28 @@ class MaxUnpool2D(Layer):
         self.out_width = (self.input_width - 1) * stride + size[1]
         # it is definitely integer, so we do not need to check it anymore
         self.out_dim = (self.input_channel, self.out_height, self.out_width)
-        
+
     def forward(self, input, max_indices):
+        print(max_indices)
         self.num_of_entries = input.shape[0]
-        output_shape = (self.num_of_entries, self.out_dim[0], self.out_dim[1], self.out_dim[2])
-        input_flat = input.reshape(max_indices.shape)
-        outputs = np.zeros(output_shape)
-        output_cols = im2col_indices(outputs, self.size[0], self.size[1], padding=0, stride=self.stride)
-        for i in range(output_cols.shape[1]):
-            output_cols[max_indices[i]][i] = input_flat[i]
-        shape = (self.num_of_entries*self.input_channel, 1, self.out_height, self.out_width)
-        output = col2im_no_dup(output_cols, shape, self.size[0], self.size[1], padding=0, stride=self.stride).reshape(self.num_of_entries, self.input_channel, self.out_height, self.out_width)
-        return output
+
+        output_shape = (self.num_of_entries,
+                        self.out_dim[0], self.out_dim[1], self.out_dim[2])
+        indices = max_indices.reshape(input.shape)
+        print(indices)
+        unpooled = np.zeros(output_shape)
+        for i in range(self.num_of_entries):
+            for j in range(self.input_channel):
+                for m in range(self.input_height):
+                    for n in range(self.input_width):
+                        index = indices[i, j, m, n]
+                        w_index = index % self.size[0]
+                        h_index = index // self.size[1]
+                        print("index={}, m={},n={},w_index={}, h_index={}, input={}, loc_h={}, loc_w={}".format(index, m, n, w_index, h_index,
+                              input[i, j, m, n], m+h_index, n + w_index))
+                        unpooled[i, j,  m+h_index, n +
+                                 w_index] = input[i, j, m, n]
+        return unpooled
 
     def backward(self, in_gradient):
         '''
