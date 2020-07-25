@@ -23,13 +23,16 @@ class MaxPool2D(Layer):
 
     def forward(self, input):
         self.num_of_entries = input.shape[0]
-        input_reshaped = input.reshape(input.shape[0]* input.shape[1], 1, input.shape[2], input.shape[3])
+        input_reshaped = input.reshape(input.shape[0] * input.shape[1], 1, input.shape[2], input.shape[3])
         self.input_col = im2col_indices(input_reshaped, self.size[0], self.size[1], padding=0, stride=self.stride)
         self.max_indices = np.argmax(self.input_col, axis=0)
         self.total_count = list(range(0, self.max_indices.size))
         output = self.input_col[self.max_indices, self.total_count]
         output = output.reshape(self.out_height, self.out_width, self.num_of_entries, self.input_channel).transpose(2,3,0,1)
-        return output
+        if self.return_index:
+            return output, self.max_indices
+        else:
+            return output
 
     def backward(self, in_gradient):
         gradient_col = np.zeros_like(self.input_col)

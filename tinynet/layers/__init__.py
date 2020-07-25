@@ -6,4 +6,7 @@ from .convolution import Conv2D
 from .flatten import Flatten
 from .pooling import MaxPool2D
 from .dropout import Dropout
-__all__ = ['Layer', 'Linear', 'Softmax', 'ReLu', 'Conv2D', 'Flatten', 'MaxPool2D', 'Dropout']
+from .deconvolution import Deconv2D
+from .unpooling import MaxUnpool2D
+
+__all__ = ['Layer', 'Linear', 'Softmax', 'ReLu', 'Conv2D', 'Flatten', 'MaxPool2D', 'Dropout', 'Deconv2D', 'MaxUnpool2D']

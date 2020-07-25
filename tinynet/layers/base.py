@@ -50,5 +50,5 @@ class Layer(object):
             info.append('N/A')
         return info
     
-    def __call__(self, input):
-        return self.forward(input)
+    def __call__(self, *args):
+        return self.forward(*args)
