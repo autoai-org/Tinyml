@@ -28,3 +28,16 @@ class Sequential(Net):
 
     def __call__(self, input):
         return self.forward(input)
+    
+    def predict(self, data, batch_size=None):
+        results = None
+        if batch_size:
+            for i in range(0, len(data), batch_size):
+                result = self.forward(data[i:i+batch_size])
+                if results is None:
+                    results = result
+                else:
+                    results = np.concatenate((results, result))
+            return results
+        else:
+            return self.model.forward(data)

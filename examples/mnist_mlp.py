@@ -4,10 +4,10 @@ from sklearn.preprocessing import OneHotEncoder
 from tinynet.core import Backend as np
 from tinynet.layers import Linear, ReLu, Softmax, softmax
 from tinynet.learner import Learner
-from tinynet.losses import (cross_entropy_loss,
-                            cross_entropy_with_softmax_loss, mse_loss)
+from tinynet.losses import cross_entropy_with_softmax_loss
 from tinynet.net import Sequential
 from tinynet.optims import SGDOptimizer
+from tinynet.learner.callbacks import evaluate_classification_accuracy
 
 # Higher verbose level = more detailed logging
 tinynet.utilities.logger.VERBOSE = 1
@@ -43,7 +43,6 @@ model = Sequential([
     Linear('fc_2', 128, 64),
     ReLu('relu_2'),
     Linear('fc_3', 64, 10),
-    # Softmax()
 ])
 
 
@@ -53,12 +52,14 @@ def get_accuracy(y_predict, y_true):
 
 
 model.summary()
+callbacks = [evaluate_classification_accuracy]
+cargs = (x_test, y_test)
 learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.5))
 
 print('starting training...')
-# model, losses = learner.fit(x_train, y_train, epochs=2, batch_size=256)
+model, losses = learner.fit(x_train, y_train, epochs=2, batch_size=256, callbacks=callbacks, callbacks_interval=1, cargs=cargs)
 
-model.load("./model.tnn")
+# model.load("./model.tnn")
 
 print('starting evaluating...')
 

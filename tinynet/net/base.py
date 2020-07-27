@@ -1,5 +1,6 @@
 import pickle
 from tinynet.utilities.logger import print_net_summary
+from tinynet.core import Backend as np
 
 class Net(object):
     def __init__(self, layers):
@@ -41,4 +42,3 @@ class Net(object):
                 layer.weight = layers_weights[layer.name]
                 layer.bias = layers_bias[layer.name]
         print("[Tinynet] Successfully imported from {}".format(filepath))
-            

@@ -16,7 +16,7 @@ class Learner():
         self.model.update(self.optimizer)
         return loss
 
-    def fit(self, data, label, epochs, batch_size):
+    def fit(self, data, label, epochs, batch_size, callbacks=[], callbacks_interval=None, cargs=()):
         losses = []
         start = time.process_time()
         for epoch in range(epochs):
@@ -30,6 +30,9 @@ class Learner():
                                        label[i:i+batch_size])
             log_trainining_progress(epoch, epochs, loss, loss/batch_size)
             losses.append(loss)
+            if not callbacks_interval is None and epoch % callbacks_interval==0:
+                for each in callbacks:
+                    each(self.model,epoch, *cargs)
         elapsed = time.process_time() - start
         log_training_time(elapsed)
         return self.model, losses

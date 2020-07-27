@@ -17,10 +17,10 @@ class TestDeconv2D_multiple(unittest.TestCase):
         self.tnn_conv = Conv2D('test_conv2d', (3, 8, 8), 12, 2, 2, 1, 0)
         self.torch_conv = torch_conv(3, 12, (2, 2), 1, 0)
         self.tnn_conv.weight.tensor = self.forward_weight
+        self.tnn_conv.bias.tensor = self.forward_bias
         self.tnn_deconv = Deconv2D('test_deconv', (12, 7, 7), 3, 2, 2, 1, dilation=1)
         self.tnn_deconv.weight.tensor = self.tnn_conv.weight.tensor
         self.tnn_deconv.bias.tensor = self.tnn_conv.bias.tensor
-        # self.tnn_conv.bias.tensor = self.forward_bias
 
     def test_convolution(self):
         print(self.data.shape)
