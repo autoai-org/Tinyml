@@ -7,4 +7,4 @@ def cross_entropy_with_softmax_loss(predicted, ground_truth):
     loss = np.mean(-np.log(output_probabilities[np.arange(output_probabilities.shape[0],dtype=np.int8), ground_truth]))
     output_probabilities[np.arange(output_probabilities.shape[0]), ground_truth] -= 1
     gradient = output_probabilities / predicted.shape[0]
-    return loss, 
+    return loss, gradient
