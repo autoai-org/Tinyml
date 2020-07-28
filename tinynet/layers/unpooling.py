@@ -36,13 +36,10 @@ class MaxUnpool2D(Layer):
         self.out_dim = (self.input_channel, self.out_height, self.out_width)
 
     def forward(self, input, max_indices):
-        print(max_indices)
         self.num_of_entries = input.shape[0]
-
         output_shape = (self.num_of_entries,
                         self.out_dim[0], self.out_dim[1], self.out_dim[2])
         indices = max_indices.reshape(input.shape)
-        print(indices)
         unpooled = np.zeros(output_shape)
         for i in range(self.num_of_entries):
             for j in range(self.input_channel):

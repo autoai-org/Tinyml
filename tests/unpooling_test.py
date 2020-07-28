@@ -8,7 +8,7 @@ from torch.nn import MaxPool2d as torch_max_pool_2d
 from torch.nn import MaxUnpool2d as torch_max_unpool_2d
 
 
-class TestMaxpool2D(unittest.TestCase):
+class TestMaxUnpool2D(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.single_channel_layer = MaxPool2D('test_single', (1, 4, 4), (2, 2),
@@ -24,18 +24,12 @@ class TestMaxpool2D(unittest.TestCase):
         data = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [1, 3, 5, 7],
                          [2, 4, 6, 8]])
         data = data.reshape(1, 1, data.shape[0], data.shape[1])
-        print(data)
         output, indices = self.single_channel_layer(data)
         ground_truth = np.array([[[[6, 7, 8], [6, 7, 8], [4, 6, 8]]]])
         self.assertTrue((output == ground_truth).all())
         unpooled = self.single_unpool_layer(output, indices)
-        print('input data')
-        print(output)
-        print(unpooled)
         input_ground_truth = ([[[[0, 0, 0, 0], [0, 6, 7, 8], [0, 0, 0, 0],
                                  [0, 4, 6, 8]]]])
-        print('ground truth')
-        print(input_ground_truth)
         self.assertTrue((unpooled == input_ground_truth).all())
 
 
@@ -51,21 +45,13 @@ class TestUnpool2DwithTorch(unittest.TestCase):
         self.tnn_layer = MaxUnpool2D('test', (3, 3, 3), (2, 2), 1)
 
     def test(self):
-        print(self.data)
         torch_output, torch_indices = self.torch_max_pool_layer(
             torch.from_numpy(self.data))
         tnn_output, tnn_indices = self.tnn_pool_layer(self.data)
-        print(tnn_output.shape)
         self.assertTrue((torch_output.numpy() == tnn_output).all())
-        # print(torch_indices)
-        # print(tnn_indices)
-        # self.assertTrue((torch_indices.numpy()==tnn_indices))
         tnn_input = self.tnn_layer(tnn_output, tnn_indices)
         torch_input = self.torch_layer(torch_output, torch_indices)
-        print(tnn_input)
-        print(torch_input)
         self.assertTrue((torch_input.numpy() == tnn_input).all())
-
 
 if __name__ == '__main__':
     unittest.main()
