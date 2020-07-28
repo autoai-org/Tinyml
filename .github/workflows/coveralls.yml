@@ -30,8 +30,4 @@ jobs:
       run: |
         coverage run --source=tinynet -m pytest tests/
         coveralls --output=coverage.json
-        
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        COVERALLS_REPO_TOKEN=${{ secrets.COVERALLS_TOKEN }} coveralls
