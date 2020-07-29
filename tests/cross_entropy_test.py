@@ -15,19 +15,23 @@ class TestCrossEntropy(unittest.TestCase):
         self.target = np.random.randint(0, 4, (3, ))
         self.torch_ce_loss = CrossEntropyLoss()
 
-    def test(self):
-        torch_input = torch.from_numpy(self.data)
-        torch_input.requires_grad = True
-        torch_output = self.torch_ce_loss(torch_input,
+    def test_forward(self):
+        self.torch_input = torch.from_numpy(self.data)
+        self.torch_input.requires_grad = True
+        self.torch_output = self.torch_ce_loss(self.torch_input,
                                           torch.from_numpy(self.target).long())
-        tnn_output, tnn_loss_gradient = cross_entropy_with_softmax_loss(
+        tnn_output, self.tnn_loss_gradient = cross_entropy_with_softmax_loss(
             self.data, self.target)
-        torch_output.backward()
-        torch_gradient = torch_input.grad.numpy()
         self.assertTrue(
-            (torch_output.detach().numpy() - tnn_output < EPSILON).all())
+            (self.torch_output.detach().numpy() - tnn_output < EPSILON).all())
+
+    def test_backward(self):
+        self.test_forward()
+        self.torch_output.backward()
+        torch_gradient = self.torch_input.grad.numpy()
         self.assertTrue(
-            (torch_gradient - tnn_loss_gradient < GRAD_EPSILON).all())
+            (torch_gradient - self.tnn_loss_gradient < GRAD_EPSILON).all())
+
 
 
 if __name__ == '__main__':

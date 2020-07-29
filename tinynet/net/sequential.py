@@ -43,4 +43,4 @@ class Sequential(Net):
                     results = np.concatenate((results, result))
             return results
         else:
-            return self.model.forward(data)
+            return self.forward(data)

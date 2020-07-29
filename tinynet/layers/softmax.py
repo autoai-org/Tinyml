@@ -17,14 +17,9 @@ class Softmax(Layer):
         > TODO: to add the tricks
         '''
         self.input = input
-        input_max = np.max(input, axis=self.axis, keepdims=True)
-        if input_max.ndim > 0:
-            input_max[~np.isfinite(input_max)] = 0
-        shifted_input = np.exp(input-input_max)
-        sum_input = np.sum(shifted_input,axis=self.axis, keepdims=True)      
-        logsumexp = np.log(sum_input + self.eps)
-        logsumexp += input_max
-        return np.exp(input-logsumexp)
+        shifted = np.exp(input - input.max(axis=1, keepdims=True))
+        result = shifted / shifted.sum(axis=1, keepdims=True)
+        return result
 
     def backward(self, in_gradient):
         '''

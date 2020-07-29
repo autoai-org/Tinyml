@@ -9,9 +9,11 @@ from sklearn.preprocessing import OneHotEncoder
 from tinynet.core import Backend as np
 from tinynet.learner import Learner
 from tinynet.losses import cross_entropy_with_softmax_loss
-from tinynet.models.vgg16 import model
+from tinynet.models.vgg16 import vgg16
 from tinynet.optims import SGDOptimizer
+from tinynet.learner.callbacks import evaluate_classification_accuracy, save_model
 
+import numpy as np
 GPU = True
 
 if GPU:
@@ -41,20 +43,10 @@ def load_data(filepath):
 
 def get_accuracy(y_predict, y_true):
     return np.mean(
-        np.equal(np.argmax(y_predict, axis=-1), np.argmax(y_true, axis=-1)))
+        np.equal(y_predict, y_true))
 
 
 x_train, y_train, x_test, y_test = load_data('dataset/cat_and_dog.pkl')
-
-
-def preprocess_y(y_train, y_test):
-    enc = OneHotEncoder(sparse=False, categories='auto')
-    y_train = enc.fit_transform(y_train.reshape(len(y_train), -1))
-    y_test = enc.transform(y_test.reshape(len(y_test), -1))
-    return y_train, y_test
-
-
-y_train, y_test = preprocess_y(y_train, y_test)
 
 print(y_train.shape)
 print(x_train.shape)
@@ -66,17 +58,21 @@ if GPU:
     x_test = cp.array(x_test)
     y_test = cp.array(y_test)
 
+model = vgg16()
 model.summary()
-
+callbacks = [evaluate_classification_accuracy, save_model]
+cargs = (x_test, y_test)
 learner = Learner(model, cross_entropy_with_softmax_loss,
                   SGDOptimizer(lr=0.01))
 
-TRAIN = False
+TRAIN = True
 
 print('starting training...')
 
 if TRAIN:
-    learner.fit(x_train, y_train, epochs=5, batch_size=1)
+    learner.fit(x_train, y_train, epochs=50, batch_size=5, callbacks=callbacks,
+            callbacks_interval=1,
+            cargs=cargs)
 
     model.export('cat_and_dog.tnn')
 
