@@ -21,7 +21,7 @@ class TestLinearLayer(unittest.TestCase):
     def test_forward(self):
         torch_input = torch.from_numpy(self.data)
         self.torch_linear.weight = torch.nn.Parameter(
-            torch.from_numpy(self.forward_weight))
+            torch.from_numpy(self.forward_weight.T))
         self.tnn_linear.weight.tensor = self.forward_weight
         self.torch_output = self.torch_linear(torch_input)
         self.tnn_output = self.tnn_linear(self.data)

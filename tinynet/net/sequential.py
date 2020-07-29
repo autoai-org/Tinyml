@@ -2,7 +2,7 @@ from .base import Net
 
 from tinynet.core import Backend as np
 from tinynet.utilities.logger import output_intermediate_result
-
+from tinynet.layers import MaxPool2D
 class Sequential(Net):
     '''
     Sequential model reads a list of layers and stack them to be a neural network.
@@ -13,7 +13,10 @@ class Sequential(Net):
     def forward(self, input):
         output = input
         for layer in self.layers:
-            output = layer.forward(output)
+            if isinstance(layer, MaxPool2D):
+                output, max_indices = layer.forward(output)
+            else:
+                output = layer.forward(output)
             output_intermediate_result(layer.name, output, 'data', layer)
         return output
     

@@ -39,16 +39,6 @@ def get_accuracy(y_predict, y_true):
 
 x_train, y_train, x_test, y_test = load_data("./dataset/tinyimagenet.pkl")
 
-
-def preprocess_y(y_train, y_test):
-    enc = OneHotEncoder(sparse=False, categories='auto')
-    y_train = enc.fit_transform(y_train.reshape(len(y_train), -1))
-    y_test = enc.transform(y_test.reshape(len(y_test), -1))
-    return y_train, y_test
-
-
-y_train, y_test = preprocess_y(y_train, y_test)
-
 print(y_train.shape)
 print(x_train.shape)
 

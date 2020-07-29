@@ -20,7 +20,7 @@ class Linear(Layer):
         '''
         # save input as the input will be used in backward pass
         self.input = input
-        return np.matmul(input, self.weight.tensor.T) + self.bias.tensor
+        return np.matmul(input, self.weight.tensor) + self.bias.tensor
     
     def backward(self, in_gradient):
         '''
