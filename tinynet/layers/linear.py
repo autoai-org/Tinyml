@@ -20,7 +20,7 @@ class Linear(Layer):
         '''
         # save input as the input will be used in backward pass
         self.input = input
-        return np.matmul(input, self.weight.tensor) + self.bias.tensor
+        return np.matmul(input, self.weight.tensor.T) + self.bias.tensor
     
     def backward(self, in_gradient):
         '''
@@ -32,7 +32,7 @@ class Linear(Layer):
 
             \\frac{\\partial l}{\\partial w} = \\frac{\\partial l}{\\partial y}\\frac{\\partial y}{\\partial w}=\\frac{\\partial l}{\\partial y} x
         '''
-        self.weight.gradient = np.matmul(self.input.T, in_gradient)
+        self.weight.gradient = np.matmul(self.input.T, in_gradient).T
         self.bias.gradient = in_gradient.sum(axis=0)
         return np.matmul(in_gradient, self.weight.tensor.T)
     

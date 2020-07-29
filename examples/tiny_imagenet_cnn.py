@@ -20,6 +20,7 @@ if GPU:
 
 tinynet.utilities.logger.VERBOSE = 1
 
+
 def load_data(filepath):
     with open(filepath, 'rb') as f:
         cat_dog_data = pickle.load(f)

@@ -53,5 +53,6 @@ class TestUnpool2DwithTorch(unittest.TestCase):
         torch_input = self.torch_layer(torch_output, torch_indices)
         self.assertTrue((torch_input.numpy() == tnn_input).all())
 
+
 if __name__ == '__main__':
     unittest.main()

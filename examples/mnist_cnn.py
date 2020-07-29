@@ -8,10 +8,11 @@ from tinynet.layers import Conv2D, Dropout, Linear, ReLu, Softmax, softmax
 from tinynet.layers.flatten import Flatten
 from tinynet.layers.pooling import MaxPool2D
 from tinynet.learner import Learner
+from tinynet.learner.callbacks import evaluate_classification_accuracy
 from tinynet.losses import cross_entropy_with_softmax_loss, mse_loss
 from tinynet.net import Sequential
 from tinynet.optims import SGDOptimizer
-from tinynet.learner.callbacks import evaluate_classification_accuracy
+
 # Higher verbose level = more detailed logging
 tinynet.utilities.logger.VERBOSE = 1
 
@@ -87,11 +88,16 @@ def get_accuracy(y_predict, y_true):
 model.summary()
 callbacks = [evaluate_classification_accuracy]
 cargs = (x_test, y_test)
-learner = Learner(model, cross_entropy_with_softmax_loss,
-                  SGDOptimizer(lr=0.2))
+learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.2))
 
 print('starting training...')
-learner.fit(x_train, y_train, epochs=5, batch_size=1024, callbacks=callbacks, callbacks_interval=1, cargs=cargs)
+learner.fit(x_train,
+            y_train,
+            epochs=5,
+            batch_size=1024,
+            callbacks=callbacks,
+            callbacks_interval=1,
+            cargs=cargs)
 
 print('training completed!')
 print('starting evaluating...')
