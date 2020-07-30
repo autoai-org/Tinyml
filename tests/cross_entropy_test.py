@@ -18,8 +18,9 @@ class TestCrossEntropy(unittest.TestCase):
     def test_forward(self):
         self.torch_input = torch.from_numpy(self.data)
         self.torch_input.requires_grad = True
-        self.torch_output = self.torch_ce_loss(self.torch_input,
-                                          torch.from_numpy(self.target).long())
+        self.torch_output = self.torch_ce_loss(
+            self.torch_input,
+            torch.from_numpy(self.target).long())
         tnn_output, self.tnn_loss_gradient = cross_entropy_with_softmax_loss(
             self.data, self.target)
         self.assertTrue(
@@ -31,7 +32,6 @@ class TestCrossEntropy(unittest.TestCase):
         torch_gradient = self.torch_input.grad.numpy()
         self.assertTrue(
             (torch_gradient - self.tnn_loss_gradient < GRAD_EPSILON).all())
-
 
 
 if __name__ == '__main__':

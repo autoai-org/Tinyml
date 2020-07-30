@@ -2,18 +2,20 @@ import os
 import pickle
 import sys
 
+import numpy as np
+
 # Higher verbose level = more detailed logging
 import tinynet
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from tinynet.core import Backend as np
 from tinynet.learner import Learner
+from tinynet.learner.callbacks import (evaluate_classification_accuracy,
+                                       save_model)
 from tinynet.losses import cross_entropy_with_softmax_loss
 from tinynet.models.vgg16 import vgg16
 from tinynet.optims import SGDOptimizer
-from tinynet.learner.callbacks import evaluate_classification_accuracy, save_model
 
-import numpy as np
 GPU = True
 
 if GPU:
@@ -42,8 +44,7 @@ def load_data(filepath):
 
 
 def get_accuracy(y_predict, y_true):
-    return np.mean(
-        np.equal(y_predict, y_true))
+    return np.mean(np.equal(y_predict, y_true))
 
 
 x_train, y_train, x_test, y_test = load_data('dataset/cat_and_dog.pkl')
@@ -70,9 +71,13 @@ TRAIN = True
 print('starting training...')
 
 if TRAIN:
-    learner.fit(x_train, y_train, epochs=50, batch_size=5, callbacks=callbacks,
-            callbacks_interval=1,
-            cargs=cargs)
+    learner.fit(x_train,
+                y_train,
+                epochs=50,
+                batch_size=5,
+                callbacks=callbacks,
+                callbacks_interval=1,
+                cargs=cargs)
 
     model.export('cat_and_dog.tnn')
 

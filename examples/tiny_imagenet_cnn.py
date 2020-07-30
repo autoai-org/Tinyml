@@ -58,14 +58,14 @@ callbacks = [evaluate_classification_accuracy, save_model]
 cargs = (x_test, y_test)
 
 learner = Learner(model, cross_entropy_with_softmax_loss,
-                  SGDOptimizer(lr=0.05))
+                  SGDOptimizer(lr=0.01, momentum=0.9))
 
 TRAIN = True
 
 print('starting training...')
 
 if TRAIN:
-    learner.fit(x_train, y_train, epochs=10, batch_size=40, callbacks_interval=1,
+    learner.fit(x_train, y_train, epochs=50, batch_size=45, callbacks=callbacks,callbacks_interval=1,
             cargs=cargs)
     model.export('tinyimagenet.tnn')
 

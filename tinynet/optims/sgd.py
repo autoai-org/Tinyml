@@ -8,12 +8,17 @@ class SGDOptimizer():
     
     where :math:`\\lambda` is the preset learning rate, and :math:`\\nabla` is the gradient.
     '''
-    def __init__(self, lr):
+    def __init__(self, lr, momentum=None):
         self.lr = lr
+        self.momentum = momentum
     
     def update(self, param):
         if param.require_grad:
-            param.tensor -= self.lr * param.gradient
+            if self.momentum:
+                param.velocity = self.momentum * param.velocity + self.lr * param.gradient
+                param.tensor -= param.velocity
+            else:
+                param.tensor -= self.lr * param.gradient
             param.gradient.fill(0)
         else:
             pass
