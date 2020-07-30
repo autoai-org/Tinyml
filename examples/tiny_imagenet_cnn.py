@@ -12,6 +12,7 @@ from tinynet.learner import Learner
 from tinynet.losses import cross_entropy_with_softmax_loss
 from tinynet.models.tinyvgg16 import tinyvgg16
 from tinynet.optims import SGDOptimizer
+from tinynet.learner.callbacks import evaluate_classification_accuracy, save_model
 
 GPU = True
 
@@ -25,10 +26,12 @@ def load_data(filepath):
     with open(filepath, 'rb') as f:
         cat_dog_data = pickle.load(f)
         x_train = cat_dog_data['train']['data']
-        y_train = cat_dog_data['train']['label']
+        y_train = cat_dog_data['train']['label']        
+        idx = numpy.random.permutation(len(x_train))
+        x_train, y_train = numpy.asarray(x_train)[idx], numpy.asarray(y_train)[idx]
         x_test = cat_dog_data['test']['data']
         y_test = cat_dog_data['test']['label']
-        return numpy.asarray(x_train), numpy.asarray(y_train), numpy.asarray(
+        return x_train, y_train, numpy.asarray(
             x_test), numpy.asarray(y_test)
 
 
@@ -51,16 +54,19 @@ if GPU:
 
 model = tinyvgg16()
 model.summary()
+callbacks = [evaluate_classification_accuracy, save_model]
+cargs = (x_test, y_test)
 
 learner = Learner(model, cross_entropy_with_softmax_loss,
-                  SGDOptimizer(lr=0.01))
+                  SGDOptimizer(lr=0.05))
 
 TRAIN = True
 
 print('starting training...')
 
 if TRAIN:
-    learner.fit(x_train, y_train, epochs=10, batch_size=10)
+    learner.fit(x_train, y_train, epochs=10, batch_size=40, callbacks_interval=1,
+            cargs=cargs)
     model.export('tinyimagenet.tnn')
 
 else:

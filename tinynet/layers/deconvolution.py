@@ -66,7 +66,7 @@ class Deconv2D(Layer):
         input_mat = input.reshape(
             (input.shape[0], input.shape[1], -1)).transpose((0, 2, 1))
         filters_mat = self.weight.tensor.reshape(
-            self.weight.tensor.shape[0], -1)
+            self.input_channel, -1)
         res_mat = np.matmul(input_mat, filters_mat)
 
         return im2rows(res_mat, (input.shape[0], filter_shape[1], res_shape[0], res_shape[1]), filter_shape, self.dilation, (self.stride, self.stride), dilated_shape, input.shape[2:]) + self.bias.tensor[np.newaxis, :, np.newaxis, np.newaxis]
