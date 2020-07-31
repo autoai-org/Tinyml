@@ -13,7 +13,7 @@ class Sequential(Net):
     def forward(self, input):
         output = input
         for layer in self.layers:
-            if isinstance(layer, MaxPool2D):
+            if isinstance(layer, MaxPool2D) and layer.return_index:
                 output, max_indices = layer.forward(output)
             else:
                 output = layer.forward(output)

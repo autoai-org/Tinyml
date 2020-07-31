@@ -1,11 +1,11 @@
 import unittest
 
 import numpy as np
-
 import torch
+from torch.nn import Conv2d as torch_conv2d
+
 from tests.base import EPSILON, GRAD_EPSILON
 from tinynet.layers import Conv2D
-from torch.nn import Conv2d as torch_conv2d
 
 
 class TestConv2D(unittest.TestCase):

@@ -1,8 +1,9 @@
 import os
 
+from sklearn.preprocessing import OneHotEncoder
+
 import tinynet
 import tinynet.dataloaders.mnist as mnist
-from sklearn.preprocessing import OneHotEncoder
 from tinynet.core import Backend as np
 from tinynet.layers import Conv2D, Dropout, Linear, ReLu, Softmax, softmax
 from tinynet.layers.flatten import Flatten
@@ -31,11 +32,6 @@ def pre_process_data(train_x, train_y, test_x, test_y):
     test_x = test_x / 255.
     train_x = train_x.reshape(-1, 1, 28, 28)
     test_x = test_x.reshape(-1, 1, 28, 28)
-
-    enc = OneHotEncoder(sparse=False, categories='auto')
-    train_y = enc.fit_transform(train_y.reshape(len(train_y), -1))
-
-    test_y = enc.transform(test_y.reshape(len(test_y), -1))
 
     return train_x, train_y, test_x, test_y
 
@@ -79,12 +75,6 @@ model = Sequential([
     Linear('fc_2', 128, 10),
 ])
 
-
-def get_accuracy(y_predict, y_true):
-    return np.mean(
-        np.equal(np.argmax(y_predict, axis=-1), np.argmax(y_true, axis=-1)))
-
-
 model.summary()
 callbacks = [evaluate_classification_accuracy]
 cargs = (x_test, y_test)
@@ -100,9 +90,3 @@ learner.fit(x_train,
             cargs=cargs)
 
 print('training completed!')
-print('starting evaluating...')
-
-y_predict = learner.predict(x_test)
-
-acc = get_accuracy(y_predict, y_test)
-print('Testing Accuracy: {}%'.format(acc * 100))

@@ -1,11 +1,11 @@
 import unittest
 
 import numpy as np
-
 import torch
+from torch.nn import Linear as torch_linear
+
 from tests.base import EPSILON, GRAD_EPSILON
 from tinynet.layers import Linear as tnn_linear
-from torch.nn import Linear as torch_linear
 
 
 class TestLinearLayer(unittest.TestCase):
@@ -32,7 +32,7 @@ class TestLinearLayer(unittest.TestCase):
         self.test_forward()
         self.torch_output.backward(torch.from_numpy(self.gradient))
         self.tnn_linear.backward(self.gradient)
-        self.assertTrue((self.torch_linear.weight.grad.numpy() -
+        self.assertTrue((self.torch_linear.weight.grad.numpy().T -
                          self.tnn_linear.weight.gradient < GRAD_EPSILON).all())
 
 

@@ -8,3 +8,5 @@ format:
 	isort -i **/*.py
 	yapf -i **/*.py
 
+test:
+	python3 -m unittest/*.py

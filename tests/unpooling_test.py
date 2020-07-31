@@ -1,11 +1,11 @@
 import unittest
 
 import numpy as np
-
 import torch
-from tinynet.layers import MaxPool2D, MaxUnpool2D
 from torch.nn import MaxPool2d as torch_max_pool_2d
 from torch.nn import MaxUnpool2d as torch_max_unpool_2d
+
+from tinynet.layers import MaxPool2D, MaxUnpool2D
 
 
 class TestMaxUnpool2D(unittest.TestCase):
