@@ -12,7 +12,8 @@ class TestDeconv2D(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.forward_weight = np.array([[1, 2], [3, 4]],
-                                       dtype=np.float32).T.reshape(1, 1, 2, 2)
+                                       dtype=np.float32).reshape(1, 1, 2, 2)
+        print(self.forward_weight)
         self.data = np.array([[37, 47], [67, 77]],
                              dtype=np.float32).reshape(1, 1, 2, 2)
         self.torch_deconv = torch_deconv(1, 1, (2, 2), 1, bias=False)
@@ -28,6 +29,8 @@ class TestDeconv2D(unittest.TestCase):
         self.assertTrue(
             (self.torch_deconv_output.detach().numpy() == tnn_deconv_output
              ).all())
+        print(tnn_deconv_output)
+        print(self.torch_deconv_output)
 
 
 class TestDeconv2D_multi_channel(unittest.TestCase):
