@@ -56,4 +56,5 @@ def tinyvgg16():
     model.add(Dropout('drop_2', 0.5))
     model.add(Linear('fc_3', 4096, 200))
 
+    model.build_params()
     return model

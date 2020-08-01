@@ -45,6 +45,8 @@ x_test = (x_test/255).astype('float32')
 y_train = process_y(y_train)
 y_test = process_y(y_test)
 
+print(y_test.shape)
+
 model = Net()
 optimizer = optim.SGD(model.parameters(),lr=0.05)
 
@@ -64,7 +66,7 @@ def train(model, optimizer, epochs, batch_size, data, label):
             y_minibatch = label[i:i+batch_size]
             optimizer.zero_grad()
             output = model(Variable(torch.from_numpy(x_minibatch)))
-            loss = F.nll_loss(output, Variable(torch.from_numpy(y_minibatch)))
+            loss = F.cross_entropy(output, Variable(torch.from_numpy(y_minibatch)))
             loss.backward()
             optimizer.step()
         log_trainining_progress(epoch, epochs, loss, loss/batch_size)

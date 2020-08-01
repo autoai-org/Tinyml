@@ -1,11 +1,11 @@
 import unittest
 
 import numpy as np
-import torch
-from torch.nn import Conv2d as torch_conv2d
 
+import torch
 from tests.base import EPSILON, GRAD_EPSILON
 from tinynet.layers import Conv2D
+from torch.nn import Conv2d as torch_conv2d
 
 
 class TestConv2D(unittest.TestCase):
@@ -59,6 +59,9 @@ class TestConv2D_multiple_channel(unittest.TestCase):
         self.tnn_conv.backward(self.gradient)
         self.assertTrue((self.torch_conv.weight.grad.numpy() -
                          self.tnn_conv.weight.gradient < GRAD_EPSILON).all())
+        self.assertTrue(
+            (self.torch_conv.bias.grad.numpy() - self.tnn_conv.bias.gradient.T
+             < GRAD_EPSILON).all())
 
 
 if __name__ == '__main__':

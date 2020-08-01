@@ -6,8 +6,6 @@ class Net(object):
     def __init__(self, layers):
         self.layers = layers
         self.parameters = []
-        for layer in self.layers:
-            self.parameters.extend(layer.parameters)
         
     def update(self, optimizer):
         '''

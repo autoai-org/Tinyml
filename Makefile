@@ -9,4 +9,4 @@ format:
 	yapf -i **/*.py
 
 test:
-	python3 -m unittest/*.py
+	python3 -m unittest tests/*.py

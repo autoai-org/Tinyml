@@ -1,7 +1,6 @@
-from sklearn.preprocessing import OneHotEncoder
-
 import tinynet
 import tinynet.dataloaders.mnist as mnist
+from sklearn.preprocessing import OneHotEncoder
 from tinynet.core import Backend as np
 from tinynet.layers import Linear, ReLu, Softmax, softmax
 from tinynet.learner import Learner

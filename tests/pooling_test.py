@@ -1,10 +1,10 @@
 import unittest
 
 import numpy as np
-import torch
-from torch.nn import MaxPool2d as torch_max_pool_2d
 
+import torch
 from tinynet.layers import MaxPool2D
+from torch.nn import MaxPool2d as torch_max_pool_2d
 
 
 class TestMaxpool2D(unittest.TestCase):

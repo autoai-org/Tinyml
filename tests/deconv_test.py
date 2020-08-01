@@ -1,11 +1,11 @@
 import unittest
 
 import numpy as np
-import torch
-from torch.nn import ConvTranspose2d as torch_deconv
 
+import torch
 from tests.base import EPSILON
 from tinynet.layers import Deconv2D
+from torch.nn import ConvTranspose2d as torch_deconv
 
 
 class TestDeconv2D(unittest.TestCase):
@@ -13,7 +13,6 @@ class TestDeconv2D(unittest.TestCase):
         super().__init__(*args, **kwargs)
         self.forward_weight = np.array([[1, 2], [3, 4]],
                                        dtype=np.float32).reshape(1, 1, 2, 2)
-        print(self.forward_weight)
         self.data = np.array([[37, 47], [67, 77]],
                              dtype=np.float32).reshape(1, 1, 2, 2)
         self.torch_deconv = torch_deconv(1, 1, (2, 2), 1, bias=False)
@@ -29,8 +28,6 @@ class TestDeconv2D(unittest.TestCase):
         self.assertTrue(
             (self.torch_deconv_output.detach().numpy() == tnn_deconv_output
              ).all())
-        print(tnn_deconv_output)
-        print(self.torch_deconv_output)
 
 
 class TestDeconv2D_multi_channel(unittest.TestCase):

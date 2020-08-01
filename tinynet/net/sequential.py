@@ -3,6 +3,7 @@ from .base import Net
 from tinynet.core import Backend as np
 from tinynet.utilities.logger import output_intermediate_result
 from tinynet.layers import MaxPool2D
+
 class Sequential(Net):
     '''
     Sequential model reads a list of layers and stack them to be a neural network.
@@ -21,13 +22,18 @@ class Sequential(Net):
         return output
     
     def backward(self, in_gradient):
-        for layer in self.layers[::-1]:
-            in_gradient = layer.backward(in_gradient)
-            output_intermediate_result(layer.name, in_gradient, 'gradient', layer)
-        return in_gradient
-    
+        out_gradient = in_gradient
+        for layer in self.layers[::-1]:    
+            out_gradient = layer.backward(out_gradient)
+            output_intermediate_result(layer.name, out_gradient, 'gradient', layer)
+        return out_gradient
+
     def add(self, layer):
         self.layers.append(layer)
+
+    def build_params(self):
+        for layer in self.layers:
+            self.parameters.extend(layer.parameters)
 
     def __call__(self, input):
         return self.forward(input)

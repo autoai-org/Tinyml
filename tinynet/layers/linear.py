@@ -32,7 +32,7 @@ class Linear(Layer):
 
             \\frac{\\partial l}{\\partial w} = \\frac{\\partial l}{\\partial y}\\frac{\\partial y}{\\partial w}=\\frac{\\partial l}{\\partial y} x
         '''
-        self.weight.gradient = np.matmul(self.input.T, in_gradient)
-        self.bias.gradient = in_gradient.sum(axis=0)
+        self.weight.gradient += np.matmul(self.input.T, in_gradient)
+        self.bias.gradient += np.sum(in_gradient,axis=0)
         return np.matmul(in_gradient, self.weight.tensor.T)
     

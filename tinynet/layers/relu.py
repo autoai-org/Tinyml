@@ -17,4 +17,4 @@ class ReLu(Layer):
         return input * (input > 0)
 
     def backward(self, in_gradient):
-        return in_gradient * 1.0 * (self.input > 0)
+        return in_gradient * (self.input > 0)
