@@ -73,6 +73,7 @@ model = Sequential([
     Dropout('drop_2', 0.5),
     Linear('fc_2', 128, 10),
 ])
+model.build_params()
 
 model.summary()
 callbacks = [evaluate_classification_accuracy]

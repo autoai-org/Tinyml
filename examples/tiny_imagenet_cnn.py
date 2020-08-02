@@ -59,7 +59,7 @@ callbacks = [evaluate_classification_accuracy, save_model]
 cargs = (x_test, y_test)
 
 learner = Learner(model, cross_entropy_with_softmax_loss,
-                  SGDOptimizer(lr=0.01, momentum=0.9))
+                  SGDOptimizer(lr=0.001, momentum=0.9))
 
 TRAIN = True
 

@@ -39,6 +39,7 @@ class torch_net(nn.Module):
         x = self.relu2(x)
         x = self.pool1(x)
         x = x.view(x.size(0), -1)
+        print(x.shape)
         x = self.linear1(x)
         x = self.relu3(x)
         x = self.linear2(x)
@@ -83,12 +84,12 @@ class End2EndTest(unittest.TestCase):
             torch.from_numpy(self.tnn_model.layers[2].bias.tensor.flatten()))
 
         self.torch_model.linear1.weight = nn.Parameter(
-            torch.from_numpy(self.tnn_model.layers[6].weight.tensor.T))
+            torch.from_numpy(self.tnn_model.layers[6].weight.tensor))
         self.torch_model.linear1.bias = nn.Parameter(
             torch.from_numpy(self.tnn_model.layers[6].bias.tensor.flatten()))
 
         self.torch_model.linear2.weight = nn.Parameter(
-            torch.from_numpy(self.tnn_model.layers[8].weight.tensor.T))
+            torch.from_numpy(self.tnn_model.layers[8].weight.tensor))
         self.torch_model.linear2.bias = nn.Parameter(
             torch.from_numpy(self.tnn_model.layers[8].bias.tensor.flatten()))
 
@@ -99,7 +100,7 @@ class End2EndTest(unittest.TestCase):
         self.tnn_optimizer = SGDOptimizer(lr=0.1)
 
     def test(self):
-        batch_size = 1
+        batch_size = 2
         self.data = np.random.randn(batch_size, 3, 28, 28)
         self.gt = np.random.randint(0, 9, size=(batch_size, ))
         self.torch_input = torch.from_numpy(self.data)

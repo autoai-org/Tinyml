@@ -42,11 +42,6 @@ def load_data(filepath):
                                                             random_state=42)
         return x_train, y_train, x_test, y_test
 
-
-def get_accuracy(y_predict, y_true):
-    return np.mean(np.equal(y_predict, y_true))
-
-
 x_train, y_train, x_test, y_test = load_data('dataset/cat_and_dog.pkl')
 
 print(y_train.shape)
@@ -64,7 +59,7 @@ model.summary()
 callbacks = [evaluate_classification_accuracy, save_model]
 cargs = (x_test, y_test)
 learner = Learner(model, cross_entropy_with_softmax_loss,
-                  SGDOptimizer(lr=0.01))
+                  SGDOptimizer(lr=0.01, momentum=0.9))
 
 TRAIN = True
 
@@ -88,5 +83,3 @@ print('starting evaluating...')
 
 y_predict = learner.predict(x_test, batch_size=1)
 
-acc = get_accuracy(y_predict, y_test)
-print('Testing Accuracy: {}%'.format(acc * 100))
