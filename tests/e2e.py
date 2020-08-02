@@ -135,7 +135,9 @@ class End2EndTest(unittest.TestCase):
             self.torch_loss_val.backward()
             self.torch_optimizer.step()
 
-            self.assertTrue(np.absolute( (self.torch_output.grad.numpy() - self.tnn_loss_gradient)<EPSILON).all())
+            self.assertTrue(
+                np.absolute((self.torch_output.grad.numpy() -
+                             self.tnn_loss_gradient) < EPSILON).all())
 
             self.tnn_model.backward(self.tnn_loss_gradient)
             self.tnn_model.update(self.tnn_optimizer)

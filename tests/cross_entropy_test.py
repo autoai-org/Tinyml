@@ -23,15 +23,13 @@ class TestCrossEntropy(unittest.TestCase):
             torch.from_numpy(self.target).long())
         tnn_output, self.tnn_loss_gradient = cross_entropy_with_softmax_loss(
             self.data, self.target)
-        self.assertTrue(
-            (self.torch_output.detach().numpy() - tnn_output < EPSILON).all())
+        self.assertTrue(np.absolute(self.torch_output.detach().numpy() - tnn_output < EPSILON).all())
 
     def test_backward(self):
         self.test_forward()
         self.torch_output.backward()
         torch_gradient = self.torch_input.grad.numpy()
-        self.assertTrue(
-            (torch_gradient - self.tnn_loss_gradient < GRAD_EPSILON).all())
+        self.assertTrue((np.absolute(torch_gradient - self.tnn_loss_gradient)< GRAD_EPSILON).all())
 
 
 if __name__ == '__main__':

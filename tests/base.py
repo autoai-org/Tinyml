@@ -30,7 +30,7 @@ def isEqual(epoch, tnn_model, torch_model):
     print('----- BIAS -----')
     print(tnn_model.layers[6].bias.tensor)
     print('--------------')
-    print(torch_model.linear2.bias.detach().numpy())
+    print(torch_model.linear1.bias.detach().numpy())
     '''
     assert (np.absolute(torch_model.linear1.weight.detach().numpy() -
                         tnn_model.layers[6].weight.tensor < EPSILON)).all()

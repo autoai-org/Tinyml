@@ -42,6 +42,7 @@ def load_data(filepath):
                                                             random_state=42)
         return x_train, y_train, x_test, y_test
 
+
 x_train, y_train, x_test, y_test = load_data('dataset/cat_and_dog.pkl')
 
 print(y_train.shape)
@@ -82,4 +83,3 @@ else:
 print('starting evaluating...')
 
 y_predict = learner.predict(x_test, batch_size=1)
-

@@ -16,17 +16,19 @@ class TestLinearLayer(unittest.TestCase):
         out_features = 2
         self.data = np.random.randn(batch_size, in_features)
         self.forward_weight = np.random.randn(out_features, in_features)
-        self.forward_bias = np.random.randn(batch_size, out_features)
+        self.forward_bias = np.random.randn(out_features)
         self.torch_linear = torch_linear(in_features, out_features)
         self.tnn_linear = tnn_linear('test', in_features, out_features)
-        
+
         self.gradient = np.random.randn(batch_size, out_features)
+        
+        self.torch_input = torch.from_numpy(self.data)
+        self.torch_input = self.torch_input.view(self.torch_input.size(0), -1)
+        self.torch_input.requires_grad = True
+        self.torch_input.retain_grad()
 
     def test_forward(self):
-        self.torch_input = torch.from_numpy(self.data)
-        self.torch_input.requires_grad = True
-        self.torch_input = self.torch_input.view(self.torch_input.size(0), -1)
-        
+
         self.torch_linear.weight = torch.nn.Parameter(
             torch.from_numpy(self.forward_weight))
         self.torch_linear.bias = torch.nn.Parameter(
@@ -44,25 +46,23 @@ class TestLinearLayer(unittest.TestCase):
 
     def test_backward(self):
         self.test_forward()
-        
+
         output_grad = self.tnn_linear.backward(self.gradient)
 
         self.torch_output.backward(torch.from_numpy(self.gradient))
+        
+        self.assertTrue(
+            np.absolute((self.torch_input.grad - output_grad) < EPSILON).all())
 
         self.assertTrue(
-            np.absolute((self.torch_linear.weight.grad.numpy().T -
+            np.absolute((self.torch_linear.weight.grad.numpy() -
                          self.tnn_linear.weight.gradient) < EPSILON).all())
 
-        print(self.torch_linear.bias.grad.numpy())
-        print(self.tnn_linear.bias.gradient)
-        
         self.assertTrue(
             np.absolute((self.torch_linear.bias.grad.numpy() -
                          self.tnn_linear.bias.gradient) < EPSILON).all())
 
-        self.assertTrue(
-            np.absolute(
-                (self.torch_input.grad.numpy() - output_grad) < EPSILON).all())
+
 
 
 if __name__ == '__main__':

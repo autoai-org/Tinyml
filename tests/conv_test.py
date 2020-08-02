@@ -40,15 +40,21 @@ class TestConv2D_multiple_channel(unittest.TestCase):
         self.tnn_conv.weight.tensor = self.forward_weight
         self.tnn_conv.bias.tensor = self.forward_bias
         self.torch_conv = torch_conv2d(3, 12, (2, 2), 1, bias=False)
+        
+        self.torch_input = torch.from_numpy(self.data)
+        self.torch_input.requires_grad = True
+        self.torch_input.retain_grad()
 
     def test_forward(self):
+        
         tnn_conv_output = self.tnn_conv(self.data)
         self.torch_conv.weight = torch.nn.Parameter(
             torch.from_numpy(self.forward_weight))
         self.torch_conv.bias = torch.nn.Parameter(
             torch.from_numpy(self.forward_bias.flatten()))
 
-        self.torch_conv_output = self.torch_conv(torch.from_numpy(self.data))
+        self.torch_conv_output = self.torch_conv(self.torch_input)
+
         self.assertTrue(
             (self.torch_conv_output.detach().numpy() - tnn_conv_output <
              EPSILON).all())
@@ -56,11 +62,15 @@ class TestConv2D_multiple_channel(unittest.TestCase):
     def test_backward(self):
         self.test_forward()
         self.torch_conv_output.backward(torch.from_numpy(self.gradient))
-        self.tnn_conv.backward(self.gradient)
-        self.assertTrue((self.torch_conv.weight.grad.numpy() -
-                         self.tnn_conv.weight.gradient < GRAD_EPSILON).all())
+        out_grad = self.tnn_conv.backward(self.gradient)
+
+        self.assertTrue((np.absolute(self.torch_conv.weight.grad.numpy() -
+                                     self.tnn_conv.weight.gradient < GRAD_EPSILON)).all())
         self.assertTrue(
-            (self.torch_conv.bias.grad.numpy() - self.tnn_conv.bias.gradient.T
+            (np.absolute(self.torch_conv.bias.grad.numpy() - self.tnn_conv.bias.gradient.T)
+             < GRAD_EPSILON).all())
+        self.assertTrue(
+            (np.absolute(self.torch_input.grad - out_grad)
              < GRAD_EPSILON).all())
 
 

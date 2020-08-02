@@ -32,6 +32,7 @@ def pre_process_data(train_x, train_y, test_x, test_y):
 
     return train_x, train_y, test_x, test_y
 
+
 x_train, y_train, x_test, y_test = mnist.load()
 x_train, y_train, x_test, y_test = pre_process_data(x_train, y_train, x_test,
                                                     y_test)
@@ -60,7 +61,8 @@ model.build_params()
 model.summary()
 callbacks = [evaluate_classification_accuracy]
 cargs = (x_test, y_test)
-learner = Learner(model, cross_entropy_with_softmax_loss, SGDOptimizer(lr=0.1, momentum=0.9))
+learner = Learner(model, cross_entropy_with_softmax_loss,
+                  SGDOptimizer(lr=0.1, momentum=0.9))
 
 print('starting training...')
 learner.fit(x_train,
