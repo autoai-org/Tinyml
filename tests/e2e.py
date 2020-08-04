@@ -5,19 +5,15 @@ import numpy as np
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-from tests.base import EPSILON, GRAD_EPSILON, isEqual
+from tests.base import EPSILON, isEqual
 from tinynet.layers import Conv2D, Flatten, Linear, MaxPool2D, ReLu
 from tinynet.losses.cross_entropy import cross_entropy_with_softmax_loss
 from tinynet.net import Sequential
 from tinynet.optims import SGDOptimizer
-from torch import flatten as torch_flatten
-from torch.autograd import Variable
 from torch.nn import Conv2d as torch_conv2d
 from torch.nn import Linear as torch_linear
 from torch.nn import MaxPool2d as torch_maxpool2d
 from torch.nn import ReLU as torch_relu
-from torch.nn import Sequential as torch_sequential
 
 
 class torch_net(nn.Module):
@@ -87,7 +83,7 @@ class End2EndTest(unittest.TestCase):
             torch.from_numpy(self.tnn_model.layers[6].weight.tensor))
         self.torch_model.linear1.bias = nn.Parameter(
             torch.from_numpy(self.tnn_model.layers[6].bias.tensor.flatten()))
-
+        print(self.tnn_model.layers[6].weight.tensor)
         self.torch_model.linear2.weight = nn.Parameter(
             torch.from_numpy(self.tnn_model.layers[8].weight.tensor))
         self.torch_model.linear2.bias = nn.Parameter(
@@ -100,7 +96,7 @@ class End2EndTest(unittest.TestCase):
         self.tnn_optimizer = SGDOptimizer(lr=0.1)
 
     def test(self):
-        batch_size = 2
+        batch_size = 1
         self.data = np.random.randn(batch_size, 3, 28, 28)
         self.gt = np.random.randint(0, 9, size=(batch_size, ))
         self.torch_input = torch.from_numpy(self.data)
@@ -122,6 +118,7 @@ class End2EndTest(unittest.TestCase):
             self.torch_loss_val = self.torch_loss(
                 self.torch_output,
                 torch.from_numpy(self.gt).long())
+
             self.tnn_loss, self.tnn_loss_gradient = cross_entropy_with_softmax_loss(
                 self.tnn_output, self.gt)
 
