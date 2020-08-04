@@ -93,7 +93,7 @@ class Conv2D(Layer):
         self.padding = padding
         weight = np.random.randn(
             self.n_filter, self.input_channel, self.h_filter, self.w_filter) / np.sqrt(n_filter/2.0)
-        bias = np.zeros((self.n_filter, 1))
+        bias = np.zeros((self.n_filter))
         self.weight = self.build_param(weight)
         self.bias = self.build_param(bias)
         self.out_height = (self.input_height - self.h_filter +
@@ -111,7 +111,7 @@ class Conv2D(Layer):
         self.input_col = im2col_indices(
             input, self.h_filter, self.w_filter, stride=self.stride, padding=self.padding)
         weight_in_row = self.weight.tensor.reshape(self.n_filter, -1)
-        output = np.matmul(weight_in_row, self.input_col) + self.bias.tensor
+        output = np.matmul(weight_in_row, self.input_col) + self.bias.tensor.reshape(self.n_filter, 1)
         output = output.reshape(
             self.n_filter, self.out_height, self.out_width, self.n_input)
         output = output.transpose(3, 0, 1, 2)
@@ -124,7 +124,7 @@ class Conv2D(Layer):
         self.weight.gradient = weight_gradient.reshape(
             self.weight.tensor.shape)
         self.bias.gradient = np.sum(in_gradient, axis=(
-            0, 2, 3)).reshape(self.n_filter, -1)
+            0, 2, 3)).reshape(self.n_filter)
         weight_flat = self.weight.tensor.reshape(self.n_filter, -1)
         out_gradient_col = np.matmul(weight_flat.T, gradient_flat)
         shape = (self.n_input, self.input_channel,

@@ -72,22 +72,22 @@ class End2EndTest(unittest.TestCase):
         self.torch_model.conv1.weight = nn.Parameter(
             torch.from_numpy(self.tnn_model.layers[0].weight.tensor))
         self.torch_model.conv1.bias = nn.Parameter(
-            torch.from_numpy(self.tnn_model.layers[0].bias.tensor.flatten()))
+            torch.from_numpy(self.tnn_model.layers[0].bias.tensor))
 
         self.torch_model.conv2.weight = nn.Parameter(
             torch.from_numpy(self.tnn_model.layers[2].weight.tensor))
         self.torch_model.conv2.bias = nn.Parameter(
-            torch.from_numpy(self.tnn_model.layers[2].bias.tensor.flatten()))
+            torch.from_numpy(self.tnn_model.layers[2].bias.tensor))
 
         self.torch_model.linear1.weight = nn.Parameter(
             torch.from_numpy(self.tnn_model.layers[6].weight.tensor))
         self.torch_model.linear1.bias = nn.Parameter(
-            torch.from_numpy(self.tnn_model.layers[6].bias.tensor.flatten()))
+            torch.from_numpy(self.tnn_model.layers[6].bias.tensor))
         print(self.tnn_model.layers[6].weight.tensor)
         self.torch_model.linear2.weight = nn.Parameter(
             torch.from_numpy(self.tnn_model.layers[8].weight.tensor))
         self.torch_model.linear2.bias = nn.Parameter(
-            torch.from_numpy(self.tnn_model.layers[8].bias.tensor.flatten()))
+            torch.from_numpy(self.tnn_model.layers[8].bias.tensor))
 
         self.torch_optimizer = torch.optim.SGD(self.torch_model.parameters(),
                                                lr=0.1)
@@ -101,7 +101,7 @@ class End2EndTest(unittest.TestCase):
         self.gt = np.random.randint(0, 9, size=(batch_size, ))
         self.torch_input = torch.from_numpy(self.data)
         self.torch_input.requires_grad = True
-        epochs = 2
+        epochs = 10
         for epoch in range(epochs):
             isEqual(epoch, self.tnn_model, self.torch_model)
             self.torch_model.train()
@@ -110,6 +110,9 @@ class End2EndTest(unittest.TestCase):
             self.torch_output = self.torch_model(self.torch_input)
             self.torch_output.retain_grad()
             self.tnn_output = self.tnn_model(self.data)
+
+            print(self.tnn_output)
+            print(self.torch_output.detach().numpy())
 
             self.assertTrue(
                 (self.torch_output.detach().numpy() - self.tnn_output <
@@ -125,6 +128,7 @@ class End2EndTest(unittest.TestCase):
             self.assertTrue(
                 (self.torch_loss_val.detach().numpy() - self.tnn_loss <
                  EPSILON).all())
+                
             print('torch_loss: {}'.format(self.torch_loss_val.item()))
             print('tnn_loss: {}'.format(self.tnn_loss))
 

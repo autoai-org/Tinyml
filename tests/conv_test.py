@@ -33,7 +33,7 @@ class TestConv2D_multiple_channel(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.forward_weight = np.random.randn(12, 3, 2, 2)
-        self.forward_bias = np.random.randn(12, 1)
+        self.forward_bias = np.random.randn(12)
         self.data = np.random.randn(1, 3, 8, 8)
         self.tnn_conv = Conv2D('test_conv2d', (3, 8, 8), 12, 2, 2, 1, 0)
         self.gradient = np.random.randn(1, 12, 7, 7)
@@ -51,7 +51,7 @@ class TestConv2D_multiple_channel(unittest.TestCase):
         self.torch_conv.weight = torch.nn.Parameter(
             torch.from_numpy(self.forward_weight))
         self.torch_conv.bias = torch.nn.Parameter(
-            torch.from_numpy(self.forward_bias.flatten()))
+            torch.from_numpy(self.forward_bias))
 
         self.torch_conv_output = self.torch_conv(self.torch_input)
 
