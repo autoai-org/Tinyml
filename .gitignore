@@ -8,3 +8,4 @@ __pycache__
 .vscode/
 .coverage
 coverage.json
+*.tnn

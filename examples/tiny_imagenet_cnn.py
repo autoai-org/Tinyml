@@ -26,12 +26,12 @@ tinynet.utilities.logger.VERBOSE = 1
 def load_data(filepath):
     with open(filepath, 'rb') as f:
         cat_dog_data = pickle.load(f)
-        x_train = cat_dog_data['train']['data']
-        y_train = cat_dog_data['train']['label']
+        x_train = cat_dog_data['train']['data'] 
+        y_train = cat_dog_data['train']['label'] 
         idx = numpy.random.permutation(len(x_train))
-        x_train, y_train = numpy.asarray(x_train)[idx], numpy.asarray(
-            y_train)[idx]
-        x_test = cat_dog_data['test']['data']
+        x_train, y_train = numpy.asarray(x_train)[idx]/255., numpy.asarray(
+            y_train)[idx]/ 255.
+        x_test = cat_dog_data['test']['data'] 
         y_test = cat_dog_data['test']['label']
         return x_train, y_train, numpy.asarray(x_test), numpy.asarray(y_test)
 
@@ -59,7 +59,7 @@ callbacks = [evaluate_classification_accuracy, save_model]
 cargs = (x_test, y_test)
 
 learner = Learner(model, cross_entropy_with_softmax_loss,
-                  SGDOptimizer(lr=0.001, momentum=0.9))
+                  SGDOptimizer(lr=0.01, momentum=0.9))
 
 TRAIN = True
 
@@ -69,7 +69,7 @@ if TRAIN:
     learner.fit(x_train,
                 y_train,
                 epochs=50,
-                batch_size=45,
+                batch_size=20,
                 callbacks=callbacks,
                 callbacks_interval=1,
                 cargs=cargs)

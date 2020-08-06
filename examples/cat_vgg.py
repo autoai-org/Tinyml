@@ -13,7 +13,7 @@ from tinynet.learner import Learner
 from tinynet.learner.callbacks import (evaluate_classification_accuracy,
                                        save_model)
 from tinynet.losses import cross_entropy_with_softmax_loss
-from tinynet.models.vgg16 import vgg16
+from tinynet.models.vgg11 import vgg11
 from tinynet.optims import SGDOptimizer
 
 GPU = True
@@ -43,7 +43,7 @@ def load_data(filepath):
         return x_train, y_train, x_test, y_test
 
 
-x_train, y_train, x_test, y_test = load_data('dataset/cat_and_dog.pkl')
+x_train, y_train, x_test, y_test = load_data('dataset/600.pkl')
 
 print(y_train.shape)
 print(x_train.shape)
@@ -55,12 +55,12 @@ if GPU:
     x_test = cp.array(x_test)
     y_test = cp.array(y_test)
 
-model = vgg16()
+model = vgg11()
 model.summary()
 callbacks = [evaluate_classification_accuracy, save_model]
 cargs = (x_test, y_test)
 learner = Learner(model, cross_entropy_with_softmax_loss,
-                  SGDOptimizer(lr=0.01, momentum=0.9))
+                  SGDOptimizer(lr=0.001, momentum=0.9))
 
 TRAIN = True
 
@@ -70,11 +70,10 @@ if TRAIN:
     learner.fit(x_train,
                 y_train,
                 epochs=50,
-                batch_size=5,
+                batch_size=36,
                 callbacks=callbacks,
                 callbacks_interval=1,
                 cargs=cargs)
-
     model.export('cat_and_dog.tnn')
 
 else:

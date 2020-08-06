@@ -1,10 +1,14 @@
 #coding:utf-8
 from tabulate import tabulate
+import numpy as np
 VERBOSE = 1
 
 def print_net_summary(layers):
+    total_weight = [np.prod(layer.weight.tensor.shape) for layer in layers if hasattr(layer, 'weight')]
+    total_bias = [np.prod(layer.bias.tensor.shape) for layer in layers if hasattr(layer, 'bias')]
     layers_info = [each.summary() for each in layers]
     print(tabulate(layers_info, headers=['Type', 'Name', 'Weight','Output_shape'], tablefmt='orgtbl'))
+    print("Total Trainable Params: {}".format(sum(total_weight)+sum(total_bias)))
 
 def log_trainining_progress(epoch,total_epochs, loss_sum, loss_mean):
     if (VERBOSE>=1):

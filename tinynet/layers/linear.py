@@ -7,9 +7,10 @@ class Linear(Layer):
     '''
     def __init__(self, name, input_dim, output_dim):
         super().__init__(name)
+        # Xavier Initialization
         weight = np.random.randn(
             output_dim, input_dim) * np.sqrt(1/input_dim)
-        bias = np.zeros(output_dim)
+        bias = np.random.randn(output_dim) * np.sqrt(1/input_dim)
         self.type = 'Linear'
         self.weight = self.build_param(weight)
         self.bias = self.build_param(bias)

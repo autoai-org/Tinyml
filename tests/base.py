@@ -25,12 +25,6 @@ def isEqual(epoch, tnn_model, torch_model):
     assert (torch_model.conv2.weight.detach().numpy() -
             tnn_model.layers[2].weight.tensor < EPSILON).all()
 
-    print('----- Conv 2 -----')
-    print('----- BIAS -----')
-    print(tnn_model.layers[2].bias.tensor)
-    print('--------------')
-    print(torch_model.conv2.bias.detach().numpy())
-
     assert (torch_model.conv2.bias.detach().numpy() -
             tnn_model.layers[2].bias.tensor < EPSILON).all()
 
