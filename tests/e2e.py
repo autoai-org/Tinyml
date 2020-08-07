@@ -88,7 +88,8 @@ class End2EndTest(unittest.TestCase):
             torch.from_numpy(self.tnn_model.layers[8].bias.tensor))
 
         self.torch_optimizer = torch.optim.SGD(self.torch_model.parameters(),
-                                               lr=0.1, momentum=0.9)
+                                               lr=0.1,
+                                               momentum=0.9)
         self.torch_loss = nn.CrossEntropyLoss()
 
         self.tnn_optimizer = SGDOptimizer(lr=0.1, momentum=0.9)
@@ -120,11 +121,11 @@ class End2EndTest(unittest.TestCase):
 
             self.tnn_loss, self.tnn_loss_gradient = cross_entropy_with_softmax_loss(
                 self.tnn_output, self.gt)
-                        
+
             self.assertTrue(
                 (self.torch_loss_val.detach().numpy() - self.tnn_loss <
                  EPSILON).all())
-                
+
             # now perform the backward process
             self.torch_loss_val.backward()
             self.torch_optimizer.step()

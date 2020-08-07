@@ -21,7 +21,7 @@ class TestLinearLayer(unittest.TestCase):
         self.tnn_linear = tnn_linear('test', in_features, out_features)
 
         self.gradient = np.random.randn(batch_size, out_features)
-        
+
         self.torch_input = torch.from_numpy(self.data)
         self.torch_input = self.torch_input.view(self.torch_input.size(0), -1)
         self.torch_input.requires_grad = True
@@ -50,7 +50,7 @@ class TestLinearLayer(unittest.TestCase):
         output_grad = self.tnn_linear.backward(self.gradient)
 
         self.torch_output.backward(torch.from_numpy(self.gradient))
-        
+
         self.assertTrue(
             np.absolute((self.torch_input.grad - output_grad) < EPSILON).all())
 
@@ -61,8 +61,6 @@ class TestLinearLayer(unittest.TestCase):
         self.assertTrue(
             np.absolute((self.torch_linear.bias.grad.numpy() -
                          self.tnn_linear.bias.gradient) < EPSILON).all())
-
-
 
 
 if __name__ == '__main__':

@@ -1,12 +1,13 @@
-from tests.base import EPSILON
 import unittest
 
 import numpy as np
 
 import torch
+from tests.base import EPSILON
 from tinynet.layers import MaxPool2D, MaxUnpool2D
 from torch.nn import MaxPool2d as torch_max_pool_2d
 from torch.nn import MaxUnpool2d as torch_max_unpool_2d
+
 
 class TestMaxUnpool2D(unittest.TestCase):
     def __init__(self, *args, **kwargs):
@@ -37,12 +38,12 @@ class TestUnpool2DwithTorch(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.data = np.random.rand(2, 3, 20, 20)
-        self.torch_max_pool_layer = torch_max_pool_2d((2, 2), 1, 0, 1, True)
+        self.torch_max_pool_layer = torch_max_pool_2d((2, 2), 2, 0, 1, True)
         self.tnn_pool_layer = MaxPool2D('prepare', (3, 20, 20), (2, 2),
-                                        1,
+                                        2,
                                         return_index=True)
-        self.torch_layer = torch_max_unpool_2d((2, 2), 1, padding=0)
-        self.tnn_layer = MaxUnpool2D('test', (3, 19, 19), (2, 2), 1)
+        self.torch_layer = torch_max_unpool_2d((2, 2), 2, padding=0)
+        self.tnn_layer = MaxUnpool2D('test', (3, 10, 10), (2, 2), 2)
 
     def test(self):
         torch_output, torch_indices = self.torch_max_pool_layer(
@@ -52,6 +53,8 @@ class TestUnpool2DwithTorch(unittest.TestCase):
         tnn_input = self.tnn_layer(tnn_output, tnn_indices)
         torch_input = self.torch_layer(torch_output, torch_indices)
         self.assertTrue((torch_input.numpy() == tnn_input).all())
+
+
 class TestUnpool2DwithStride(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,6 +76,7 @@ class TestUnpool2DwithStride(unittest.TestCase):
         input_ground_truth = ([[[[0, 0, 0, 0], [0, 6, 0, 8], [0, 0, 0, 0],
                                  [0, 4, 0, 8]]]])
         self.assertTrue((unpooled == input_ground_truth).all())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -27,11 +27,12 @@ class TestRelu(unittest.TestCase):
     def test_backward(self):
         self.test_forward()
         self.torch_output.backward(torch.from_numpy(self.gradient))
-        
+
         out_grad = self.tnn_relu.backward(self.gradient)
 
         self.assertTrue(
             (self.torch_input.grad.detach().numpy() == out_grad).all())
+
 
 if __name__ == '__main__':
     unittest.main()

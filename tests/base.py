@@ -15,12 +15,12 @@ def isEqual(epoch, tnn_model, torch_model):
 
     assert (np.absolute(torch_model.linear2.bias.detach().numpy() -
                         tnn_model.layers[8].bias.tensor) < EPSILON).all()
-    
+
     assert (np.absolute(torch_model.linear1.weight.detach().numpy() -
                         tnn_model.layers[6].weight.tensor < EPSILON)).all()
     assert (np.absolute(torch_model.linear1.bias.detach().numpy() -
                         tnn_model.layers[6].bias.tensor) < EPSILON).all()
-    
+
     assert (torch_model.conv2.weight.detach().numpy() -
             tnn_model.layers[2].weight.tensor < EPSILON).all()
 

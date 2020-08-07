@@ -36,7 +36,6 @@ class MaxUnpool2D(Layer):
         self.out_dim = (self.input_channel, self.out_height, self.out_width)
 
     def forward(self, input, max_indices):
-        stride = self.stride
         self.num_of_entries = input.shape[0]
         output_shape = (self.num_of_entries,
                         self.out_dim[0], self.out_dim[1], self.out_dim[2])
@@ -49,8 +48,7 @@ class MaxUnpool2D(Layer):
                         index = indices[i, j, m, n]
                         w_index = index %  self.size[0]
                         h_index = index // self.size[1]
-                        #print("m={} n={} Indices {}, w_index {},  h_index {}, Value {} m+h_index {} n+w_index {}".format(m,n, index, w_index, h_index, input[i, j, m, n], m*stride+h_index, n*stride+w_index))
-                        unpooled[i, j,  m*stride+h_index, n*stride +
+                        unpooled[i, j,  m*self.stride+h_index, n*self.stride +
                                  w_index] = input[i, j, m, n]
         return unpooled
 
