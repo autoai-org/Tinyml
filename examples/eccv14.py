@@ -133,7 +133,7 @@ def visualize(img_id, model, inv_model, image_arr):
         plt.subplot(2, 4, idx+2)
         img, activation = vis_layer(layer, feature_maps, inv_model, pool_indices)
         plt.title("{}-th Layer, the max activation is {}".format(layer, activation))
-        plt.imshow(img[:112,:112,:])
+        plt.imshow(img)
     plt.savefig("results/"+str(img_id)+".jpg")
 
 

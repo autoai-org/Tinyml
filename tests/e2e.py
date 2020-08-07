@@ -100,7 +100,7 @@ class End2EndTest(unittest.TestCase):
         self.torch_input = torch.from_numpy(self.data)
         self.torch_input.requires_grad = True
 
-        epochs = 10
+        epochs = 2
         for epoch in range(epochs):
             isEqual(epoch, self.tnn_model, self.torch_model)
             self.torch_model.train()
@@ -109,9 +109,6 @@ class End2EndTest(unittest.TestCase):
             self.torch_output = self.torch_model(self.torch_input)
             self.torch_output.retain_grad()
             self.tnn_output = self.tnn_model(self.data)
-
-            print(self.tnn_output)
-            print(self.torch_output)
 
             self.assertTrue(
                 (self.torch_output.detach().numpy() - self.tnn_output <
@@ -123,17 +120,11 @@ class End2EndTest(unittest.TestCase):
 
             self.tnn_loss, self.tnn_loss_gradient = cross_entropy_with_softmax_loss(
                 self.tnn_output, self.gt)
-            
-            print(self.torch_loss_val.detach().numpy())
-            print(self.tnn_loss)
-            
+                        
             self.assertTrue(
                 (self.torch_loss_val.detach().numpy() - self.tnn_loss <
                  EPSILON).all())
                 
-            print('torch_loss: {}'.format(self.torch_loss_val.item()))
-            print('tnn_loss: {}'.format(self.tnn_loss))
-
             # now perform the backward process
             self.torch_loss_val.backward()
             self.torch_optimizer.step()

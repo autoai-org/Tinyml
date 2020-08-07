@@ -60,7 +60,6 @@ def load_weight(inv_vgg, vgg):
             # inv_vgg.layers[conv2deconv_indices[idx]].bias.tensor = layer.bias.tensor
     return inv_vgg
 
-
 def forward(x, inv_vgg, layer_id, pool_indices):
     if layer_id in conv2deconv_indices:
         start_idx = conv2deconv_indices[layer_id]

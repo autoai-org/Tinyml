@@ -10,7 +10,6 @@ from tests.base import EPSILON
 
 # This function is only used for e2e tests, and cannot be used directly for comparing two models.
 def isEqual(epoch, tnn_model, torch_model):
-    print('Epoch {}'.format(epoch))
     assert (np.absolute(torch_model.linear2.weight.detach().numpy() -
                         tnn_model.layers[8].weight.tensor < EPSILON)).all()
 
