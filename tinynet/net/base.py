@@ -1,6 +1,8 @@
 import pickle
 from tinynet.utilities.logger import print_net_summary
 from tinynet.core import Backend as np
+from tinynet.core import GPU
+import numpy
 
 class Net(object):
     def __init__(self, layers):
@@ -22,21 +24,39 @@ class Net(object):
         layers_bias = {}
         for layer in self.layers:
             if hasattr(layer, 'weight'):
-                layers_weights[layer.name] = layer.weight
-                layers_bias[layer.name] = layer.bias
+                if (GPU):
+                    import cupy as cp
+                    layers_weights[layer.name] = cp.asnumpy(layer.weight.tensor)
+                    layers_bias[layer.name] = cp.asnumpy(layer.bias.tensor)
+                else:
+                    layers_weights[layer.name] = layer.weight.tensor
+                    layers_bias[layer.name] = layer.bias.tensor
         layers_params = {'weight':layers_weights, 'bias':layers_bias}
-        with open(filepath, 'wb') as export_file:
-            pickle.dump(layers_params, export_file)
+        numpy.save(filepath, layers_params)
         print("[Tinynet] Successfully exported to {}".format(filepath))
     
     def load(self, filepath):
-        layers_params = None
-        with open(filepath, 'rb') as import_file:
-            layers_params = pickle.load(import_file)
-        layers_weights = layers_params['weight']
-        layers_bias = layers_params['bias']
+        if filepath.endswith('.npy'):
+            self._load_npy(filepath)
+        else:
+            layers_params = None
+            with open(filepath, 'rb') as import_file:
+                layers_params = pickle.load(import_file)
+            layers_weights = layers_params['weight']
+            layers_bias = layers_params['bias']
+            for layer in self.layers:
+                if hasattr(layer, 'weight'):
+                    print(layers_weights[layer.name])
+                    layer.weight.tensor = layers_weights[layer.name]
+                    layer.bias.tensor = layers_bias[layer.name]
+            print("[Tinynet] Successfully imported from {}".format(filepath))
+    
+    def _load_npy(self, filepath):
+        layers_params = np.load(filepath, allow_pickle=True)
+        layers_weight = layers_params.item().get('weight')
+        layers_bias = layers_params.item().get('bias')
         for layer in self.layers:
             if hasattr(layer, 'weight'):
-                layer.weight = layers_weights[layer.name]
-                layer.bias = layers_bias[layer.name]
+                layer.weight.tensor = layers_weight[layer.name]
+                layer.bias.tensor = layers_bias[layer.name]
         print("[Tinynet] Successfully imported from {}".format(filepath))

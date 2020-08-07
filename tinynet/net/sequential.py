@@ -11,14 +11,18 @@ class Sequential(Net):
     def __init__(self, layers):
         super().__init__(layers)
     
-    def forward(self, input):
+    def forward(self, input, return_indices=False):
+        pool_indices = [None] * len(self.layers)
         output = input
-        for layer in self.layers:
+        for index, layer in enumerate(self.layers):
             if isinstance(layer, MaxPool2D) and layer.return_index:
                 output, max_indices = layer.forward(output)
+                pool_indices[index] = max_indices
             else:
                 output = layer.forward(output)
             output_intermediate_result(layer.name, output, 'data', layer)
+        if return_indices:
+            return output, pool_indices
         return output
     
     def backward(self, in_gradient):

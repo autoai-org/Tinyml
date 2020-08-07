@@ -2,7 +2,7 @@ from .base import Layer
 from tinynet.core import Backend as np
 
 
-def im2rows(in_gradient, inp_shape, filter_shape, dilation, stride, dilated_shape, res_shape):
+def im2rows(input, inp_shape, filter_shape, dilation, stride, dilated_shape, padding, res_shape):
     """
     Gradient transformation for the im2rows operation
     :param in_gradient: The grad from the next layer
@@ -16,14 +16,20 @@ def im2rows(in_gradient, inp_shape, filter_shape, dilation, stride, dilated_shap
     """
     dilated_rows, dilated_cols = dilated_shape
     num_rows, num_cols = res_shape
-    res = np.zeros(inp_shape, dtype=in_gradient.dtype)
-    in_gradient = in_gradient.reshape(
-        (in_gradient.shape[0], in_gradient.shape[1], filter_shape[1], filter_shape[2], filter_shape[3]))
+    res = np.zeros(inp_shape, dtype=input.dtype)
+    input = input.reshape(
+        (input.shape[0], input.shape[1], filter_shape[1], filter_shape[2], filter_shape[3]))
     for it in range(num_rows * num_cols):
         i = it // num_rows
         j = it % num_rows
         res[:, :, i * stride[0]:i * stride[0] + dilated_rows:dilation,
-            j * stride[1]:j * stride[1] + dilated_cols:dilation] += in_gradient[:, it, :, :, :]
+            j * stride[1]:j * stride[1] + dilated_cols:dilation] += input[:, it, :, :, :]
+    if (padding != 0):
+        # TODO: this only works for pad=1, right now.
+        res = np.delete(res, 0, 2)
+        res = np.delete(res, res.shape[2]-1, 2)
+        res = np.delete(res, 0, 3)
+        res = np.delete(res, res.shape[3]-1,3)
     return res
 
 
@@ -32,7 +38,7 @@ class Deconv2D(Layer):
     Deconv2D performs deconvolution operation, or tranposed convolution.    
     '''
 
-    def __init__(self, name, input_dim, n_filters, h_filter, w_filter, stride, dilation=1):
+    def __init__(self, name, input_dim, n_filters, h_filter, w_filter, stride, dilation=1, padding=0):
         '''
         :param input_dim: the input dimension, in the format of (C,H,W)
         :param n_filters: the number of convolution filters
@@ -49,6 +55,7 @@ class Deconv2D(Layer):
         self.w_filter = w_filter
         self.stride = stride
         self.dilation = dilation
+        self.padding = padding
         weight = np.random.randn(
             self.n_filters, self.input_channel, self.h_filter, self.w_filter) / np.sqrt(self.n_filters/2.0)
         bias = np.zeros((self.n_filters, 1))
@@ -69,7 +76,7 @@ class Deconv2D(Layer):
             self.input_channel, -1)
         res_mat = np.matmul(input_mat, filters_mat)
 
-        return im2rows(res_mat, (input.shape[0], filter_shape[1], res_shape[0], res_shape[1]), filter_shape, self.dilation, (self.stride, self.stride), dilated_shape, input.shape[2:]) + self.bias.tensor[np.newaxis, :, np.newaxis, np.newaxis]
+        return im2rows(res_mat, (input.shape[0], filter_shape[1], res_shape[0], res_shape[1]), filter_shape, self.dilation, (self.stride, self.stride), dilated_shape, self.padding, input.shape[2:])
 
     def backward(self, in_gradient):
         '''

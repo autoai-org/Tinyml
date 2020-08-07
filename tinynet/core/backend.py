@@ -9,8 +9,13 @@ Backend = None
 
 if GPU:
     print('[Tinynet] Using GPU as backend')
-    import cupy as cp
-    Backend = cp
+    try:
+        import cupy as cp
+        Backend = cp
+    except Exception as e:
+        print('no cupy found, will fallback to cpu mode')
+        import numpy as np
+        Backend = np
 else:
     import numpy as np
     Backend = np
