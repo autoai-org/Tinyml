@@ -95,7 +95,7 @@ def vis_layer(layer, feature_maps, inv_vgg, pool_locs):
     mark = np.argmax(act_list)
     choose_map = new_feat_map[0, mark, :, :]
     max_activation = np.max(choose_map)
-    if mark ==0:
+    if mark == 0:
         new_feat_map[:,1,:,:] = 0
     else:
         new_feat_map[:,mark,:,:] = 0
@@ -119,21 +119,21 @@ def visualize(img_id, model, inv_model, image_arr):
     '''
     classification
     '''
-    image_input = image_arr.reshape(1, 3, 224,224)
+    image_input = image_arr.reshape(1, 3, 224, 224)
     output, feature_maps, pool_indices = feed_store(image_input, model)
     print("Predicted as {}".format(np.argmax(output)))
     '''
-    inverse
+    inverse visualization
     '''
     plt.figure(num=None, figsize=(16, 12), dpi=120)
     plt.subplot(2, 4, 1)
-    plt.title("Original Image, {}".format(np.argmax(output)))
+    plt.title("Original Image, Label: {}".format(np.argmax(output)))
     plt.imshow(origin)
-    for idx, layer in enumerate([2,5,7]):
+    for idx, layer in enumerate([7, 10, 12, 14, 17, 19, 21]):
         plt.subplot(2, 4, idx+2)
-        img, activation = vis_layer(layer, feature_maps, inv_model, pool_indices)
+        deconv_output, activation = vis_layer(layer, feature_maps, inv_model, pool_indices)
         plt.title("{}-th Layer, the max activation is {}".format(layer, activation))
-        plt.imshow(img)
+        plt.imshow(deconv_output)
     plt.savefig("results/"+str(img_id)+".jpg")
 
 
@@ -141,6 +141,6 @@ def visualize(img_id, model, inv_model, image_arr):
 if __name__=='__main__':
     model = load_model()
     inv_model = load_inverse_model(model)
-    for i in range(1):
+    for i in range(20):
         img = load_single_image(i)
         visualize(i, model, inv_model, img)

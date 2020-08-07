@@ -17,19 +17,7 @@ def load_data(filepath):
     x_train, x_test, y_train, y_test = train_test_split(data, label, test_size=0.10, random_state=42)
     return x_train, y_train, x_test, y_test
 
-def get_accuracy(y_predict, y_true):
-    return np.mean(np.equal(np.argmax(y_predict, axis=-1),
-                            np.argmax(y_true, axis=-1)))
-
-x_train, y_train, x_test, y_test = load_data('dataset/cat_and_dog.pkl')
-
-def preprocess_y(y_train, y_test):
-  enc = OneHotEncoder(sparse=False, categories='auto')
-  y_train = enc.fit_transform(y_train.reshape(len(y_train), -1))
-  y_test = enc.transform(y_test.reshape(len(y_test), -1))
-  return y_train, y_test
-
-y_train, y_test = preprocess_y(y_train, y_test)
+x_train, y_train, x_test, y_test = load_data('dataset/600.pkl')
 
 device = 'cuda'
 model = vgg16(pretrained=False)

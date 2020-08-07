@@ -1,5 +1,7 @@
 from tinynet.net import Sequential
 from tinynet.layers import Deconv2D, Conv2D, MaxUnpool2D, ReLu
+from PIL import Image
+import numpy as np
 
 conv2deconv_indices = {
     0: 23, 2: 21, 5: 18, 7: 16,
