@@ -111,10 +111,16 @@ class End2EndTest(unittest.TestCase):
             self.torch_output.retain_grad()
             self.tnn_output = self.tnn_model(self.data)
 
+            # see if we remove the pow(10, epoch)
             self.assertTrue(
                 (self.torch_output.detach().numpy() - self.tnn_output <
                  pow(10, epoch) * EPSILON).all())
-
+            print(np.max(self.torch_output.detach().numpy() - self.tnn_output))
+            '''
+            self.assertTrue(
+                (self.torch_output.detach().numpy() - self.tnn_output <
+                 EPSILON).all())
+            '''
             self.torch_loss_val = self.torch_loss(
                 self.torch_output,
                 torch.from_numpy(self.gt).long())

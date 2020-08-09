@@ -6,7 +6,7 @@ import torch
 from tests.base import EPSILON
 from tinynet.losses import cross_entropy_with_softmax_loss
 from torch.nn import CrossEntropyLoss
-
+from tinynet.utilities import gradient_check
 
 class TestCrossEntropy(unittest.TestCase):
     def __init__(self, *args, **kwargs):
@@ -39,7 +39,14 @@ class TestCrossEntropy(unittest.TestCase):
 
         self.assertTrue((np.absolute(torch_gradient - self.tnn_loss_gradient) <
                          EPSILON).all())
-
-
+'''
+    def test_grad(self):
+        def get_outgrad(data):
+            loss, grad = cross_entropy_with_softmax_loss(data, self.target)
+            return grad
+        grad = gradient_check(self.data, get_outgrad)
+        print(grad)
+        print(self.tnn_loss_gradient)
+'''
 if __name__ == '__main__':
     unittest.main()

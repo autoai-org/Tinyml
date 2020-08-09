@@ -41,8 +41,7 @@ def load_single_image(id):
             image = image.resize((224, 224), Image.ANTIALIAS)
             image = np.asarray(image.convert('RGB')).transpose(2, 0, 1) / 255.
             return image
-
-
+            
 '''
 Load model
 '''
@@ -143,7 +142,7 @@ def visualize(img_id, model, inv_model, image_arr):
     '''
     inverse visualization
     '''
-    plt.figure(num=None, figsize=(16, 12), dpi=120)
+    plt.figure(num=None, figsize=(16, 8), dpi=120)
     plt.subplot(2, 4, 1)
     plt.title("Original Image, Label: {}".format(np.argmax(output)))
     plt.imshow(origin)
@@ -153,9 +152,13 @@ def visualize(img_id, model, inv_model, image_arr):
                                               pool_indices)
         plt.title("{}-th Layer, the max activation is {}".format(
             layer, activation))
-        plt.imshow(deconv_output)
-    plt.savefig("results/" + str(img_id) + ".jpg")
+        # plt.imshow(deconv_output)
+        save_img(deconv_output, str(img_id), str(layer))
+    # plt.savefig("results/" + str(img_id) + ".jpg")
 
+def save_img(image_arr, source, layer_id):
+    im = Image.fromarray(image_arr)
+    im.save("results/separated/"+source+"-"+layer_id+".jpg")
 
 if __name__ == '__main__':
     model = load_model()

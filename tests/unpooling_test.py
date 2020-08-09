@@ -72,7 +72,6 @@ class TestUnpool2DwithStride(unittest.TestCase):
         ground_truth = np.array([[[[6, 8], [4, 8]]]])
         self.assertTrue((output == ground_truth).all())
         unpooled = self.single_unpool_layer(output, indices)
-        print(unpooled)
         input_ground_truth = ([[[[0, 0, 0, 0], [0, 6, 0, 8], [0, 0, 0, 0],
                                  [0, 4, 0, 8]]]])
         self.assertTrue((unpooled == input_ground_truth).all())
