@@ -16,6 +16,9 @@ from tinynet.losses import cross_entropy_with_softmax_loss
 from tinynet.models.vgg11 import vgg11
 from tinynet.optims import SGDOptimizer
 
+model = vgg11()
+model.summary()
+
 GPU = True
 
 if GPU:

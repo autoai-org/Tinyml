@@ -13,17 +13,11 @@ publicly accessible issues, please drop an email to `askxzyao@gmail.com <mailto:
    :caption: Contents:
 
    overview
+   preliminaries
+   notations
    induction
    examples
    api
-   
-
-.. figure:: ../../assets/mascot.png
-   :alt: Jingwei - The mascot for Tinynet
-   :width: 4.58333in
-
-   Jingwei - The mascot for Tinynet
-
 
 Indices and tables
 ==================

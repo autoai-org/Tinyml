@@ -30,9 +30,10 @@ There are two fundamental observations in back propagation:
    :math:`\frac{\partial{l}}{\partial{x_i}}=\frac{\partial{l}}{\partial{y_{i-1}}}`.
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 3
    :caption: Contents:
 
+   induction/linear-transformation
    induction/linear
    induction/relu
    induction/dropout

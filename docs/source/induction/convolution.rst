@@ -1,152 +1,219 @@
 Convolutional Layer
 ===================
 
-Compared with fully connected layers, convolutional layers is more
-difficult to compute. In convolutional layers, we have a spatially small
-window sliding on the image. For example, assume we have two matrix
-:math:`A_{3\times 3}`, :math:`B_{2\times
-2}`, :math:`B` is the sliding window, and
+**Definition** In fully connected layers, the input is always a
+one-dimensional vector. However, images are usually stored as a
+multi-dimensional matrix and have implicit spatial structures. For
+example, the eyes are always on top of the nose, etc. These properties
+are not well expressed using a fully connected layer. Hence we use the
+convolutional layers to preserve these properties. For example, assume
+we have a single channel input matrix :math:`A_{3\times 3}` and single
+filter matrix :math:`B_{2\times 2}`, and
 
 .. math::
 
    A=\left[ {\begin{array}{*{20}c} 
-           1 & 2 & 3 \\
-           4 & 5 & 6   \\
-           7 & 8 & 9   
+           a_{11} & a_{12} & a_{13} \\
+           a_{21} & a_{22} & a_{23} \\
+           a_{31} & a_{32} & a_{33}   
            \end{array} } \right], B=\left[ {\begin{array}{*{20}c}
-           1 & 2    \\
-           3 & 4   
+           b_{11} & b_{12}    \\
+           b_{21} & b_{22}   
        \end{array} } \right]
 
-We use :math:`a_{ij}` and :math:`b_{ij}` to denote the elements in
-:math:`A` and :math:`B`, then the output after convolutional layer would
-be
+Then, we slide the filter :math:`B` with a unit stride, i.e. move one
+column or one row at a time. If we use :math:`a_{ij}` and :math:`b_{ij}`
+to denote the element in :math:`A` and :math:`B` at the :math:`(i,j)`
+location. Then we can obtain the output of the convolutional layer with
+the following steps:
 
-.. math::
+-  At the beginning, the :math:`2\times 2` filter is placed at the upper
+   left corner. At this time, we perform the dot product and we will
+   have
+   :math:`y_{11}=a_{11}b_{11}+a_{12}b_{12}+a_{21}b_{21}+a_{22}b_{22}`.
+
+-  Then we slide the filter across the width for a unit stride, i.e. we
+   move the slide to the upper right corner. At this time, we perform
+   the dot product and we will have
+   :math:`y_{12}=a_{12}b_{11}+a_{13}b_{12}+a_{22}b_{21}+a_{23}b_{22}`.
+
+-  Then we found that there is no more values on the right side, so we
+   start to slide the filter on the next row. At this time, we start at
+   the bottom left corner and we can obtain that
+   :math:`y_{21}=a_{21}b_{11}+a_{22}b_{12}+a_{31}b_{21}+a_{32}b_{22}`.
+
+-  Then we again slide the filter to the right side, i.e. the bottom
+   right corner and we obtain that
+   :math:`y_{22}=a_{22}b_{11}+a_{23}b_{12}+a_{32}b_{21}+a_{33}b_{22}`.
+
+After these steps, we found that we get four outputs, and we can obtain
+the final output if we place the output values to corresponding
+locations, i.e. the value we computed at the upper left corner is placed
+at the upper left corner and so on so forth. Hence, in this example, we
+get a :math:`(1,2,2)` output matrix
+
+.. math:: 
 
    C=\left[ {\begin{array}{*{20}c}
-           \sum_{i,j=1}^2 a_{ij}b_{ij} & \sum_{i=1}^{2}\sum_{j=2}^{3} a_{ij}b_{ij-1}   \\
-           \sum_{i=2}^{3}\sum_{j=1}^{2} a_{ij}b_{i-1j} & \sum_{i,j=2}^3 a_{ij}b_{i-1j-1}    \\
-           \end{array} } \right]=\left[ {\begin{array}{*{20}c}
-           37 & 47    \\
-           67 & 77   
-       \end{array} } \right]
+         y_{11} & y_{12}    \\
+         y_{21} & y_{22}   
+      \end{array} } \right]
 
-Formally, we can write the forward pass of the convolutional layer as
+More generally, we can formalize the input, the filters and the output
+of a convolutional layer as below:
 
-.. math:: f(x_{ij}) = o_{ij} = \sum_{p=1}^{m}\sum_{q=1}^{n}w_{ij} \times x_{i+p-1, j+q-1} + b
+-  The input is a :math:`(N, C, H, W)` tensor, where :math:`N` is the
+   number of the input matrix in a single batch, :math:`C` is the
+   channel of the matrix, :math:`H` and :math:`W` are the height and
+   width of the input matrix. For example, :math:`10` coloured images
+   with the size :math:`(224, 224)` can be represented as a
+   :math:`(10, 3, 224, 224)` tensor.
 
-Even though we can compute
-:math:`\frac{\partial f(x_{ij})}{\partial x_{ij}}` successfully with the
-formula, it can be expected to be complicated with at least two loops.
-Computing for the forward and backward passes with loops is inefficient,
-thus we need a way to vectorize the computation process and use matrix
-multiplication to compute the general matrix problem. Such technique is
-called GEMM (**GE**\ neral **M**\ atrix to **M**\ atrix Multiplication).
-To do so, we need to formalize the convolution operation in more detail.
+-  The filters is a :math:`(K, C, H_f, W_f)` tensor, where :math:`K` is
+   the number of filters, :math:`C` is the channel of the filters and it
+   will always be identical to the channel of the input matrix.
+   :math:`H_f` and :math:`W_f` are the height and width of the filters.
 
-The input to a convolution operation is a :math:`w\times h\times c`
-matrix where :math:`w` is the width of the image, :math:`h` is the
-height of the image, and :math:`c` is the channel of the image. For
-example, a colored RGB image of size :math:`(224,224)` can be
-represented as a :math:`224\times 224\times 3` tensor. At the same time,
-the sliding window has three properties, the height, the width of the
-filter and the number of output feature maps. These properties are
-denoted by :math:`h_f`, :math:`w_f` and :math:`K`. Then since we are
-sliding the window on the image, we have a vertical stride :math:`s_v`
-and a horizontal stride :math:`s_h`. In the edge region, there might be
-no data in a window, and in that case, we need to add padding to the
-original input. In summary, we have the following notations as shown in the table:
+-  The output is a :math:`(N, K, H_{out}, W_{out})` tensor.
 
-============= ===============================
-Parameter     Meaning                          
-============= ===============================
-:math:`N`     Number of data in a batch        
-:math:`W`     Width of the 2D data             
-:math:`H`     Height of the 2D data            
-:math:`C`     Channel of the 2D data           
-:math:`H_f`   Height of the filters            
-:math:`W_f`   Width of the filters             
-:math:`K`     Number of output feature maps    
-:math:`S_v`   Vertical stride of the window    
-:math:`S_h`   Horizontal stride of the window  
-:math:`Pad_v` Vertical padding                 
-:math:`Pad_h` Horizontal padding               
-============= ===============================
+-  The stride that we use to slide the filters are denoted as :math:`S`.
 
-[table_1]
+With these notations, we can compute the output of a convolution layer
+with seven loops.
 
-With these notations, we can formalize the input, sliding window and the
-output as below:
+Though the convolution operation can be computed by the above algorithm,
+we can still use matrix multiplication to perform such computation as
+suggested by `A guide to convolution arithmetic for deep
+learning <https://arxiv.org/pdf/1603.07285.pdf>`_. The benefits of using matrix multiplication are two-fold:
 
--  The input is a :math:`(N, C, H, W)` tensor.
+-  We have already gotten two laws for computing the differentiation of
+   linear transformation. If we can define the convolution operation as
+   :math:`g(x)=AX+B` (i.e. matrix multiplication), we could easily reuse
+   the two laws and get the derivative of the loss value with respect to
+   the filter and input.
 
--  The sliding window, or called filter is a :math:`(K, C, H_f, W_f)`
-   tensor.
+-  We are about to study how to compute the forward pass of Deconv
+   operation and that operation can be easily defined with the matrix
+   multiplication form of the convolution operation. We will see this in
+   *Section 3.2.1 Deconv*.
 
--  The output is a :math:`(N, K, P, Q)` tensor, where :math:`P, Q` is
-   the width and height of the output.
+Hence, in the below computation of the forward pass and backward pass of
+the convolution operation, we will show how to convert it into a matrix
+multiplication.
 
-The technique that improve the efficiency is called *im2col*. As suggested in `cuDNN: Efficient Primitives for Deep Learning <https://arxiv.org/abs/1410.0759>`_, we can convert the input :math:`(N,C,H,W)` tensor to a matrix with the size :math:`(CRS, NPQ)` and reshape the filter from a :math:`(K, C, H_f, W_f)` tensor to a :math:`(K, CH_fW_f)` matrix. To
-achieve this goal, we use a sliding window with the size
-:math:`(H_f, W_f)` and extract all the regions from the input, and then
-reshape them into columns. After that we combine all the columns
-together and will get a :math:`(CRS, NPQ)` matrix. For the filters, it
-is straightforward as we only need to concatenate the last three
-dimensions. For example, with the matrix :math:`A` and :math:`B`, we can
-to convert them as
+**Forward Pass** Recall that the input :math:`X`, the filter :math:`W`
+and the expected output :math:`Y` we have in the above example.
 
 .. math::
 
-   A^*=\left[ {\begin{array}{*{20}c} 
-           1 & 2 & 4 & 5   \\
-           2 & 3 & 5 & 6   \\
-           4 & 5 & 7 & 8   \\
-           5 & 6 & 8 & 9
-           \end{array} } \right], B^*=\left[ {\begin{array}{*{20}c}
-           1 & 2 & 3 & 4  
+   X=\left[ {\begin{array}{*{20}c} 
+       a_{11} & a_{12} & a_{13} \\
+       a_{21} & a_{22} & a_{23} \\
+       a_{31} & a_{32} & a_{33}   
+       \end{array} } \right], W=\left[ {\begin{array}{*{20}c}
+       b_{11} & b_{12}    \\
+       b_{21} & b_{22}   
+   \end{array} } \right], Y=\left[ {\begin{array}{*{20}c}
+       y_{11} & y_{12}    \\
+       y_{21} & y_{22}   
+   \end{array} } \right]
+
+If we unroll the input and the output into vectors from left to right,
+top to bottom, we can also represent the filters as a sparse matrix
+where the non-zero elements are the elements in the filters. For
+example, We can unroll the input and output in our case as
+:math:`X^*_{9\times 1}=[a_{11},a_{12},a_{13},a_{21},a_{22},a_{23},a_{31},a_{32},a_{33}]^T`
+and :math:`Y^*_{4\times 1}=[y_{11},y_{12},y_{21} ,y_{22}]^T`. Then we
+will want a :math:`4\times 9` matrix :math:`W^*` such that
+:math:`Y^* = W^*X^*`. From the direct computation of convolutional
+layers, we can transform the original filters :math:`W` into
+
+.. math::
+
+   W^*=\left[ {\begin{array}{*{20}c} 
+           b_{11} & b_{12} & 0 & b_{21} & b_{22} & 0 & 0 & 0 & 0 \\
+           0 & b_{11} & b_{12} & 0 & b_{21} & b_{22} & 0 & 0 & 0 \\
+           0 & 0 & 0 & b_{11} & b_{12} & 0 & b_{21} & b_{22} & 0 \\
+           0 & 0 & 0 & 0 & b_{11} & b_{12} & 0 & b_{21} & b_{22}
        \end{array} } \right]
 
-Then we have :math:`C^*=A^*B^*=[37, 47, 67, 77]`. If we reshape them
-back to :math:`2\times 2`, we will have :math:`C^*_{2\times 2}=C`.
+Then we can verify that
 
-.. figure:: ../../../assets/im2col.png
-   :alt: Illustration of convering input data and filter into matrices
-   :width: 4.58333in
+.. math::
 
-   Illustration of convering input data and filter into matrices
+   W^*X^*=\left[ {\begin{array}{*{20}c} 
+       b_{11} & b_{12} & 0 & b_{21} & b_{22} & 0 & 0 & 0 & 0 \\
+       0 & b_{11} & b_{12} & 0 & b_{21} & b_{22} & 0 & 0 & 0 \\
+       0 & 0 & 0 & b_{11} & b_{12} & 0 & b_{21} & b_{22} & 0 \\
+       0 & 0 & 0 & 0 & b_{11} & b_{12} & 0 & b_{21} & b_{22}
+   \end{array} } \right] \times [a_{11},a_{12},a_{13}\cdots, a_{33}]^T = Y^*
 
-In Fig. `1`_, we have a colored image and the input can be represented
-as a :math:`(1,3,3,3)` tensor :math:`A`, and filters set with :math:`2`
-output features map and these filters can be represented as a
-:math:`(2,3,2,2)` tensor :math:`B`. We can then convert them into
-matrices :math:`A^*` and :math:`B^*` as shown in the image, and we will
-then have :math:`C^*=A^*B^*`. We can then reshape :math:`C^*` to get the
-output of convolutional layer.
+**Backward Pass** From the forward pass, we converted the filters into a
+sparse matrix :math:`W^*`, and we found that the convolution is also a
+linear operation, i.e. :math:`Y^*=W^*X^*`. Similar to the backward pass
+of fully connected layers, we can directly compute the gradient of the
+loss value with respect to the weight matrix as
+:math:`\frac{\partial\ell}{\partial W^*}=\nabla^{(i)} (X^*)^T` (Using
+the Law 2). Hence, we can update the weight matrix in convolutional
+layers as :math:`(W^*)^{new}=(W^*)^{old}-\epsilon \nabla^{(i)}(X^*)^T`
+and it is the same as in fully connected layers.
 
-The benefit of using the *im2col* technique is that we can convert the
-complex convolutional operation into matrix multiplication. We can use
-:math:`x^*` to denote the input data in column format and :math:`w^*`,
-:math:`b^*` to denote the parameters in the convolutional layer. Then
-similar to fully connected layer, we will have
-:math:`f(x_{ij}^*)=w^*x_{ij}^*+b^*`, and the derivative also becomes
-straightforward as we have:
+Besides, we will need to compute the gradient that we want to pass to
+previous layers, i.e. the gradient of the loss value with respect to the
+input matrix. We will have
+:math:`\frac{\partial\ell}{\partial X^*}=\frac{\partial\ell}{\partial Y^*}\frac{\partial Y^*}{\partial X^*}=(W^*)^T\nabla^{(i)}`
+(Using the Law 1).
 
--  :math:`\frac{\partial l}{\partial w^*_{ij}}=\frac{\partial l}{\partial f}\frac{\partial f}{\partial w^*_{ij}}=\frac{\partial l}{\partial f}x^*_{ij}`.
+Here we will show how the unrolling process works for convolution
+operation and how to perform the forward pass in the direct and matrix
+multiplication methods. Since the backward pass is identical to fully
+connected layers, we will not compute the backward pass in this example.
 
--  :math:`\frac{\partial l}{\partial b^*_{ij}}=\frac{\partial l}{\partial f}`
+We assume that we have an input :math:`X`, the filter :math:`W` as
 
--  :math:`\frac{\partial l}{\partial x^*_{ij}}=\frac{\partial l}{\partial f}\frac{\partial f}{\partial x^*_{ij}}=\frac{\partial l}{\partial f}w^*_{ij}`
+.. math::
 
-After computing these derivatives, all we need to do is to convert it
-back to original tensors.
+   X=\left[ {\begin{array}{*{20}c} 
+       1 & 2 & 3 \\
+       4 & 5 & 6 \\
+       7 & 8 & 9   
+       \end{array} } \right], W=\left[ {\begin{array}{*{20}c}
+       1 & 2 \\
+       3 & 4
+   \end{array} } \right]
 
-The implementation of dropout layer in Tinynet is as below:
+*Direct Computation* To compute the output directly, we will have to
+slide the filter :math:`W` from left to right, from top to bottom. We
+will have :math:`1*1+2*2+4* 3+5*4=37`, :math:`2*1+3*2+5*3+6*4=47`,
+:math:`4*1+5*2+7*3+8*4=67`, :math:`5*1+6*2+8*3+9*4=77` in the upper
+left, upper right, bottom left and bottom right corners. Then, we can
+get the output as
 
-.. literalinclude:: ../../../tinynet/layers/convolution.py
-  :language: Python
-  :linenos:
+.. math::
 
-.. _1: #fig_2
+   Y=\left[ {\begin{array}{*{20}c}
+       37 & 47 \\
+       67 & 77
+   \end{array} } \right]
 
+*Matrix Multiplcation* With matrix multiplication approach, we need to
+unroll the filter and input matrices into
 
+.. math::
+
+   W^*=\left[ {\begin{array}{*{20}c} 
+       1 & 2 & 0 & 3 & 4 & 0 & 0 & 0 & 0 \\
+       0 & 1 & 2 & 0 & 3 & 4 & 0 & 0 & 0 \\
+       0 & 0 & 0 & 1 & 2 & 0 & 3 & 4 & 0 \\
+       0 & 0 & 0 & 0 & 1 & 2 & 0 & 3 & 4
+   \end{array} } \right], X^*=\left[ {\begin{array}{*{20}c} 
+       1 & 2 & \cdots & 9 
+       \end{array} } \right]^T
+
+Then we can compute the output directly by
+:math:`Y^*=W^*X^*=[37,47,67,77]^T`. By reshaping :math:`Y^*`, we can
+easily obtain the desired output matrix :math:`Y_{2\times 2}`.
+
+Since the backward process will be identical to what we did in *Section
+3.1.1 Fully Connected* if we perform the forward pass in a matrix
+multiplication way, we will omit the examples here.

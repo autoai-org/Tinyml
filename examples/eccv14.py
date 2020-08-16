@@ -41,7 +41,8 @@ def load_single_image(id):
             image = image.resize((224, 224), Image.ANTIALIAS)
             image = np.asarray(image.convert('RGB')).transpose(2, 0, 1) / 255.
             return image
-            
+
+
 '''
 Load model
 '''
@@ -156,13 +157,20 @@ def visualize(img_id, model, inv_model, image_arr):
         save_img(deconv_output, str(img_id), str(layer))
     # plt.savefig("results/" + str(img_id) + ".jpg")
 
+
 def save_img(image_arr, source, layer_id):
     im = Image.fromarray(image_arr)
-    im.save("results/separated/"+source+"-"+layer_id+".jpg")
+    im.save("results/separated/" + source + "-" + layer_id + ".jpg")
+
 
 if __name__ == '__main__':
     model = load_model()
     inv_model = load_inverse_model(model)
-    for i in range(20):
-        img = load_single_image(i)
-        visualize(i, model, inv_model, img)
+    #for i in range(20):
+    #    img = load_single_image(i)
+    #    visualize(i, model, inv_model, img)
+    filepath = 'cat.jpg'
+    image = Image.open(os.path.join(data_path, filepath))
+    image = image.resize((224, 224), Image.ANTIALIAS)
+    image = np.asarray(image.convert('RGB')).transpose(2, 0, 1) / 255.
+    visualize('0', model, inv_model, image)
