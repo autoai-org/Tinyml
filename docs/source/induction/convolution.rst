@@ -164,6 +164,10 @@ input matrix. We will have
 :math:`\frac{\partial\ell}{\partial X^*}=\frac{\partial\ell}{\partial Y^*}\frac{\partial Y^*}{\partial X^*}=(W^*)^T\nabla^{(i)}`
 (Using the Law 1).
 
+----------
+ Example
+----------
+
 Here we will show how the unrolling process works for convolution
 operation and how to perform the forward pass in the direct and matrix
 multiplication methods. Since the backward pass is identical to fully
@@ -217,3 +221,9 @@ easily obtain the desired output matrix :math:`Y_{2\times 2}`.
 Since the backward process will be identical to what we did in *Section
 3.1.1 Fully Connected* if we perform the forward pass in a matrix
 multiplication way, we will omit the examples here.
+
+The implementation of convolutional layer in Tinynet is as below:
+
+.. literalinclude:: ../../../tinynet/layers/convolution.py
+  :language: Python
+  :linenos:
