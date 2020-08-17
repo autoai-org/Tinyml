@@ -1,9 +1,9 @@
 Overview
 ===================================
 
-I wrote Tinynet for educational purpose, and I found it is useful and interesting to figure out what is a deep learning framework doing under sophisticated apis. I hope this project can be useful for students to understand deep learning.
+I wrote Tinynet for learning purpose, and I found it is useful and interesting to figure out what is a deep learning framework doing under their apis. I hope this project can be useful for other students to understand how deep learning works.
 
-In Tiny, we focus on three main tasks: construct the
+In Tinynet, we focus on three main tasks: construct the
 neural networks, perform the training, evaluating and visualizing
 processes and export the trained weight to the persistent storage (i.e.
 the hard disk). We have made the following modules to achieve these
