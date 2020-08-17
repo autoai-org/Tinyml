@@ -12,6 +12,7 @@
    induction/dropout
    induction/softmax
    induction/pooling
+   induction/unpooling
    induction/convolution
    induction/convolution-transpose
    induction/mse

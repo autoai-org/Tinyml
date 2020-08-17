@@ -53,11 +53,7 @@ matrix first, and then multiply it with our input. We will have
 .. math:: X=(W^*)^TY_{4\times 1}=[37, 121, 94, 178, 500, 342, 201, 499, 308]^T
 
 Then we can reshape it back into a :math:`3\times 3` matrix as
-:math:`X_{3\times 3}=\left[ {\begin{array}{*{20}c} 
-    37 & 121 & 94 \\
-    178 & 500 & 342 \\
-    201 & 499 & 308 
-    \end{array} } \right]`
+:math:`X_{3\times 3}=\left[ {\begin{array}{*{20}c}37 & 121 & 94 \\178 & 500 & 342 \\201 & 499 & 308 \end{array} } \right]`
 
 As we see in this example, the deconv operation does not guarantee that
 we will have the same input of convolution operation, but just guarantee
