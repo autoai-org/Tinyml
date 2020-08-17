@@ -10,15 +10,22 @@ it works on GPU.
 def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride=1):
     # First figure out what the size of the output should be
     N, C, H, W = x_shape
+    # check if the output shape are integers
     assert (H + 2 * padding - field_height) % stride == 0
     assert (W + 2 * padding - field_height) % stride == 0
     out_height = (H + 2 * padding - field_height) / stride + 1
     out_width = (W + 2 * padding - field_width) / stride + 1
-
+    # np.arange generates an evenly paced array, here it will be [0,1,2,..., field_height]
+    # then np.repeat will repeat each elements in the array. here i0 will be 
+    # [0,0,0...,0, 1,...,1,...., field_height,...,field_height]. Each element will be repeated field_width times.
     i0 = np.repeat(np.arange(field_height, dtype='int32'), field_width)
+    # np.tile will repeat the whole array for C times.
+    # i0 will become [0,0,...,0,1....,field_height,0,...,field_height]
     i0 = np.tile(i0, C)
+    # Similarly, i1 will be [0,...0, 1*stride,...,1*stride,..., out_width * stride]
     i1 = stride * np.repeat(np.arange(int(out_height),
                                       dtype='int32'), int(out_width))
+
     j0 = np.tile(np.arange(field_width), field_height * C)
     j1 = stride * np.tile(np.arange(out_width, dtype='int32'), int(out_height))
     i = i0.reshape(-1, 1) + i1.reshape(1, -1)
@@ -26,7 +33,10 @@ def get_im2col_indices(x_shape, field_height=3, field_width=3, padding=1, stride
 
     k = np.repeat(np.arange(C, dtype='int32'),
                   field_height * field_width).reshape(-1, 1)
-
+    # shape of k: (C * field_height * field_width, 1)
+    # shape of i: (C * field_height * field_width, out_height * out_width)
+    # shape of j: (C * field_height * field_width, out_height * out_width)
+    # k for indicating channels
     return (k, i, j)
 
 
@@ -34,11 +44,12 @@ def im2col_indices(x, field_height=3, field_width=3, padding=1, stride=1):
     """ An implementation of im2col based on some fancy indexing """
     # Zero-pad the input
     p = padding
+    # add paddings to neighbors
     x_padded = np.pad(x, ((0, 0), (0, 0), (p, p), (p, p)), mode='constant')
 
     k, i, j = get_im2col_indices(x.shape, field_height, field_width, padding,
                                  stride)
-
+    # get the columns with fancy indexing
     cols = x_padded[:, k, i, j]
     C = x.shape[1]
     cols = cols.transpose(1, 2, 0).reshape(field_height * field_width * C, -1)
