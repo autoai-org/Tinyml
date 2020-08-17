@@ -13,5 +13,6 @@
    induction/softmax
    induction/pooling
    induction/convolution
+   induction/convolution-transpose
    induction/mse
    induction/cross-entropy
