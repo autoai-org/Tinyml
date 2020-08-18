@@ -20,12 +20,18 @@ def im2rows(input, inp_shape, filter_shape, dilation, stride, dilated_shape, pad
     input = input.reshape(
         (input.shape[0], input.shape[1], filter_shape[1], filter_shape[2], filter_shape[3]))
     for it in range(num_rows * num_cols):
+        # first found index of rows and columns
+        # i for rows
+        # j for columns
         i = it // num_rows
         j = it % num_rows
+        # accessing via colons: [start:end:step]
+        # commas are for different dimensions
         res[:, :, i * stride[0]:i * stride[0] + dilated_rows:dilation,
             j * stride[1]:j * stride[1] + dilated_cols:dilation] += input[:, it, :, :, :]
     if (padding != 0):
         # TODO: this only works for pad=1, right now.
+        # remove the padding regions
         res = np.delete(res, 0, 2)
         res = np.delete(res, res.shape[2]-1, 2)
         res = np.delete(res, 0, 3)

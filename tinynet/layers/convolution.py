@@ -72,6 +72,11 @@ def col2im_indices(cols, x_shape, field_height=3, field_width=3, padding=1,
         # In cupy, scatter_add is equivalent to np.add.at
         np.scatter_add(x_padded, (slice(None), k, i, j), cols_reshaped)
     else:
+        # ufunc.at performed unbuffered inplace operation.
+        # (a, indices, b)
+        # For addition ufunc, this method is equivalent to a[indices] += b,
+        # except that results are accumulated for elements that are indexed 
+        # more than once
         np.add.at(x_padded, (slice(None), k, i, j), cols_reshaped)
     if padding == 0:
         return x_padded

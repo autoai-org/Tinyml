@@ -59,6 +59,7 @@ def load_weight(inv_vgg, vgg):
     for idx, layer in enumerate(vgg.layers):
         if isinstance(layer, Conv2D):
             inv_vgg.layers[conv2deconv_indices[idx]].weight.tensor = layer.weight.tensor
+            # No idea why we ignore bias, but that's what [https://github.com/huybery/VisualizingCNN] did.
             # inv_vgg.layers[conv2deconv_indices[idx]].bias.tensor = layer.bias.tensor
     return inv_vgg
 
