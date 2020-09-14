@@ -57,3 +57,6 @@ class MaxUnpool2D(Layer):
         This function is not needed in computation, at least right now.
         '''
         pass
+    
+    def __call__(self, input, max_indices):
+        return self.forward(input, max_indices)

@@ -62,6 +62,36 @@ class TestDeconv2D_multi_channel(unittest.TestCase):
             (self.torch_deconv_output.detach().numpy() - tnn_deconv_output <
              EPSILON).all())
 
+class TestDeconv2D_multi_channel_2(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.forward_weight = np.random.randn(1, 1, 2, 2)
+        self.forward_bias = np.random.randn(3, )
+        self.data = np.random.randn(1, 1, 4, 4)
+
+        self.torch_deconv = torch_deconv(1,
+                                         1, (2, 2),
+                                         1,
+                                         1,
+                                         dilation=1,
+                                         bias=False)
+
+        self.tnn_deconv = Deconv2D('test', (1, 4, 4), 1, 2, 2, 1, 1, 1)
+
+        self.tnn_deconv.weight.tensor = self.forward_weight
+
+        self.torch_deconv.weight = torch.nn.Parameter(
+            torch.from_numpy(self.forward_weight))
+
+    def test_forward(self):
+        self.torch_deconv_output = self.torch_deconv(
+            torch.from_numpy(self.data))
+        tnn_deconv_output = self.tnn_deconv(self.data)
+        self.assertTrue(
+            (self.torch_deconv_output.detach().numpy() - tnn_deconv_output <
+             EPSILON).all())
+        print(self.torch_deconv_output)
+
 
 if __name__ == '__main__':
     unittest.main()
