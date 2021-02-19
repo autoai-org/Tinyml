@@ -34,8 +34,8 @@ The form is very elegant, and easy to compute. Therefore we usually hide
 the computational process of the derivative of softmax in the
 computation of cross entropy loss.
 
-The implementation of cross entropy loss in Tinynet is as below:
+The implementation of cross entropy loss in tinyml is as below:
 
-.. literalinclude:: ../../../tinynet/losses/cross_entropy.py
+.. literalinclude:: ../../../tinyml/losses/cross_entropy.py
   :language: Python
   :linenos:

@@ -1,14 +1,14 @@
-from tinynet.models.inv_vgg11 import forward
+from tinyml.models.inv_vgg11 import forward
 import unittest
 
 import numpy as np
 
 import torch
 from tests.base import EPSILON
-from tinynet.layers import Conv2D, MaxPool2D, Flatten, Linear
-from tinynet.net import Sequential
-from tinynet.losses.cross_entropy import cross_entropy_with_softmax_loss
-from tinynet.optims import SGDOptimizer
+from tinyml.layers import Conv2D, MaxPool2D, Flatten, Linear
+from tinyml.net import Sequential
+from tinyml.losses.cross_entropy import cross_entropy_with_softmax_loss
+from tinyml.optims import SGDOptimizer
 
 tnn_model = Sequential([
     Conv2D('test_conv2d', (1, 3, 3), 1, 2, 2, 1, 0),

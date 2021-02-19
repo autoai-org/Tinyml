@@ -8,9 +8,9 @@ from numpy.core.fromnumeric import argmax
 import matplotlib
 import matplotlib.pyplot as plt
 from PIL import Image
-from tinynet.layers import Conv2D, Deconv2D, MaxPool2D, MaxUnpool2D, Softmax
-from tinynet.models.inv_vgg11 import forward, inverse_vgg, load_weight
-from tinynet.models.vgg11 import vgg11
+from tinyml.layers import Conv2D, Deconv2D, MaxPool2D, MaxUnpool2D, Softmax
+from tinyml.models.inv_vgg11 import forward, inverse_vgg, load_weight
+from tinyml.models.vgg11 import vgg11
 '''
 Constants
 '''

@@ -195,9 +195,9 @@ confirm that our inductions and computations are correct. With knowing
 the forward pass and backward pass, we now proceed to investigate how
 convolution and other operations work.
 
-The implementation of fully connected layer in Tinynet is as below:
+The implementation of fully connected layer in tinyml is as below:
 
-.. literalinclude:: ../../../tinynet/layers/linear.py
+.. literalinclude:: ../../../tinyml/layers/linear.py
   :language: Python
   :linenos:
 

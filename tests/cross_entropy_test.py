@@ -4,8 +4,8 @@ import numpy as np
 
 import torch
 from tests.base import EPSILON
-from tinynet.losses import cross_entropy_with_softmax_loss
-from tinynet.utilities import gradient_check
+from tinyml.losses import cross_entropy_with_softmax_loss
+from tinyml.utilities import gradient_check
 from torch.nn import CrossEntropyLoss
 
 

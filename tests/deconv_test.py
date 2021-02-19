@@ -4,7 +4,7 @@ import numpy as np
 
 import torch
 from tests.base import EPSILON
-from tinynet.layers import Deconv2D
+from tinyml.layers import Deconv2D
 from torch.nn import ConvTranspose2d as torch_deconv
 
 

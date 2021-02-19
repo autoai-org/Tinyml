@@ -50,8 +50,8 @@ Then the backward computation becomes straightforward:
        \frac{\partial l }{\partial y_i}\times\frac{\partial y_i}{\partial x_i}=\frac{1}{p}\frac{\partial l}{\partial y_i} & \text{$r_i\geq p$} \\
      \end{cases}
 
-The implementation of dropout layer in Tinynet is as below:
+The implementation of dropout layer in tinyml is as below:
 
-.. literalinclude:: ../../../tinynet/layers/dropout.py
+.. literalinclude:: ../../../tinyml/layers/dropout.py
   :language: Python
   :linenos:

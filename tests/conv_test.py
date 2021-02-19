@@ -4,7 +4,7 @@ import numpy as np
 
 import torch
 from tests.base import EPSILON
-from tinynet.layers import Conv2D
+from tinyml.layers import Conv2D
 from torch.nn import Conv2d as torch_conv2d
 
 

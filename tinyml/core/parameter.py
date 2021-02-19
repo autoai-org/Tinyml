@@ -1,4 +1,4 @@
-from tinynet.core import Backend as np
+from tinyml.core import Backend as np
 
 class Parameter():
   def __init__(self, tensor, require_grad=True):

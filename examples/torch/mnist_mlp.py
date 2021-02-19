@@ -3,15 +3,15 @@ from torch import optim
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from tinynet.core import Backend as np
+from tinyml.core import Backend as np
 
 from torch.autograd import Variable
-from tinynet.utilities.logger import log_trainining_progress
-import tinynet.dataloaders.mnist as mnist
-import tinynet
+from tinyml.utilities.logger import log_trainining_progress
+import tinyml.dataloaders.mnist as mnist
+import tinyml
 
 
-tinynet.utilities.logger.VERBOSE = 1
+tinyml.utilities.logger.VERBOSE = 1
 
 def process_y(y):
     digits = 10

@@ -2,6 +2,6 @@
  Optimizers
 ==============
 
-.. automodule:: tinynet.optims
+.. automodule:: tinyml.optims
    :members:
    :imported-members:

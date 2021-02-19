@@ -2,6 +2,6 @@
  Loss Functions
 ================
 
-.. automodule:: tinynet.losses
+.. automodule:: tinyml.losses
    :members:
    :imported-members:

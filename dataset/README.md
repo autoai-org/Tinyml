@@ -1,1 +1,1 @@
-# TinyNet Dataset
+# tinyml Dataset

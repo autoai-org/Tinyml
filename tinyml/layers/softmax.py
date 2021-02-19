@@ -1,4 +1,4 @@
-from tinynet.core import Backend as np
+from tinyml.core import Backend as np
 from .base import Layer    
 
 class Softmax(Layer):

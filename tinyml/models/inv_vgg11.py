@@ -1,5 +1,5 @@
-from tinynet.net import Sequential
-from tinynet.layers import Deconv2D, Conv2D, MaxUnpool2D, ReLu
+from tinyml.net import Sequential
+from tinyml.layers import Deconv2D, Conv2D, MaxUnpool2D, ReLu
 from PIL import Image
 import numpy as np
 

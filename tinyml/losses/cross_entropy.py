@@ -1,5 +1,5 @@
-from tinynet.core import Backend as np
-from tinynet.layers import Softmax
+from tinyml.core import Backend as np
+from tinyml.layers import Softmax
 
 def cross_entropy_with_softmax_loss(predicted, ground_truth):
     softmax = Softmax('softmax')

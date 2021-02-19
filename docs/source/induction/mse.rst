@@ -10,8 +10,8 @@ derivative we need to compute, we will only need to compute
 
 .. math:: \frac{\partial l}{\partial y_i}=\frac{\partial l}{\partial g}\times \frac{\partial g}{{\partial y_i}}=\frac{2}{n}(y_i-\hat{y_i})
 
-The implementation of mean square error loss in Tinynet is as below:
+The implementation of mean square error loss in tinyml is as below:
 
-.. literalinclude:: ../../../tinynet/losses/mse.py
+.. literalinclude:: ../../../tinyml/losses/mse.py
   :language: Python
   :linenos:

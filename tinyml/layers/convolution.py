@@ -1,6 +1,6 @@
 from .base import Layer
-from tinynet.core import Backend as np
-from tinynet.core import GPU
+from tinyml.core import Backend as np
+from tinyml.core import GPU
 
 '''
 These im2col and col2im should be credited to:
@@ -117,7 +117,7 @@ class Conv2D(Layer):
         self.out_width = (self.input_width - self.w_filter +
                           2 * padding) / self.stride + 1
         if not self.out_width.is_integer() or not self.out_height.is_integer():
-            raise Exception("[Tinynet] Invalid dimension settings!")
+            raise Exception("[tinyml] Invalid dimension settings!")
         self.out_height, self.out_width = int(
             self.out_height), int(self.out_width)
         self.out_dim = (self.n_filter, self.out_height, self.out_width)

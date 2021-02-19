@@ -27,8 +27,8 @@ Then we have:
 We see that the derivative is not defined at the point :math:`x_i=0`,
 but when computing, we can set it to be :math:`0`, or :math:`1`, or any other values between.
 
-The implementation of ReLu layer in Tinynet is as below:
+The implementation of ReLu layer in tinyml is as below:
 
-.. literalinclude:: ../../../tinynet/layers/relu.py
+.. literalinclude:: ../../../tinyml/layers/relu.py
   :language: Python
   :linenos:

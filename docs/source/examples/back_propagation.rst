@@ -148,7 +148,7 @@ procedure, we can compute the new loss :math:`l=0.2384542802724947`. If
 the new loss is still unsatifactory, we can repeat the process again and
 again to lower the loss until it is satifactory.
 
-The process can be easily implemented in Tinynet with the following code
+The process can be easily implemented in tinyml with the following code
 snippets.
 
 .. literalinclude:: ../../../examples/back_propagation.py

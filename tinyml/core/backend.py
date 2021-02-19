@@ -8,7 +8,7 @@ if "TNN_GPU" in os.environ:
 Backend = None
 
 if GPU:
-    print('[Tinynet] Using GPU as backend')
+    print('[tinyml] Using GPU as backend')
     try:
         import cupy as cp
         Backend = cp

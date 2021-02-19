@@ -1,5 +1,5 @@
 from .base import Layer
-from tinynet.core import Backend as np
+from tinyml.core import Backend as np
 from .convolution import im2col_indices, col2im_indices
 
 class MaxPool2D(Layer):
@@ -16,7 +16,7 @@ class MaxPool2D(Layer):
         self.out_height = (self.input_height - size[0]) / stride + 1
         self.out_width = (self.input_width - size[1]) / stride + 1
         if not self.out_height.is_integer() or not self.out_width.is_integer():
-            raise Exception("[Tinynet] Invalid dimension settings!")
+            raise Exception("[tinyml] Invalid dimension settings!")
         self.out_width = int(self.out_width)
         self.out_height = int(self.out_height)
         self.out_dim = (self.input_channel, self.out_height, self.out_width)

@@ -1,20 +1,20 @@
 import os
 
-import tinynet
-import tinynet.dataloaders.mnist as mnist
+import tinyml
+import tinyml.dataloaders.mnist as mnist
 from sklearn.preprocessing import OneHotEncoder
-from tinynet.core import Backend as np
-from tinynet.layers import Conv2D, Dropout, Linear, ReLu, Softmax, softmax
-from tinynet.layers.flatten import Flatten
-from tinynet.layers.pooling import MaxPool2D
-from tinynet.learner import Learner
-from tinynet.learner.callbacks import evaluate_classification_accuracy
-from tinynet.losses import cross_entropy_with_softmax_loss, mse_loss
-from tinynet.net import Sequential
-from tinynet.optims import SGDOptimizer
+from tinyml.core import Backend as np
+from tinyml.layers import Conv2D, Dropout, Linear, ReLu, Softmax, softmax
+from tinyml.layers.flatten import Flatten
+from tinyml.layers.pooling import MaxPool2D
+from tinyml.learner import Learner
+from tinyml.learner.callbacks import evaluate_classification_accuracy
+from tinyml.losses import cross_entropy_with_softmax_loss, mse_loss
+from tinyml.net import Sequential
+from tinyml.optims import SGDOptimizer
 
 # Higher verbose level = more detailed logging
-tinynet.utilities.logger.VERBOSE = 1
+tinyml.utilities.logger.VERBOSE = 1
 
 GPU = False
 

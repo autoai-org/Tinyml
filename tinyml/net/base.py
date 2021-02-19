@@ -1,7 +1,7 @@
 import pickle
-from tinynet.utilities.logger import print_net_summary
-from tinynet.core import Backend as np
-from tinynet.core import GPU
+from tinyml.utilities.logger import print_net_summary
+from tinyml.core import Backend as np
+from tinyml.core import GPU
 import numpy
 
 class Net(object):
@@ -33,7 +33,7 @@ class Net(object):
                     layers_bias[layer.name] = layer.bias.tensor
         layers_params = {'weight':layers_weights, 'bias':layers_bias}
         numpy.save(filepath, layers_params)
-        print("[Tinynet] Successfully exported to {}".format(filepath))
+        print("[tinyml] Successfully exported to {}".format(filepath))
     
     def load(self, filepath):
         if filepath.endswith('.npy'):
@@ -49,7 +49,7 @@ class Net(object):
                     print(layers_weights[layer.name])
                     layer.weight.tensor = layers_weights[layer.name]
                     layer.bias.tensor = layers_bias[layer.name]
-            print("[Tinynet] Successfully imported from {}".format(filepath))
+            print("[tinyml] Successfully imported from {}".format(filepath))
     
     def _load_npy(self, filepath):
         layers_params = np.load(filepath, allow_pickle=True)
@@ -59,4 +59,4 @@ class Net(object):
             if hasattr(layer, 'weight'):
                 layer.weight.tensor = layers_weight[layer.name]
                 layer.bias.tensor = layers_bias[layer.name]
-        print("[Tinynet] Successfully imported from {}".format(filepath))
+        print("[tinyml] Successfully imported from {}".format(filepath))

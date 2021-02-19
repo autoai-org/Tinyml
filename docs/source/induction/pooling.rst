@@ -51,8 +51,8 @@ Hence we can compute the derivative as below:
            0                             & \text{otherwise}                                                            \\
        \end{cases}
 
-The implementation of max pooling layer in Tinynet is as below:
+The implementation of max pooling layer in tinyml is as below:
 
-.. literalinclude:: ../../../tinynet/layers/pooling.py
+.. literalinclude:: ../../../tinyml/layers/pooling.py
   :language: Python
   :linenos:

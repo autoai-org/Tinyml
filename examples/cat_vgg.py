@@ -5,16 +5,16 @@ import sys
 import numpy as np
 
 # Higher verbose level = more detailed logging
-import tinynet
+import tinyml
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
-from tinynet.core import Backend as np
-from tinynet.learner import Learner
-from tinynet.learner.callbacks import (evaluate_classification_accuracy,
+from tinyml.core import Backend as np
+from tinyml.learner import Learner
+from tinyml.learner.callbacks import (evaluate_classification_accuracy,
                                        save_model)
-from tinynet.losses import cross_entropy_with_softmax_loss
-from tinynet.models.vgg11 import vgg11
-from tinynet.optims import SGDOptimizer
+from tinyml.losses import cross_entropy_with_softmax_loss
+from tinyml.models.vgg11 import vgg11
+from tinyml.optims import SGDOptimizer
 
 model = vgg11()
 model.summary()
@@ -24,9 +24,9 @@ GPU = True
 if GPU:
     os.environ['TNN_GPU'] = "True"
 
-sys.path.insert(1, "/content/tinynet/")
+sys.path.insert(1, "/content/tinyml/")
 
-tinynet.utilities.logger.VERBOSE = 1
+tinyml.utilities.logger.VERBOSE = 1
 
 print('loading data...')
 

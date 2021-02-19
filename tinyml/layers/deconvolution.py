@@ -1,5 +1,5 @@
 from .base import Layer
-from tinynet.core import Backend as np
+from tinyml.core import Backend as np
 
 
 def im2rows(input, inp_shape, filter_shape, dilation, stride, dilated_shape, padding, res_shape):

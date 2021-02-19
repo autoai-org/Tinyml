@@ -1,6 +1,6 @@
 #coding:utf-8
 
-from tinynet.core import Parameter
+from tinyml.core import Parameter
 
 class Layer(object):
     def __init__(self, name):

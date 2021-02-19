@@ -2,6 +2,6 @@
  Net
 ==============
 
-.. automodule:: tinynet.net
+.. automodule:: tinyml.net
    :members:
    :imported-members:

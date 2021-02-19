@@ -4,23 +4,23 @@ import pickle
 import numpy
 
 # Higher verbose level = more detailed logging
-import tinynet
+import tinyml
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
-from tinynet.core import Backend as np
-from tinynet.learner import Learner
-from tinynet.learner.callbacks import (evaluate_classification_accuracy,
+from tinyml.core import Backend as np
+from tinyml.learner import Learner
+from tinyml.learner.callbacks import (evaluate_classification_accuracy,
                                        save_model)
-from tinynet.losses import cross_entropy_with_softmax_loss
-from tinynet.models.tinyvgg16 import tinyvgg16
-from tinynet.optims import SGDOptimizer
+from tinyml.losses import cross_entropy_with_softmax_loss
+from tinyml.models.tinyvgg16 import tinyvgg16
+from tinyml.optims import SGDOptimizer
 
 GPU = True
 
 if GPU:
     os.environ['TNN_GPU'] = "True"
 
-tinynet.utilities.logger.VERBOSE = 1
+tinyml.utilities.logger.VERBOSE = 1
 
 
 def load_data(filepath):

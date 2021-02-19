@@ -1,12 +1,12 @@
-from tinynet.layers import Linear, ReLu
-from tinynet.losses import mse_loss
-from tinynet.net import Sequential
-from tinynet.optims import SGDOptimizer
+from tinyml.layers import Linear, ReLu
+from tinyml.losses import mse_loss
+from tinyml.net import Sequential
+from tinyml.optims import SGDOptimizer
 import numpy as np
 
-import tinynet
+import tinyml
 
-tinynet.utilities.logger.VERBOSE = 3
+tinyml.utilities.logger.VERBOSE = 3
 
 x = np.array([0.25, 0.65]).reshape(1, 2)
 y = np.array([0.99, 0.01]).reshape(1, 2)

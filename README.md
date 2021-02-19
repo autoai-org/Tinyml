@@ -1,13 +1,13 @@
-# TinyNet
+# tinyml
 
 > The neural network framework implemented in pure python.
 
-![Build](https://github.com/xzyaoi/tinynet/workflows/Test%20Coveralls/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/xzyaoi/tinynet/badge.svg)](https://coveralls.io/github/xzyaoi/tinynet)
+![Build](https://github.com/xzyaoi/tinyml/workflows/Test%20Coveralls/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/xzyaoi/tinyml/badge.svg)](https://coveralls.io/github/xzyaoi/tinyml)
 
 ## Documents.
 
-[Online Documents](https://tinynet.autoai.org)
+[Online Documents](https://tinyml.autoai.org)
 
 ## Credits
 

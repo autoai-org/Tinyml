@@ -1,5 +1,5 @@
-from tinynet.net import Sequential
-from tinynet.layers import Conv2D, Linear, MaxPool2D, Flatten, ReLu, Dropout
+from tinyml.net import Sequential
+from tinyml.layers import Conv2D, Linear, MaxPool2D, Flatten, ReLu, Dropout
 
 def vgg16():
 

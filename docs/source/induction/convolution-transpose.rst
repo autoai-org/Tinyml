@@ -62,6 +62,6 @@ operation. Since the entries may exceed the maximum light intensity,
 i.e. :math:`255`, when we are visualizing the deconv result, we will
 need to renormalize every entry into the range of :math:`[0,255]`.
 
-.. literalinclude:: ../../../tinynet/layers/deconvolution.py
+.. literalinclude:: ../../../tinyml/layers/deconvolution.py
   :language: Python
   :linenos:

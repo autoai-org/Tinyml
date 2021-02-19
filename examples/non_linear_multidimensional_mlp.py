@@ -1,12 +1,12 @@
-import tinynet
-from tinynet.core import Backend as np
-from tinynet.layers import Linear, ReLu
-from tinynet.learner import Learner
-from tinynet.losses import mse_loss
-from tinynet.net import Sequential
-from tinynet.optims import SGDOptimizer
+import tinyml
+from tinyml.core import Backend as np
+from tinyml.layers import Linear, ReLu
+from tinyml.learner import Learner
+from tinyml.losses import mse_loss
+from tinyml.net import Sequential
+from tinyml.optims import SGDOptimizer
 
-tinynet.utilities.logger.VERBOSE = 1
+tinyml.utilities.logger.VERBOSE = 1
 
 X = np.random.randint(low=1, high=5, size=(20, 20))
 Y = np.prod(X, axis=1)

@@ -1,9 +1,9 @@
-from tinynet.net import Sequential
-from tinynet.layers import Conv2D, Linear, MaxPool2D, Flatten, ReLu, Dropout
+from tinyml.net import Sequential
+from tinyml.layers import Conv2D, Linear, MaxPool2D, Flatten, ReLu, Dropout
 
 '''
 Tiny VGG 16 is a vgg-like architecture, 
-to tackle the tinynet challenge.
+to tackle the tinyml challenge.
 TensorFlow version: https://github.com/pat-coady/tiny_imagenet/blob/master/src/vgg_16.py
 '''
 

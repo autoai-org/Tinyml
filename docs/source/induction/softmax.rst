@@ -28,8 +28,8 @@ When :math:`i\neq j`,
 
 .. math:: \frac{\partial f}{\partial x_i}=\frac{0-e^{x_i}e^{x_j}}{(\sum e^{x_j})^2}=-\frac{e^{x_i}}{\sum e^{x_j}}\times \frac{e^{x_j}}{\sum e^{x_j}}=-f(x_i)f(x_j)
 
-The implementation of softmax layer in Tinynet is as below:
+The implementation of softmax layer in tinyml is as below:
 
-.. literalinclude:: ../../../tinynet/layers/softmax.py
+.. literalinclude:: ../../../tinyml/layers/softmax.py
   :language: Python
   :linenos:

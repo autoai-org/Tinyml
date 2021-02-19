@@ -222,8 +222,8 @@ Since the backward process will be identical to what we did in *Section
 3.1.1 Fully Connected* if we perform the forward pass in a matrix
 multiplication way, we will omit the examples here.
 
-The implementation of convolutional layer in Tinynet is as below:
+The implementation of convolutional layer in tinyml is as below:
 
-.. literalinclude:: ../../../tinynet/layers/convolution.py
+.. literalinclude:: ../../../tinyml/layers/convolution.py
   :language: Python
   :linenos:

@@ -1,7 +1,7 @@
 import math
 from .base import Layer
 from .convolution import im2col_indices, get_im2col_indices
-from tinynet.core import Backend as np
+from tinyml.core import Backend as np
 
 
 def col2im_no_dup(cols, x_shape, field_height=3, field_width=3, padding=1,

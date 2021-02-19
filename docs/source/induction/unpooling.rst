@@ -18,6 +18,6 @@ In the unpooling process, we first put the maximum values back to its
 position, and fill other positions with :math:`0`. We will get the
 output as :math:`\left[ {\begin{array}{*{20}c} 0 & 0 & 0 \\0 & 5 & 6 \\ 0 & 8 & 9 \end{array} } \right]`
 
-.. literalinclude:: ../../../tinynet/layers/unpooling.py
+.. literalinclude:: ../../../tinyml/layers/unpooling.py
   :language: Python
   :linenos:

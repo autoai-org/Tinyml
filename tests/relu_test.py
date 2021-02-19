@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 
 import torch
-from tinynet.layers import ReLu
+from tinyml.layers import ReLu
 from torch.nn import ReLU as torch_relu
 
 

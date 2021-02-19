@@ -2,6 +2,6 @@
  Layers
 ==============
 
-.. automodule:: tinynet.layers
+.. automodule:: tinyml.layers
    :members:
    :imported-members:

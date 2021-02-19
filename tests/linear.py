@@ -4,7 +4,7 @@ import numpy as np
 
 import torch
 from tests.base import EPSILON
-from tinynet.layers import Linear as tnn_linear
+from tinyml.layers import Linear as tnn_linear
 from torch.nn import Linear as torch_linear
 
 

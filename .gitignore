@@ -10,3 +10,7 @@ __pycache__
 coverage.json
 *.tnn
 results/
+*.egg-info
+dist/
+build/
+.pytest_cache

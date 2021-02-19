@@ -1,4 +1,4 @@
-from tinynet.core import Backend as np
+from tinyml.core import Backend as np
 
 
 def evaluate_classification_accuracy(model, epoch, data, label):
