@@ -1,4 +1,3 @@
-import os
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 import torch
@@ -8,14 +7,19 @@ from torch.utils.data import TensorDataset, DataLoader
 
 import pickle
 
+
 # Utilities
 def load_data(filepath):
-  with open(filepath, 'rb') as f:
-    cat_dog_data = pickle.load(f)
-    data = cat_dog_data['image']
-    label = cat_dog_data['labels']
-    x_train, x_test, y_train, y_test = train_test_split(data, label, test_size=0.10, random_state=42)
-    return x_train, y_train, x_test, y_test
+    with open(filepath, 'rb') as f:
+        cat_dog_data = pickle.load(f)
+        data = cat_dog_data['image']
+        label = cat_dog_data['labels']
+        x_train, x_test, y_train, y_test = train_test_split(data,
+                                                            label,
+                                                            test_size=0.10,
+                                                            random_state=42)
+        return x_train, y_train, x_test, y_test
+
 
 x_train, y_train, x_test, y_test = load_data('dataset/600.pkl')
 
@@ -31,7 +35,7 @@ y_test = torch.Tensor(y_test)
 optimizer = torch.optim.SGD(lr=0.01)
 criterion = nn.NLLLoss()
 
-training_dataset = TensorDataset(x_train,y_train)
+training_dataset = TensorDataset(x_train, y_train)
 test_dataset = TensorDataset(x_test, y_test)
 
 training_dataset = DataLoader(training_dataset, batch_size=4)
@@ -51,4 +55,4 @@ for epoch in range(5):
 
 y_predict = model(x_test)
 acc = get_accuracy(y_predict, y_test)
-print('Testing Accuracy: {}%'.format(acc*100))
+print('Testing Accuracy: {}%'.format(acc * 100))

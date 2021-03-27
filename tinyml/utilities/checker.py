@@ -3,6 +3,7 @@ This utility computes the gradient with finite differences
 '''
 import numpy as np
 
+
 def gradient_check(input, function, eps=1e-15):
     gradient = np.zeros(input.shape)
     for i in range(len(input)):

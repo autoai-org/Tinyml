@@ -11,7 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 from tinyml.core import Backend as np
 from tinyml.learner import Learner
 from tinyml.learner.callbacks import (evaluate_classification_accuracy,
-                                       save_model)
+                                      save_model)
 from tinyml.losses import cross_entropy_with_softmax_loss
 from tinyml.models.vgg11 import vgg11
 from tinyml.optims import SGDOptimizer

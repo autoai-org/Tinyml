@@ -11,7 +11,7 @@ class SGDOptimizer():
     def __init__(self, lr, momentum=None):
         self.lr = lr
         self.momentum = momentum
-    
+
     def update(self, param):
         if param.require_grad:
             if self.momentum:

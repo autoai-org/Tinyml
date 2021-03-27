@@ -1,5 +1,5 @@
 from tinyml.core import Backend as np
-from tinyml.layers import LeakyReLu, Linear, ReLu
+from tinyml.layers import Linear, ReLu
 from tinyml.learner import Learner
 from tinyml.losses import mse_loss
 from tinyml.net import Sequential

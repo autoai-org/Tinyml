@@ -4,13 +4,14 @@ from tinyml.core import Backend as np
 from tinyml.utilities.logger import output_intermediate_result
 from tinyml.layers import MaxPool2D
 
+
 class Sequential(Net):
     '''
     Sequential model reads a list of layers and stack them to be a neural network.
     '''
     def __init__(self, layers):
         super().__init__(layers)
-    
+
     def forward(self, input, return_indices=False):
         pool_indices = [None] * len(self.layers)
         output = input
@@ -24,12 +25,13 @@ class Sequential(Net):
         if return_indices:
             return output, pool_indices
         return output
-    
+
     def backward(self, in_gradient):
         out_gradient = in_gradient
-        for layer in self.layers[::-1]:    
+        for layer in self.layers[::-1]:
             out_gradient = layer.backward(out_gradient)
-            output_intermediate_result(layer.name, out_gradient, 'gradient', layer)
+            output_intermediate_result(layer.name, out_gradient, 'gradient',
+                                       layer)
         return out_gradient
 
     def add(self, layer):
@@ -41,12 +43,12 @@ class Sequential(Net):
 
     def __call__(self, input):
         return self.forward(input)
-    
+
     def predict(self, data, batch_size=None):
         results = None
         if batch_size:
             for i in range(0, len(data), batch_size):
-                result = self.forward(data[i:i+batch_size])
+                result = self.forward(data[i:i + batch_size])
                 if results is None:
                     results = result
                 else:

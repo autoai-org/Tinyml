@@ -4,9 +4,9 @@ default:
 	@echo "\tmake format\t Format all code"
 
 format:
-	autoflake -i **/*.py
-	isort -i **/*.py
-	yapf -i **/*.py
+	autoflake --in-place --remove-unused-variables --recursive .
+	isort .
+	yapf -ir .
 
 test:
 	python3 -m unittest tests/*.py

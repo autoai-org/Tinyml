@@ -62,6 +62,7 @@ class TestDeconv2D_multi_channel(unittest.TestCase):
             (self.torch_deconv_output.detach().numpy() - tnn_deconv_output <
              EPSILON).all())
 
+
 class TestDeconv2D_multi_channel_2(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

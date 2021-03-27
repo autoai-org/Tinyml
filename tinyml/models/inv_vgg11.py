@@ -4,18 +4,21 @@ from PIL import Image
 import numpy as np
 
 conv2deconv_indices = {
-    0: 23, 2: 21, 5: 18, 7: 16,
-    10: 13, 12: 11, 14: 9, 17: 6,
-    19: 4, 21: 2
+    0: 23,
+    2: 21,
+    5: 18,
+    7: 16,
+    10: 13,
+    12: 11,
+    14: 9,
+    17: 6,
+    19: 4,
+    21: 2
 }
 
-pooling2unpooling_indices = {
-    4: 19, 9: 14, 16: 7, 23: 0
-}
+pooling2unpooling_indices = {4: 19, 9: 14, 16: 7, 23: 0}
 
-unpooling2pooling_indices = {
-    19: 4, 14: 9, 7: 16, 0: 23
-}
+unpooling2pooling_indices = {19: 4, 14: 9, 7: 16, 0: 23}
 
 
 def inverse_vgg():
@@ -58,10 +61,12 @@ def inverse_vgg():
 def load_weight(inv_vgg, vgg):
     for idx, layer in enumerate(vgg.layers):
         if isinstance(layer, Conv2D):
-            inv_vgg.layers[conv2deconv_indices[idx]].weight.tensor = layer.weight.tensor
+            inv_vgg.layers[
+                conv2deconv_indices[idx]].weight.tensor = layer.weight.tensor
             # No idea why we ignore bias, but that's what [https://github.com/huybery/VisualizingCNN] did.
             # inv_vgg.layers[conv2deconv_indices[idx]].bias.tensor = layer.bias.tensor
     return inv_vgg
+
 
 def forward(x, inv_vgg, layer_id, pool_indices):
     if layer_id in conv2deconv_indices:

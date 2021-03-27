@@ -1,4 +1,6 @@
 import json
+
+
 class SummaryWriter():
     def __init__(self, filepath):
         self.filepath = filepath

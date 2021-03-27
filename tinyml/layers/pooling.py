@@ -2,6 +2,7 @@ from .base import Layer
 from tinyml.core import Backend as np
 from .convolution import im2col_indices, col2im_indices
 
+
 class MaxPool2D(Layer):
     '''
     Perform Max pooling, i.e. select the max item in a sliding window.
@@ -23,13 +24,23 @@ class MaxPool2D(Layer):
 
     def forward(self, input):
         self.num_of_entries = input.shape[0]
-        input_reshaped = input.reshape(input.shape[0] * input.shape[1], 1, input.shape[2], input.shape[3])
-        self.input_col = im2col_indices(input_reshaped, self.size[0], self.size[1], padding=0, stride=self.stride)
+        input_reshaped = input.reshape(input.shape[0] * input.shape[1], 1,
+                                       input.shape[2], input.shape[3])
+        self.input_col = im2col_indices(input_reshaped,
+                                        self.size[0],
+                                        self.size[1],
+                                        padding=0,
+                                        stride=self.stride)
         self.max_indices = np.argmax(self.input_col, axis=0)
         self.total_count = list(range(0, self.max_indices.size))
         output = self.input_col[self.max_indices, self.total_count]
-        output = output.reshape(self.out_height, self.out_width, self.num_of_entries, self.input_channel).transpose(2,3,0,1)
-        indices = self.max_indices.reshape(self.out_height, self.out_width, self.num_of_entries, self.input_channel).transpose(2,3,0,1)
+        output = output.reshape(self.out_height, self.out_width,
+                                self.num_of_entries,
+                                self.input_channel).transpose(2, 3, 0, 1)
+        indices = self.max_indices.reshape(self.out_height, self.out_width,
+                                           self.num_of_entries,
+                                           self.input_channel).transpose(
+                                               2, 3, 0, 1)
         if self.return_index:
             return output, indices
         else:
@@ -37,8 +48,17 @@ class MaxPool2D(Layer):
 
     def backward(self, in_gradient):
         gradient_col = np.zeros_like(self.input_col)
-        gradient_flat = in_gradient.transpose(2,3,0,1).ravel()
+        gradient_flat = in_gradient.transpose(2, 3, 0, 1).ravel()
         gradient_col[self.max_indices, self.total_count] = gradient_flat
-        shape = (self.num_of_entries*self.input_channel, 1, self.input_height, self.input_width)
-        out_gradient = col2im_indices(gradient_col, shape, self.size[0], self.size[1], padding=0, stride=self.stride).reshape(self.num_of_entries, self.input_channel, self.input_height, self.input_width)
+        shape = (self.num_of_entries * self.input_channel, 1,
+                 self.input_height, self.input_width)
+        out_gradient = col2im_indices(gradient_col,
+                                      shape,
+                                      self.size[0],
+                                      self.size[1],
+                                      padding=0,
+                                      stride=self.stride).reshape(
+                                          self.num_of_entries,
+                                          self.input_channel,
+                                          self.input_height, self.input_width)
         return out_gradient

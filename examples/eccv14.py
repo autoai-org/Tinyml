@@ -18,6 +18,8 @@ data_path = './examples/assets/dataset/'
 '''
 Load images
 '''
+
+
 def load_images():
     datasets = []
     data_path = './examples/assets/dataset/'
@@ -29,6 +31,7 @@ def load_images():
         datasets.append(image)
     return datasets
 
+
 def load_single_image(id):
     if id > 19:
         raise ValueError("Not a valid image")
@@ -39,22 +42,29 @@ def load_single_image(id):
             image = np.asarray(image.convert('RGB')).transpose(2, 0, 1) / 255.
             return image
 
+
 '''
 Load model
 '''
+
+
 def load_model():
     model = vgg11()
     model.load('./examples/assets/model.tnn.npy')
     return model
+
 
 def load_inverse_model(vgg11):
     inv_vgg = inverse_vgg()
     inv_vgg = load_weight(inv_vgg, vgg11)
     return inv_vgg
 
+
 '''
 Perform Classification
 '''
+
+
 def classify():
     datasets = load_images()
     model = load_model()

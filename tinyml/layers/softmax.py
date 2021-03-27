@@ -1,5 +1,6 @@
 from tinyml.core import Backend as np
-from .base import Layer    
+from .base import Layer
+
 
 class Softmax(Layer):
     '''
@@ -9,7 +10,7 @@ class Softmax(Layer):
         super().__init__(name)
         self.type = 'Softmax'
         self.axis = 1
-        self.eps=eps
+        self.eps = eps
 
     def forward(self, input):
         '''

@@ -1,10 +1,13 @@
-import math
 from .base import Layer
 from .convolution import im2col_indices, get_im2col_indices
 from tinyml.core import Backend as np
 
 
-def col2im_no_dup(cols, x_shape, field_height=3, field_width=3, padding=1,
+def col2im_no_dup(cols,
+                  x_shape,
+                  field_height=3,
+                  field_width=3,
+                  padding=1,
                   stride=1):
     '''
     Similar function for col2im_indices, but will not perform +=.
@@ -37,8 +40,8 @@ class MaxUnpool2D(Layer):
 
     def forward(self, input, max_indices):
         self.num_of_entries = input.shape[0]
-        output_shape = (self.num_of_entries,
-                        self.out_dim[0], self.out_dim[1], self.out_dim[2])
+        output_shape = (self.num_of_entries, self.out_dim[0], self.out_dim[1],
+                        self.out_dim[2])
         indices = max_indices.reshape(input.shape)
         unpooled = np.zeros(output_shape)
         for i in range(self.num_of_entries):
@@ -46,17 +49,16 @@ class MaxUnpool2D(Layer):
                 for m in range(self.input_height):
                     for n in range(self.input_width):
                         index = indices[i, j, m, n]
-                        w_index = index %  self.size[0]
+                        w_index = index % self.size[0]
                         h_index = index // self.size[1]
-                        unpooled[i, j,  m*self.stride+h_index, n*self.stride +
-                                 w_index] = input[i, j, m, n]
+                        unpooled[i, j, m * self.stride + h_index,
+                                 n * self.stride + w_index] = input[i, j, m, n]
         return unpooled
 
     def backward(self, in_gradient):
         '''
         This function is not needed in computation, at least right now.
         '''
-        pass
-    
+
     def __call__(self, input, max_indices):
         return self.forward(input, max_indices)

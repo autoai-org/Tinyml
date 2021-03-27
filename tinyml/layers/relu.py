@@ -1,13 +1,14 @@
 from .base import Layer
 from tinyml.core import Backend as np
 
+
 class ReLu(Layer):
     '''
     ReLu layer performs rectifier linear unit opertaion.
     '''
     def __init__(self, name):
         super().__init__(name)
-        self.type='ReLu'
+        self.type = 'ReLu'
 
     def forward(self, input):
         '''
