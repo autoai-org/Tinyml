@@ -3,7 +3,7 @@
 > The machine learning framework implemented in pure python.
 
 ![Build](https://github.com/xzyaoi/tinyml/workflows/Test%20Coveralls/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/xzyaoi/tinyml/badge.svg)](https://coveralls.io/github/xzyaoi/tinyml)
+[![Coverage Status](https://coveralls.io/repos/github/autoai-org/Tinyml/badge.svg?branch=master)](https://coveralls.io/github/autoai-org/Tinyml?branch=master)
 
 ## Documents.
 
