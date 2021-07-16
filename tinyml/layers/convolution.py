@@ -1,6 +1,7 @@
-from .base import Layer
-from tinyml.core import Backend as np
 from tinyml.core import GPU
+from tinyml.core import Backend as np
+
+from .base import Layer
 '''
 These im2col and col2im should be credited to:
 https://github.com/huyouare/CS231n. Some minor modifications are made to ensure

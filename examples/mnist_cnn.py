@@ -1,8 +1,9 @@
 import os
 
+from sklearn.preprocessing import OneHotEncoder
+
 import tinyml
 import tinyml.dataloaders.mnist as mnist
-from sklearn.preprocessing import OneHotEncoder
 from tinyml.core import Backend as np
 from tinyml.layers import Conv2D, Dropout, Linear, ReLu, Softmax, softmax
 from tinyml.layers.flatten import Flatten

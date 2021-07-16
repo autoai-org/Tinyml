@@ -1,5 +1,6 @@
-from .base import Layer
 from tinyml.core import Backend as np
+
+from .base import Layer
 
 
 class ReLu(Layer):

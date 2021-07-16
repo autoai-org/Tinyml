@@ -3,11 +3,11 @@ import pickle
 import sys
 
 import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
 
 # Higher verbose level = more detailed logging
 import tinyml
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
 from tinyml.core import Backend as np
 from tinyml.learner import Learner
 from tinyml.learner.callbacks import (evaluate_classification_accuracy,

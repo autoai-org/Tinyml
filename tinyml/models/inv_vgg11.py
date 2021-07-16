@@ -1,7 +1,8 @@
-from tinyml.net import Sequential
-from tinyml.layers import Deconv2D, Conv2D, MaxUnpool2D, ReLu
-from PIL import Image
 import numpy as np
+from PIL import Image
+
+from tinyml.layers import Conv2D, Deconv2D, MaxUnpool2D, ReLu
+from tinyml.net import Sequential
 
 conv2deconv_indices = {
     0: 23,

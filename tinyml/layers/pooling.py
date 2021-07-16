@@ -1,6 +1,7 @@
-from .base import Layer
 from tinyml.core import Backend as np
-from .convolution import im2col_indices, col2im_indices
+
+from .base import Layer
+from .convolution import col2im_indices, im2col_indices
 
 
 class MaxPool2D(Layer):

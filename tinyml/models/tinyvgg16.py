@@ -1,5 +1,5 @@
+from tinyml.layers import Conv2D, Dropout, Flatten, Linear, MaxPool2D, ReLu
 from tinyml.net import Sequential
-from tinyml.layers import Conv2D, Linear, MaxPool2D, Flatten, ReLu, Dropout
 '''
 Tiny VGG 16 is a vgg-like architecture, 
 to tackle the tinyml challenge.

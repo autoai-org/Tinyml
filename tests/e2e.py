@@ -2,18 +2,18 @@
 import unittest
 
 import numpy as np
-
 import torch
 import torch.nn as nn
+from torch.nn import Conv2d as torch_conv2d
+from torch.nn import Linear as torch_linear
+from torch.nn import MaxPool2d as torch_maxpool2d
+from torch.nn import ReLU as torch_relu
+
 from tests.base import EPSILON, isEqual
 from tinyml.layers import Conv2D, Flatten, Linear, MaxPool2D, ReLu
 from tinyml.losses.cross_entropy import cross_entropy_with_softmax_loss
 from tinyml.net import Sequential
 from tinyml.optims import SGDOptimizer
-from torch.nn import Conv2d as torch_conv2d
-from torch.nn import Linear as torch_linear
-from torch.nn import MaxPool2d as torch_maxpool2d
-from torch.nn import ReLU as torch_relu
 
 
 class torch_net(nn.Module):

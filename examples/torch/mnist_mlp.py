@@ -1,14 +1,14 @@
 import torch
-from torch import optim
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from tinyml.core import Backend as np
-
+from torch import optim
 from torch.autograd import Variable
-from tinyml.utilities.logger import log_trainining_progress
-import tinyml.dataloaders.mnist as mnist
+
 import tinyml
+import tinyml.dataloaders.mnist as mnist
+from tinyml.core import Backend as np
+from tinyml.utilities.logger import log_trainining_progress
 
 tinyml.utilities.logger.VERBOSE = 1
 

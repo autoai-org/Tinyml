@@ -1,8 +1,10 @@
 import pickle
-from tinyml.utilities.logger import print_net_summary
-from tinyml.core import Backend as np
-from tinyml.core import GPU
+
 import numpy
+
+from tinyml.core import GPU
+from tinyml.core import Backend as np
+from tinyml.utilities.logger import print_net_summary
 
 
 class Net(object):

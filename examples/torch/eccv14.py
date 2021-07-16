@@ -1,10 +1,10 @@
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
 import torch.nn as nn
 import torchvision.models as models
-from torchvision.transforms import transforms
-import numpy as np
-import matplotlib.pyplot as plt
 from PIL import Image
+from torchvision.transforms import transforms
 
 
 def forward_img(model, x):

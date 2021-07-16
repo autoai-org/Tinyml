@@ -1,8 +1,8 @@
-from .base import Net
-
 from tinyml.core import Backend as np
-from tinyml.utilities.logger import output_intermediate_result
 from tinyml.layers import MaxPool2D
+from tinyml.utilities.logger import output_intermediate_result
+
+from .base import Net
 
 
 class Sequential(Net):

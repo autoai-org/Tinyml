@@ -1,6 +1,7 @@
-from tinyml.core import Backend as np
 import time
-from tinyml.utilities.logger import log_trainining_progress, log_training_time
+
+from tinyml.core import Backend as np
+from tinyml.utilities.logger import log_training_time, log_trainining_progress
 
 
 class Learner():

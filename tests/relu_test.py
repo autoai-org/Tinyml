@@ -1,10 +1,10 @@
 import unittest
 
 import numpy as np
-
 import torch
-from tinyml.layers import ReLu
 from torch.nn import ReLU as torch_relu
+
+from tinyml.layers import ReLu
 
 
 class TestRelu(unittest.TestCase):

@@ -1,11 +1,11 @@
 import unittest
 
 import numpy as np
-
 import torch
+from torch.nn import ConvTranspose2d as torch_deconv
+
 from tests.base import EPSILON
 from tinyml.layers import Deconv2D
-from torch.nn import ConvTranspose2d as torch_deconv
 
 
 class TestDeconv2D(unittest.TestCase):

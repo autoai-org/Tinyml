@@ -1,13 +1,13 @@
 #coding:utf-8
 import os
 
+import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 from numpy import savetxt
 from numpy.core.fromnumeric import argmax
-
-import matplotlib
-import matplotlib.pyplot as plt
 from PIL import Image
+
 from tinyml.layers import Conv2D, Deconv2D, MaxPool2D, MaxUnpool2D, Softmax
 from tinyml.models.inv_vgg11 import forward, inverse_vgg, load_weight
 from tinyml.models.vgg11 import vgg11

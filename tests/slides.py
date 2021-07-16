@@ -1,12 +1,12 @@
-from tinyml.models.inv_vgg11 import forward
-
 import numpy as np
-
 import torch
+
 from tests.base import EPSILON
-from tinyml.layers import Conv2D, MaxPool2D, Flatten, Linear, Deconv2D, MaxUnpool2D
-from tinyml.net import Sequential
+from tinyml.layers import (Conv2D, Deconv2D, Flatten, Linear, MaxPool2D,
+                           MaxUnpool2D)
 from tinyml.losses.cross_entropy import cross_entropy_with_softmax_loss
+from tinyml.models.inv_vgg11 import forward
+from tinyml.net import Sequential
 from tinyml.optims import SGDOptimizer
 
 tnn_model = Sequential([

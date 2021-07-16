@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="tinyml",  # Replace with your own username
-    version="0.0.4",
+    version="0.0.5",
     author="Xiaozhe Yao",
     author_email="askxzyao@gmail.com",
     description="A Pure Python Machine Learning Library",

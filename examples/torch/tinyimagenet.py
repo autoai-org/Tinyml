@@ -1,11 +1,12 @@
+import pickle
+
+import numpy as np
 import torch
 import torch.nn as nn
-from torchvision import models
-from torch.utils.data import TensorDataset, DataLoader
-import torchvision.models as models
 import torchvision as tv
-import numpy as np
-import pickle
+import torchvision.models as models
+from torch.utils.data import DataLoader, TensorDataset
+from torchvision import models
 
 batch_size = 256
 

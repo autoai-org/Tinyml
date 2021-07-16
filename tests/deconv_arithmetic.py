@@ -1,8 +1,8 @@
-import torch
-from torch import dtype
-import torch.nn as nn
-from torch.nn import Conv2d, ConvTranspose2d
 import numpy as np
+import torch
+import torch.nn as nn
+from torch import dtype
+from torch.nn import Conv2d, ConvTranspose2d
 
 # Convolution
 torch_conv = Conv2d(1, 1, (2, 2), 2, bias=False)

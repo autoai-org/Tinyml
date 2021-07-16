@@ -1,11 +1,11 @@
 import unittest
 
 import numpy as np
-
 import torch
+from torch.nn import Linear as torch_linear
+
 from tests.base import EPSILON
 from tinyml.layers import Linear as tnn_linear
-from torch.nn import Linear as torch_linear
 
 
 class TestLinearLayer(unittest.TestCase):

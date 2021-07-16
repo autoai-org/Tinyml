@@ -1,10 +1,10 @@
+import numpy as np
+
+import tinyml
 from tinyml.layers import Linear, ReLu
 from tinyml.losses import mse_loss
 from tinyml.net import Sequential
 from tinyml.optims import SGDOptimizer
-import numpy as np
-
-import tinyml
 
 tinyml.utilities.logger.VERBOSE = 3
 

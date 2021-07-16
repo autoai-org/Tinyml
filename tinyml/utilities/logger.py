@@ -1,6 +1,7 @@
 #coding:utf-8
-from tabulate import tabulate
 import numpy as np
+from tabulate import tabulate
+
 VERBOSE = 1
 
 

@@ -1,11 +1,11 @@
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split
+import pickle
+
 import torch
 import torch.nn as nn
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+from torch.utils.data import DataLoader, TensorDataset
 from torchvision.models import vgg16
-from torch.utils.data import TensorDataset, DataLoader
-
-import pickle
 
 
 # Utilities

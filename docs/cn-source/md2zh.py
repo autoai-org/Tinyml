@@ -1,5 +1,5 @@
-import sys
 import re
+import sys
 
 interline_tag = '\n<img src="https://www.zhihu.com/equation?tex={}" alt="{}\\\\" class="ee_img tr_noresize" eeimg="1">\n'
 interline_pattern = "\$\$\n*(.*?)\n*\$\$"

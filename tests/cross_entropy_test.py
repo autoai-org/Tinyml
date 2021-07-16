@@ -1,12 +1,12 @@
 import unittest
 
 import numpy as np
-
 import torch
+from torch.nn import CrossEntropyLoss
+
 from tests.base import EPSILON
 from tinyml.losses import cross_entropy_with_softmax_loss
 from tinyml.utilities import gradient_check
-from torch.nn import CrossEntropyLoss
 
 
 class TestCrossEntropy(unittest.TestCase):

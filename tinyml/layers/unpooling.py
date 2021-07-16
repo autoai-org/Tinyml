@@ -1,6 +1,7 @@
-from .base import Layer
-from .convolution import im2col_indices, get_im2col_indices
 from tinyml.core import Backend as np
+
+from .base import Layer
+from .convolution import get_im2col_indices, im2col_indices
 
 
 def col2im_no_dup(cols,
